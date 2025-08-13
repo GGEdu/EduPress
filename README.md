@@ -162,7 +162,7 @@ cd /path/to/ciencias-curso
 ### CSS Personalizado
 
 - `src/.vitepress/theme/css/styles.css` - Estilos generales
-- `src/.vitepress/theme/css/ejercicios.css` - Estilos para capítulos
+- `src/.vitepress/theme/css/ejercicios.css` - Estilos para ejercicios
 
 ### Componentes Vue
 
