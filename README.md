@@ -1,93 +1,204 @@
-# Vitepress Template
+# 📚 EduPress - Plantilla Educativa VitePress
 
-Este proyecto utiliza [VitePress](https://vitepress.dev/) para documentación estática y está preparado para desplegarse automáticamente en GitHub Pages usando GitHub Actions.
+**Plantilla educativa impulsada por VitePress para dar vida a temarios, guías y cursos online.** Diseñada para docentes y creadores de contenido que buscan una presentación clara, atractiva y fácil de mantener.
 
-## Demo de la plantilla preparada
-https://ggedu.github.io/vitepress-template/
+## ✨ Características
 
-## Instalación
+- 🚀 **Rápido y moderno** - Construido con VitePress
+- 🎨 **Diseño educativo** - Optimizado para contenido didáctico
+- 📱 **Responsive** - Adaptable a todos los dispositivos
+- 🔍 **Búsqueda integrada** - Encuentra contenido al instante
+- 🌐 **Multiidioma** - Soporte para español y catalán
+- 🐳 **Docker Ready** - Desarrollo sin complicaciones
+- ⚡ **Auto-deploy** - Despliegue automático en GitHub Pages
 
-Instala las dependencias con:
+## 🌐 Demo
+
+[Ver la plantilla en acción](https://ggedu.github.io/EduPress/)
+
+## 🚀 Inicio Rápido
+
+### Opción 1: Con Scripts Automáticos (Recomendado)
 
 ```bash
-npm install
+# Iniciar proyecto con puertos automáticos
+./start-project.sh
+
+# Ver estado y URLs
+./status-project.sh
+
+# Modo preview (producción)
+./start-project.sh preview
+
+# Detener proyecto
+./stop-project.sh
 ```
 
-## Uso
+**Ventajas:**
 
-- Todo el contenido en formato Markdown debe estar en la carpeta `src/`.
-- Los menús de navegación y la configuración general del sitio se gestionan en la carpeta [`src/.vitepress`](src/.vitepress/), especialmente en el archivo [`config.mts`](src/.vitepress/config.mts).
-- Para desarrollo local:
+- ✅ Puertos automáticos (sin conflictos)
+- ✅ URLs claras mostradas en consola
+- ✅ Gestión sencilla de contenedores
+- ✅ Soporte para múltiples proyectos simultáneos
 
-  ```bash
-  npm run dev
+### Opción 2: Método Tradicional
+
+```bash
+# Instalar dependencias
+npm install
+
+# Desarrollo
+npm run dev
+
+# Construir para producción
+npm run build
+
+# Preview de producción
+npm run preview
+```
+
+### Opción 3: Docker Manual
+
+```bash
+# Desarrollo
+docker compose up vitepress
+
+# Preview de producción
+docker compose --profile preview up preview
+```
+
+## 📁 Estructura del Proyecto
+
+```
+EduPress/
+├── src/                          # Contenido principal
+│   ├── index.md                  # Página de inicio
+│   ├── .vitepress/
+│   │   ├── config.mts           # Configuración principal
+│   │   └── theme/               # Personalización del tema
+│   ├── contenidos/              # Materiales didácticos
+│   ├── ejercicios/                # Ejercicios y prácticas
+│   └── public/                  # Recursos estáticos
+├── docker-compose.yml           # Configuración Docker
+├── start-project.sh            # Script de inicio automático
+├── stop-project.sh             # Script de parada
+└── status-project.sh           # Script de estado
+```
+
+## ⚙️ Configuración Esencial
+
+### Personalización Rápida
+
+1. **Edita `src/.vitepress/config.mts`:**
+
+  ```typescript
+  export default defineConfig({
+    base: '/TU-REPOSITORIO/',     // Cambia por el nombre de tu repositorio
+    locales: {
+     root: {
+      title: 'Título de tu curso',
+      description: 'Descripción del curso'
+     }
+    }
+  })
   ```
 
-- Para construir la documentación para producción:
+  ⚠️ **Importante:** Busca y reemplaza todas las ocurrencias de `EduPress` por el nombre de tu repositorio en los archivos de configuración, ya que se usan como rutas absolutas.
 
-  ```bash
-  npm run build
-  ```
+2. **Actualiza contenido:**
+   - Logo: `src/public/img/logo.png`
+   - Página inicio: `src/index.md`
+   - Materiales: `src/contenidos/`
+   - Ejercicios: `src/ejercicios/`
 
-- Para previsualizar la build de producción:
+## 🚀 Despliegue en GitHub Pages
 
-  ```bash
-  npm run preview
-  ```
+### Configuración Automática
 
-## Estructura recomendada
+1. **Activar GitHub Pages:**
+   - Ve a `Settings > Pages` en tu repositorio
+   - Selecciona **"GitHub Actions"** en "Build and deployment"
 
-- `src/` — Contiene todo el contenido en Markdown.
-- `src/.vitepress/config.mts` — Configuración de VitePress y menús de navegación.
-- `src/index.md` — Página principal.
+2. **Hacer push:**
 
-## Configuración esencial en `src/.vitepress/config.mts`
+   ```bash
+   git add .
+   git commit -m "Deploy EduPress"
+   git push origin main
+   ```
 
-Antes de desplegar, revisa:
+3. **¡Listo!** Tu sitio estará en: `https://TUUSUARIO.github.io/TU-REPOSITORIO/`
 
-- base: establece el nombre del repositorio entre barras. Es imprescindible para rutas correctas en GitHub Pages.
-  - Ejemplo: si tu repo es `MYUSER/MYREPO`, usa `base: '/MYREPO/'`.
-  - Si publicas en una página de usuario/organización (usuario.github.io) o con dominio propio, usa `base: '/'`.
-- outDir: por defecto genera en `../docs` (desde `src`). No es necesario comitear `docs/` si despliegas con GitHub Pages via artifact (recomendado).
-- Idiomas: locales.root (ES) y locales.ca (Català). La navegación (nav) se define por-locale para traducir textos.
-- Otros: siteTitle, logo, sidebar, footer.
+## 🛠️ Uso Avanzado
 
-## Despliegue a GitHub Pages (rama separada gestionada por Pages)
+### Múltiples Proyectos Simultáneos
 
-Este repo usa un workflow que construye el sitio y publica el resultado en GitHub Pages mediante artifacts (sin comitear `docs/` en `main`).
+```bash
+# Terminal 1 - Proyecto Matemáticas
+cd /path/to/matematicas-curso
+./start-project.sh
+# → Puerto 5173
 
-Archivo: `.github/workflows/deploy.yml`
+# Terminal 2 - Proyecto Historia  
+cd /path/to/historia-curso
+./start-project.sh
+# → Puerto 5174 (automático)
 
-- Build: `npx vitepress build src` genera `docs/`.
-- Publicación: `actions/upload-pages-artifact` sube `docs/` como artifact y `actions/deploy-pages` publica la web.
+# Terminal 3 - Proyecto Ciencias
+cd /path/to/ciencias-curso
+./start-project.sh preview
+# → Puerto 4173 (preview)
+```
 
-Pasos para activar:
+### Configurar Nuevos Proyectos
 
-1. En GitHub > Settings > Pages → “Build and deployment” → selecciona “GitHub Actions”.
-2. Haz push a `main`; el workflow construirá y desplegará.
+```bash
+# Desde el directorio donde están tus proyectos
+./setup-all-projects.sh
+```
 
-## Docker
+## 🎨 Personalización
 
-Arranca el proyecto dentro de contenedores sin instalar Node en tu máquina:
+### CSS Personalizado
 
-- Desarrollo (VitePress dev server):
+- `src/.vitepress/theme/css/styles.css` - Estilos generales
+- `src/.vitepress/theme/css/ejercicios.css` - Estilos para capítulos
 
-  ```bash
-  docker compose up vitepress
-  ```
+### Componentes Vue
 
-  Accede en <http://localhost:5173>
+Agrega componentes personalizados en `src/.vitepress/theme/`
 
-- Preview de producción (build + preview):
+## 🔧 Solución de Problemas
 
-  ```bash
-  docker compose --profile preview up preview
-  ```
+### Puerto ocupado
 
-  Accede en <http://localhost:4173>
+```bash
+./stop-project.sh  # Detener proyecto
+./start-project.sh # Reiniciar con puerto automático
+```
 
-Notas:
+### Docker no responde
 
-- Los puertos 5173 (dev) y 24678 (HMR) deben estar libres.
-- El contenedor ejecuta `npm ci` al iniciar para asegurar dependencias limpias.
-- El volumen /app/node_modules evita que tu node_modules host sobrescriba el del contenedor.
+```bash
+sudo systemctl restart docker
+docker system prune -f
+```
+
+### Error de despliegue
+
+- Verifica que `base` en `config.mts` coincida con el nombre del repositorio
+- Asegúrate de usar "GitHub Actions" en Pages
+
+## 📚 Recursos
+
+- [Documentación VitePress](https://vitepress.dev/)
+- [Guía Markdown](https://www.markdownguide.org/)
+- [GitHub Pages](https://pages.github.com/)
+
+## 📄 Licencia
+
+MIT License - Libre para uso educativo
+
+---
+
+**💝 Diseñado para la comunidad educativa** - Simplificando la creación de contenido didáctico digital.
