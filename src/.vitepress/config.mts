@@ -3,7 +3,7 @@ import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  base: '/vitepress-template/',
+  base: '/EduPress/',
   outDir: '../docs',
   markdown: {
     config(md) {
@@ -11,9 +11,10 @@ export default defineConfig({
     }
   },
   head: [
-    // ['link', { rel: 'icon', type: 'image/png', href: '/img/logo.png' }],
-    // ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }],
-    // ['link', { rel: 'stylesheet', href: '/UD1/.vitepress/theme/custom.css' }]
+    
+    ['link', { rel: 'stylesheet', href: '/EduPress/.vitepress/theme/css/styles.css' }],
+    ['link', { rel: 'stylesheet', href: '/EduPress/.vitepress/theme/css/ejercicios.css' }],
+    ['link', { rel: 'icon', href: '/EduPress/img/logo.png' }]
   ],
   // Metadatos por idioma (guía i18n)
   locales: {
@@ -28,67 +29,53 @@ export default defineConfig({
         outline: { label: 'En esta página' },
           docFooter: { prev: 'Anterior', next: 'Siguiente' },
           nav: [
-            { text: 'Inicio', link: '/' },
-            {
-              text: 'Ejemplos',
+            { text: '🏠 Inicio', link: '/' },
+            { 
+              text: '📚 Contenidos', 
               items: [
-                { text: 'Página de inicio', link: '/' },
-                { text: 'Enlace externo', link: '/' }
+                { text: '1. Introducción', link: '/contenidos/1-introduccion' },
+
               ]
-            }
-          ]
+            },            
+          ],
       }
     },
-    ca: {
-      label: 'Català',
-      lang: 'ca-ES',
-      link: '/ca/',
-      title: 'Títol del lloc',
-      description: 'Descripció breu del lloc',
-      themeConfig: {
-        siteTitle: 'Nom del lloc',
-        outline: { label: 'En aquesta pàgina' },
-          docFooter: { prev: 'Anterior', next: 'Següent' },
-          nav: [
-            { text: 'Inici', link: '/ca/' },
-            {
-              text: 'Exemples',
-              items: [
-                { text: "Pàgina d'inici", link: '/ca/' },
-                { text: 'Enllaç extern', link: '/' }
-              ]
-            }
-          ]
-      }
-    }
   },
   // Tema por idioma
   themeConfig: {
     logo: '/img/logo.png',
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/usuario/repositorio' }
+      { icon: 'github', link: 'https://github.com/GGEdu' }
     ],
-    // Sidebar global por prefijo
     sidebar: {
       '/': [
         {
-          text: 'Contenidos',
+          text: '📚 Contenidos',
+          collapsed: true,
           items: [
-            { text: 'Introducción', link: '/' }
+            { text: '1. Introducción', link: '/contenidos/1-introduccion' },
+          ]
+        },
+        {
+              text: '🗂️ Ejercicios',
+              collapsed: true,
+              items: [
+                { text: 'Inicio', link: '/ejercicios/' },
+                { text: 'Ejercicio', link: '/ejercicios/ejercicio' },
+                { text: 'Final', link: '/ejercicios/final' }
+              ]
+            },
+        {
+          items: [
+            { text: '<img src="/EduPress/img/logo-autor.png" class="logo-anim" style="vertical-align:middle; height:165px; margin:0 auto;">', link: '' },
+            { text: '<img src="/EduPress/img/logo-gva.png" class="logo-anim" style="vertical-align:middle; height:60px; margin:0 auto;">', link: '' },
+            { text: '<img src="/EduPress/img/logo-centro.png" class="logo-anim" style="vertical-align:middle; height:90px; margin:0 auto;">', link: '' }
           ]
         }
       ],
-      '/ca/': [
-        {
-          text: 'Continguts',
-          items: [
-            { text: 'Introducció', link: '/ca/' }
-          ]
-        }
-      ]
     },
     footer: {
-      message: '<img src="/UD1/img/logo-autor.png" alt="Autor" style="height:75px; margin: 0 auto; display:block;" />',
+      message: '<img src="/EduPress/img/logo-autor.png" alt="Autor" style="height:75px; margin: 0 auto; display:block;" />',
       copyright: 'Copyright © 2025'
     }
   }

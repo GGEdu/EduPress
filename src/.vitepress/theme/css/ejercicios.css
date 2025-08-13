@@ -1,0 +1,117 @@
+/* Estilos del capítulo integrados con scoping .cap para no afectar todo el sitio */
+.cap * { box-sizing: border-box; }
+.cap header { 
+    position: sticky; 
+    top: 50vh; /* Inicialmente centrado verticalmente */
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%); /* Ajuste para centrado exacto */
+    z-index: 10; 
+    background: rgba(0,0,0,.5); 
+    height: 105px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+    transition: all 0.5s ease; /* Transición suave para todos los cambios */
+    pointer-events: auto; /* Asegurarse de que se pueden hacer clic en los elementos */
+}
+.cap header.scrolled {
+    position: sticky;
+    top: 65px;
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3); /* Sombra sutil cuando está fijo */
+}
+.cap h1 { font-size: 2rem; font-weight: 700; text-transform: uppercase; margin: 0; }
+
+.VPNavBar .title .logo, .VPNavBar .logo { height: 50px !important; width: auto; }
+.VPNavBar .title .logo img, .VPNavBar .logo img { height: 50px !important; width: auto; }
+
+.cap .middle-header{width:100%;margin:auto;display:flex;height:105px;color:#f9f9f9;background:rgba(0,0,0,.5);justify-content:center;align-items:center;position:sticky;top:65px;z-index:9}
+.cap .container { 
+    text-align: center; 
+    color: #333; 
+    width: 100%; 
+    min-height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    background-size: cover; 
+    background-position: center center; 
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    position: relative; /* Para establecer un contexto de posicionamiento */
+}
+
+/* Contenedores con imágenes de fondo (proporción 16:9) */
+.cap .container:not(.blank) {
+    aspect-ratio: 16 / 9;
+    min-height: 56.25vw; /* 16:9 aspect ratio basado en viewport width */
+    max-height: 100vh; /* No exceder altura de viewport */
+}
+
+/* Compensación para pantallas medianas con sidebar */
+@media (min-width: 769px) and (max-width: 1200px) {
+    .cap .container:not(.blank) {
+        background-position: calc(50% + 100px) center;
+    }
+}
+
+/* En pantallas grandes, asegurar proporción correcta */
+@media (min-width: 1201px) {
+    .cap .container:not(.blank) {
+        height: 44.25vw; /* Forzar altura 16:9 en monitores */
+        min-height: 600px; /* Altura mínima para evitar contenedores muy pequeños */
+        max-height: 100vh; /* Máximo de viewport height */
+        background-size: contain;
+        /* Compensar el desplazamiento por el sidebar de VitePress */
+        background-position: calc(50% + 150px) center;
+    }
+}
+.cap .blank { min-height: 40vh; background-color: #333; color: #f9f9f9; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.cap .blank p { font-size: 1.2rem; line-height: 1.5; padding: 25px; text-align: justify; }
+.cap a { display:inline-block; padding: 1em; background-color:#333; color:#ff7f5f; text-decoration:none; text-transform:uppercase; border-radius:.3em; font-weight:700; letter-spacing:.5px; font-size:.875rem; }
+.cap a:hover {
+    background-color: #ff7f5f;
+    color: #555; /* Cambia el color de fondo al pasar el ratón */
+}
+/* Tarjetas */
+.cap .container-card{ display:grid; grid-template-columns: repeat(3,1fr); gap:1.6em; }
+.cap .item{ display:flex; background:#fff; flex-direction:column; align-items:center; border-radius:.5em; box-shadow:0 29px 38px -15px rgba(0,0,0,.43); margin-bottom:30px; }
+.cap .img{ width:90%; min-height:300px; background-color:lightgrey; background-size:cover; background-position:center; margin-top:20px; border-radius:.3em; }
+@media (max-width: 1200px){ 
+    .cap .container-card{ grid-template-columns: 1fr; } 
+}
+
+/* Media queries para contenedores con imágenes */
+@media (max-width: 768px) {
+    /* En móviles, permitir más flexibilidad */
+    .cap .container:not(.blank) {
+        min-height: 70vh; /* Altura mínima más pequeña en móviles */
+        aspect-ratio: auto; /* Liberar la proporción fija en móviles */
+        background-attachment: scroll; /* Mejor rendimiento en móviles */
+    }
+}
+
+@media (max-width: 480px) {
+    /* Para pantallas muy pequeñas */
+    .cap .container:not(.blank) {
+        min-height: 60vh;
+        padding: 1rem;
+        background-size: cover;
+    }
+    
+    .cap h1 { 
+        font-size: 1.5rem; 
+    }
+}
+/* Imágenes de fondo */
+.cap .container.initial { background-image: url(/EduPress/img/ejercicios/1.00.jpg); margin-top: -105px;}
+.cap .container.zero { background-image: url(/EduPress/img/ejercicios/1.01.jpg); }
+.cap .container.first { background-image: url(/EduPress/img/ejercicios/1.02.jpg); }
+.cap .container.second { background-image: url(/EduPress/img/ejercicios/1.03.jpg); }
+.cap .container.third { background-image: url(/EduPress/img/ejercicios/1.04.jpg); }
+.cap .container.fourth { background-image: url(/EduPress/img/ejercicios/1.05.jpg); }
+.cap .img-first { background-image: url(/EduPress/img/ejercicios/1.10.jpg); margin-top: -105px;}
+.cap .img-first_1 { background-image: url(/EduPress/img/ejercicios/1.11.jpg); }
+.cap .img-first_2 { background-image: url(/EduPress/img/ejercicios/1.12.jpg); }
