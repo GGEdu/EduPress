@@ -1,0 +1,338 @@
+/* Mostrar el footer incluso cuando hay sidebar */
+/*.VPFooter.has-sidebar {
+  display: block !important;
+}*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+:root {
+  --vp-c-brand: rgb(237, 110, 81);
+  --vp-c-brand-light: #ff7f5f;
+  --vp-c-brand-lighter: #ff9173;
+  --vp-c-brand-dark: #ed3728;
+  --vp-c-brand-darker: #d62d1f;
+  
+  --vp-font-family-base: 'Roboto', sans-serif;
+  --vp-font-family-mono: 'Cascadia Code', monospace;
+  
+  --content-width: 900px;
+}
+
+/* Animaciones globales */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes floatAnimation {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes glowAnimation {
+  0%, 100% { filter: drop-shadow(0 0 5px rgba(237, 110, 81, 0.2)); }
+  50% { filter: drop-shadow(0 0 15px rgba(237, 110, 81, 0.4)); }
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos base */
+.vp-doc {
+  text-align: justify;
+  text-justify: inter-word;
+  max-width: var(--content-width);
+  margin: 0 auto;
+  animation: fadeIn 0.6s ease-out;
+}
+
+.vp-doc h1 {
+  font-size: 2.5rem;
+  background: linear-gradient(120deg, var(--vp-c-brand), var(--vp-c-brand-dark));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  margin-bottom: 2rem;
+}
+
+.vp-doc h2 {
+  font-size: 1.8rem;
+  color: var(--vp-c-brand);
+  border-bottom: 2px solid var(--vp-c-brand-lighter);
+  padding-bottom: 0.5rem;
+  margin: 2.5rem 0 1.5rem;
+}
+
+/* Contenedores personalizados */
+.tip, .info {
+  background: linear-gradient(135deg, #fff, #f8f8f8);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  animation: scaleIn 0.6s ease-out;
+  border-left: 4px solid var(--vp-c-brand);
+  transition: transform var(--transition-standard);
+}
+
+.tip:hover, .info:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Mejoras en los containers personalizados */
+.custom-block {
+  border: none !important;
+  border-radius: 12px !important;
+  margin: 2rem 0;
+  padding: 1.5rem !important;
+  /*transition: transform 0.3s ease, box-shadow 0.3s ease;*/
+  /*animation: slideIn 0.6s ease-out;*/
+}
+
+.custom-block.tip {
+  background: linear-gradient(135deg, rgba(237,110,81,0.1), rgba(237,110,81,0.05)) !important;
+}
+
+.custom-block.info {
+  background: linear-gradient(135deg, rgba(100,149,237,0.1), rgba(100,149,237,0.05)) !important;
+}
+
+.custom-block.details {
+  background: linear-gradient(135deg, rgba(100,100,100,0.1), rgba(100,100,100,0.05)) !important;
+}
+
+.custom-block:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
+
+/* Logos */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.logo-anim {
+  height: 60px;
+  margin: 1rem;
+  transition: transform 0.3s ease;
+  animation: floatAnimation 3s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+}
+
+.logo-anim:hover {
+  transform: scale(1.1) rotate(-5deg);
+}
+
+/* Lista de contenidos */
+.vp-doc ul, ol {
+  list-style: square;
+  margin-left: 1em;
+  padding-left: 1rem;
+}
+
+.mermaid {
+  display: block;      /* assegurar que sigui un element de bloc */
+}
+
+.flowchart {
+  margin: 0 auto;  /* 1.5em d'espai vertical, calcem horitzontal automàtic */
+}
+
+.vp-doc ul li {
+  margin: 1rem 0;
+  padding-left: 1rem;
+  /*padding: 1rem;
+  background: rgba(255,255,255,0.5);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  animation: fadeSlideIn 0.6s ease-out;*/
+  
+}
+
+.vp-doc blockquote {
+  background-color: rgba(237, 110, 81, 0.5);
+  color: rgb(43, 43, 43);
+  border-left: 3px solid rgba(237, 110, 81, 1);;
+  margin: 1em 0;
+  padding: 1em;
+  font-size: 1.05em;
+}
+
+.dark blockquote {
+  color: #e2e2e2;
+}
+
+.vp-doc blockquote ul {
+  padding-left: 1rem;
+}
+.vp-doc blockquote ul li {
+  list-style-type: square;
+}
+
+.vp-doc ul li::before {
+  position: absolute;
+  left: 0;
+  color: var(--vp-c-brand);
+  transition: transform var(--transition-standard);
+}
+
+/*.vp-doc ul li:hover {
+  transform: translateX(8px);
+  border-color: var(--vp-c-brand-lighter);
+  background: rgba(255,255,255,0.8);
+}*/
+/*
+.vp-doc ul li:hover::before {
+  transform: translateX(3px);
+}
+*/
+
+.vp-doc ul li a {
+  text-decoration: none;
+  color: var(--vp-c-text-1);
+  transition: color var(--transition-standard);
+}
+/*
+.vp-doc ul li a:hover {
+  color: var(--vp-c-brand);
+}
+*/
+/* Mejoras en las listas */
+.vp-doc .details ul {
+  list-style-type: none;
+  padding-left: 0rem;
+}
+
+.vp-doc .details li {
+  list-style: symbols();
+  padding-left: 1rem;
+}
+
+/*
+.vp-doc .details li:hover {
+  transform: translateX(10px);
+  background: rgba(255,255,255,0.8);
+  border-color: var(--vp-c-brand-lighter);
+}*/
+/*
+.vp-doc .details li a {
+  display: block;
+  text-decoration: none;
+  color: var(--vp-c-text-1);
+  font-weight: 500;
+}
+
+.vp-doc .details li p {
+  margin: 0.5rem 0 0;
+  color: var(--vp-c-text-2);
+  font-size: 0.9rem;
+}
+*/
+/* Animaciones para los títulos */
+.animate-title {
+  animation: slideIn 0.6s ease-out;
+}
+
+@keyframes titleSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Enlaces y Navegación */
+.vp-doc a {
+  color: var(--vp-c-brand);
+  text-decoration: none;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+}
+
+.vp-doc a:hover {
+  background-color: rgba(237,110,81,0.1);
+  color: var(--vp-c-brand-dark);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .vp-doc h1 {
+    font-size: 2rem;
+  }
+
+  .vp-doc h2 {
+    font-size: 1.5rem;
+  }
+
+  .custom-block {
+    margin: 1rem 0;
+    padding: 1rem !important;
+  }
+
+  .logo-anim {
+    height: 50px;
+    margin: 0.5rem;
+  }
+/*
+  .vp-doc .details li:hover {
+    transform: translateX(5px);
+  }*/
+}
+
+/* Scroll suave */
+html {
+  scroll-behavior: smooth;
+}
+
+.header-anchor {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .vp-doc blockquote {
+    color: #ffffff !important;
+  }
+  .VPFlyout.active a:hover {
+    color: var(--vp-c-brand-light) !important;
+  }
+  .active, .VPFlyout.active .text[data-v-7a0eaf2e], .VPSidebarItem.level-1.has-active > .item > .link > .text[data-v-3d5a5d96], .title[data-v-77f00a4c]{
+    color: var(--vp-c-brand-light) !important;
+  }
+}
+
+/* Oculta pestanyes amb títol diferent de "Java" */
+.tabs .tab-header:not(:has(button:contains("Java"))) {
+  display: none !important;
+}
+
+.tabs .tab-content > :not([data-tab="Java"]) {
+  display: none !important;
+}

@@ -1,0 +1,16 @@
+# Dependencias
+node_modules
+
+# Salida de build
+.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor/IDE
+.vscode
+.idea
+
+# VitePress output
+**/docs

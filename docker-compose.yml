@@ -1,0 +1,28 @@
+services:
+  vitepress:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+      # Evita sobreescribir node_modules del contenedor con los del host
+      - /app/node_modules
+    ports:
+      - "5173:5173"   # VitePress dev
+      - "24678:24678" # HMR de Vite
+    environment:
+      - NODE_ENV=development
+    command: sh -c "npm ci && npm run dev -- --host 0.0.0.0"
+
+  preview:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "4173:4173"   # VitePress preview
+    environment:
+      - NODE_ENV=production
+    command: sh -c "npm ci && npm run build && npm run preview -- --host 0.0.0.0"
+    profiles:
+      - preview

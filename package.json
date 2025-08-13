@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "vitepress": "^1.6.3"
+  },
+  "scripts": {
+  "dev": "vitepress dev src",
+  "build": "vitepress build src",
+  "preview": "vitepress preview docs",
+  "docs:dev": "vitepress dev src",
+  "docs:build": "vitepress build src",
+  "docs:preview": "vitepress preview docs"
+  },
+  "devDependencies": {
+    "vitepress-plugin-tabs": "^0.7.1"
+  }
+}
