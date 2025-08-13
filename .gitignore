@@ -15,6 +15,12 @@ dist-ssr
 # Build output (local only, not committed)
 docs/
 src/.vitepress/cache/
+src/.vitepress/dist/
+src/.vitepress/temp/
+
+# Dynamic port configuration
+.env
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -25,4 +31,4 @@ src/.vitepress/cache/
 *.njsproj
 *.sln
 *.sw?
-*.identifier*
+*:Zone.Identifier
