@@ -183,7 +183,7 @@ Esta plantilla educativa está diseñada para facilitar la creación de material
 ¿Listo para comenzar tu aprendizaje? Explora los contenidos y actividades:
 
 - 📖 [**Contenidos Teóricos**](./contenidos/1-introduccion) - Material de estudio
-- 💻 [**Ejercicios Prácticos**](./capitulo/) - Actividades y casos
+- 💻 [**Ejercicios Prácticos**](./ejercicios/) - Actividades y casos
 - 🎯 **Evaluación Continua** - Seguimiento de tu progreso
 - 💬 **Foros y Dudas** - Comunicación con profesores y compañeros
 
