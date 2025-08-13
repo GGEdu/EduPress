@@ -11,9 +11,6 @@ export default defineConfig({
     }
   },
   head: [
-    
-    ['link', { rel: 'stylesheet', href: '/EduPress/.vitepress/theme/css/styles.css' }],
-    ['link', { rel: 'stylesheet', href: '/EduPress/.vitepress/theme/css/ejercicios.css' }],
     ['link', { rel: 'icon', href: '/EduPress/img/logo.png' }]
   ],
   // Metadatos por idioma (guía i18n)

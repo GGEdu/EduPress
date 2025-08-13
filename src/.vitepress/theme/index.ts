@@ -5,6 +5,10 @@ import { enhanceAppWithTabs } from 'vitepress-plugin-tabs/client'
 import customEnhanceApp from './enhanceApp'
 import { initializeHeaderScrollController } from './js/headerScrollController'
 
+// Importar los estilos personalizados
+import './css/styles.css'
+import './css/ejercicios.css'
+
 export default {
   ...DefaultTheme,
   enhanceApp(ctx: EnhanceAppContext) {
