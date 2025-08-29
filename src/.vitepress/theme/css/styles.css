@@ -332,3 +332,37 @@ html {
 .tabs .tab-content > :not([data-tab="Java"]) {
   display: none !important;
 }
+
+/* Estilos para diagramas Mermaid */
+.mermaid-container {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  overflow-x: auto;
+  text-align: center;
+}
+
+.mermaid-container svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ocultar el código mermaid original */
+.language-mermaid[data-processed="true"] {
+  display: none !important;
+}
+
+/* Mejorar la visibilidad en modo oscuro */
+.dark .mermaid-container {
+  background: var(--vp-c-bg-alt);
+}
+
+/* Responsivo para móviles */
+@media (max-width: 768px) {
+  .mermaid-container {
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+  }
+}
