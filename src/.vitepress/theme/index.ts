@@ -4,10 +4,12 @@ import DefaultTheme from 'vitepress/theme'
 import { enhanceAppWithTabs } from 'vitepress-plugin-tabs/client'
 import customEnhanceApp from './enhanceApp'
 import { initializeHeaderScrollController } from './js/headerScrollController'
+import SlidesViewer from './components/SlidesViewer.vue'
 
 // Importar los estilos personalizados
 import './css/styles.css'
 import './css/ejercicios.css'
+import './css/slides.css'
 
 export default {
   ...DefaultTheme,
@@ -19,9 +21,12 @@ export default {
     // 3) Aplica el teu filtre de pestanyes
     customEnhanceApp(ctx)
     
-    // 4) Inicializar el controlador del header solo en el cliente
+    // 4) Registra el component globalment
+    ctx.app.component('SlidesViewer', SlidesViewer)
+
+    // 5) Inicializar el controlador del header solo en el cliente
     if (typeof window !== 'undefined') {
-      let diagramCounter = 0; // Contador global para IDs únicos
+      let diagramCounter = 0; // Contador global para IDs únics
       
       const initMermaid = async () => {
         try {

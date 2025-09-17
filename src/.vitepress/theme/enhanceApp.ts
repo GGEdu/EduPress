@@ -43,8 +43,14 @@ export default function customEnhanceApp(ctx: EnhanceAppContext) {
 
   // Aplica-ho en carregar i cada vegada que muta el DOM
   hideUnwantedTabs()
-  new MutationObserver(hideUnwantedTabs).observe(document.body, {
+  
+  // Observador de mutaciones
+  const observer = new MutationObserver(hideUnwantedTabs);
+  observer.observe(document.body, {
     childList: true,
     subtree: true
-  })
+  });
+
+  // Escuchar eventos de VitePress para reinicializar
+  window.addEventListener('vitepress:updated', hideUnwantedTabs);
 }
