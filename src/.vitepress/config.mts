@@ -31,6 +31,7 @@ export default defineConfig({
               text: '📚 Contenidos', 
               items: [
                 { text: '1. Introducción', link: '/contenidos/1-introduccion' },
+                { text: '2. Diapositivas', link: '/contenidos/diapositivas' },
 
               ]
             },            
@@ -51,6 +52,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: '1. Introducción', link: '/contenidos/1-introduccion' },
+            { text: '2. Diapositivas', link: '/contenidos/diapositivas' },
           ]
         },
         {

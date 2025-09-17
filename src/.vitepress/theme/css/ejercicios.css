@@ -21,7 +21,7 @@
     transform: translateY(0);
     box-shadow: 0 2px 10px rgba(0,0,0,0.3); /* Sombra sutil cuando está fijo */
 }
-.cap h1 { font-size: 2rem; font-weight: 700; text-transform: uppercase; margin: 0; }
+.cap h1 { font-size: 2rem; font-weight: 700; text-transform: uppercase; margin: 0; padding: 0 1rem;}
 
 .VPNavBar .title .logo, .VPNavBar .logo { height: 50px !important; width: auto; }
 .VPNavBar .title .logo img, .VPNavBar .logo img { height: 50px !important; width: auto; }
@@ -105,13 +105,3 @@
         font-size: 1.5rem; 
     }
 }
-/* Imágenes de fondo */
-.cap .container.initial { background-image: url(/EduPress/img/ejercicios/1.00.jpg); margin-top: -105px;}
-.cap .container.zero { background-image: url(/EduPress/img/ejercicios/1.01.jpg); }
-.cap .container.first { background-image: url(/EduPress/img/ejercicios/1.02.jpg); }
-.cap .container.second { background-image: url(/EduPress/img/ejercicios/1.03.jpg); }
-.cap .container.third { background-image: url(/EduPress/img/ejercicios/1.04.jpg); }
-.cap .container.fourth { background-image: url(/EduPress/img/ejercicios/1.05.jpg); }
-.cap .img-first { background-image: url(/EduPress/img/ejercicios/1.10.jpg); margin-top: -105px;}
-.cap .img-first_1 { background-image: url(/EduPress/img/ejercicios/1.11.jpg); }
-.cap .img-first_2 { background-image: url(/EduPress/img/ejercicios/1.12.jpg); }

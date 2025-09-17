@@ -7,6 +7,12 @@
   --vp-c-brand-dark: #ed3728;
   --vp-c-brand-darker: #d62d1f;
   
+  --vp-c-note: #4e8af1; /* Información adicional */
+  --vp-c-tip: #26a69a; /* Analogía útil / Ejemplo */
+  --vp-c-warning: #ffc107; /* Advertencia */
+  --vp-c-caution: #a836f4; /* Precaución */
+  --vp-c-important: var(--vp-c-brand-dark); /* A tener en cuenta */
+
   --vp-font-family-base: 'Roboto', sans-serif;
   --vp-font-family-mono: 'Cascadia Code', monospace;
   
@@ -54,27 +60,47 @@
 .vp-doc {
   text-align: justify;
   text-justify: inter-word;
-  max-width: var(--content-width);
   margin: 0 auto;
   animation: fadeIn 0.6s ease-out;
+}
+
+/* Estilos para los encabezados */
+.vp-doc h1,
+.vp-doc h2,
+.vp-doc h3,
+.vp-doc h4,
+.vp-doc h5 {
+  color: var(--vp-c-brand);
 }
 
 .vp-doc h1 {
   font-size: 2.5rem;
   background: linear-gradient(120deg, var(--vp-c-brand), var(--vp-c-brand-dark));
-  background-clip: text;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: transparent;
+  color: transparent; /* Fallback para navegadores que no soportan background-clip */
   margin-bottom: 2rem;
+}
+
+.vp-doc h2,
+.vp-doc h3 {
+  border-bottom: 2px solid var(--vp-c-brand-lighter);
+  padding-bottom: 0.5rem;
+  margin: 2.5rem 0 1.5rem;
 }
 
 .vp-doc h2 {
   font-size: 1.8rem;
-  color: var(--vp-c-brand);
-  border-bottom: 2px solid var(--vp-c-brand-lighter);
-  padding-bottom: 0.5rem;
-  margin: 2.5rem 0 1.5rem;
+}
+
+.vp-doc h3 {
+  font-size: 1.5rem; /* Asumiendo un tamaño ligeramente menor para h3 */
+}
+
+.vp-doc h4,
+.vp-doc h5 {
+  font-weight: 700;
 }
 
 /* Contenedores personalizados */
@@ -100,12 +126,33 @@
   border-radius: 12px !important;
   margin: 2rem 0;
   padding: 1.5rem !important;
-  /*transition: transform 0.3s ease, box-shadow 0.3s ease;*/
-  /*animation: slideIn 0.6s ease-out;*/
+  border-left-width: 4px !important;
+  border-left-style: solid !important;
+}
+
+.custom-block.note {
+  background: linear-gradient(135deg, rgba(78, 138, 241, 0.1), rgba(78, 138, 241, 0.05)) !important;
+  border-color: var(--vp-c-note) !important;
 }
 
 .custom-block.tip {
-  background: linear-gradient(135deg, rgba(237,110,81,0.1), rgba(237,110,81,0.05)) !important;
+  background: linear-gradient(135deg, rgba(38, 166, 154, 0.1), rgba(38, 166, 154, 0.05)) !important;
+  border-color: var(--vp-c-tip) !important;
+}
+
+.custom-block.important {
+  background: linear-gradient(135deg, rgba(237, 55, 40, 0.1), rgba(237, 55, 40, 0.05)) !important;
+  border-color: var(--vp-c-important) !important;
+}
+
+.custom-block.warning {
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.05)) !important;
+  border-color: var(--vp-c-warning) !important;
+}
+
+.custom-block.caution {
+  background: linear-gradient(135deg, rgba(168, 54, 244, 0.1), rgba(168, 54, 244, 0.05)) !important;
+  border-color: var(--vp-c-caution) !important;
 }
 
 .custom-block.info {
@@ -120,6 +167,8 @@
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
+
+
 
 /* Logos */
 .logo-container {
@@ -331,38 +380,4 @@ html {
 
 .tabs .tab-content > :not([data-tab="Java"]) {
   display: none !important;
-}
-
-/* Estilos para diagramas Mermaid */
-.mermaid-container {
-  margin: 1rem 0;
-  padding: 1rem;
-  background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
-  overflow-x: auto;
-  text-align: center;
-}
-
-.mermaid-container svg {
-  max-width: 100%;
-  height: auto;
-}
-
-/* Ocultar el código mermaid original */
-.language-mermaid[data-processed="true"] {
-  display: none !important;
-}
-
-/* Mejorar la visibilidad en modo oscuro */
-.dark .mermaid-container {
-  background: var(--vp-c-bg-alt);
-}
-
-/* Responsivo para móviles */
-@media (max-width: 768px) {
-  .mermaid-container {
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-  }
 }

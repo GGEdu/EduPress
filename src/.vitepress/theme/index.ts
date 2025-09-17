@@ -10,6 +10,7 @@ import SlidesViewer from './components/SlidesViewer.vue'
 import './css/styles.css'
 import './css/ejercicios.css'
 import './css/slides.css'
+import './css/ejer_imgs.css'
 
 export default {
   ...DefaultTheme,
