@@ -4,6 +4,7 @@ import DefaultTheme from 'vitepress/theme'
 import { enhanceAppWithTabs } from 'vitepress-plugin-tabs/client'
 import customEnhanceApp from './enhanceApp'
 import { initializeHeaderScrollController } from './js/headerScrollController'
+import { initLightbox } from './utils/lightboxManager'
 import SlidesViewer from './components/SlidesViewer.vue'
 
 // Importar los estilos personalizados
@@ -11,6 +12,7 @@ import './css/styles.css'
 import './css/ejercicios.css'
 import './css/slides.css'
 import './css/ejer_imgs.css'
+import './css/lightbox.css'
 
 export default {
   ...DefaultTheme,
@@ -68,24 +70,59 @@ export default {
       };
       
       // Inicializar cuando el DOM esté listo
-      window.addEventListener('DOMContentLoaded', () => {
+      const initAll = () => {
         try {
           initializeHeaderScrollController();
           initMermaid();
+          // Inicializar lightbox con un pequeño delay para asegurar que el DOM esté listo
+          setTimeout(() => {
+            try {
+              initLightbox();
+            } catch (error) {
+              console.error('Error al inicializar el lightbox:', error);
+            }
+          }, 100);
         } catch (error) {
-          console.error('Error al inicializar el controlador en DOMContentLoaded:', error);
+          console.error('Error en inicializar componentes:', error);
         }
-      });
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initAll);
+      } else {
+        initAll();
+      }
       
-      // También intentar inicializar después de un tiempo
+      // Intentar inicializar después de un tiempo
       setTimeout(() => {
         try {
           initializeHeaderScrollController();
           initMermaid();
+          initLightbox();
         } catch (error) {
           console.error('Error al inicializar el controlador en setTimeout:', error);
         }
       }, 300);
+
+      // Reintento extra para el lightbox
+      setTimeout(() => {
+        try {
+          initLightbox();
+        } catch (error) {
+          console.error('Error al reinicializar el lightbox (segundo intento):', error);
+        }
+      }, 1500);
+
+      // Escucha cambios de ruta para actualizar
+      window.addEventListener('vitepress:afterRouteChanged', () => {
+        setTimeout(() => {
+          try {
+            initLightbox();
+          } catch (error) {
+            console.error('Error al reinicializar el lightbox después de cambio de ruta:', error);
+          }
+        }, 300);
+      });
     }
   }
 } satisfies Theme

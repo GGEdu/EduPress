@@ -147,11 +147,11 @@ fi
 
 # Limpiar contenedores anteriores si existen
 print_info "Limpiando contenedores anteriores..."
-docker-compose down 2>/dev/null
+docker compose down 2>/dev/null
 
 # Iniciar el proyecto
 print_info "Iniciando Docker Compose..."
-if docker-compose $PROFILE up -d; then
+if docker compose $PROFILE up -d; then
     print_success "¡Proyecto iniciado exitosamente!"
     echo ""
     echo "==============================================="
@@ -168,8 +168,8 @@ if docker-compose $PROFILE up -d; then
     echo "📁 Proyecto: $PROJECT_NAME"
     echo "==============================================="
     echo ""
-    print_info "Para detener el proyecto, ejecuta: docker-compose down"
-    print_info "Para ver los logs, ejecuta: docker-compose logs -f"
+    print_info "Para detener el proyecto, ejecuta: docker compose down"
+    print_info "Para ver los logs, ejecuta: docker compose logs -f"
 else
     print_error "Error al iniciar Docker Compose"
     exit 1
