@@ -1,0 +1,221 @@
+/**
+ * ============================================================================
+ * UTILITIES CSS - Clases de utilidad reutilizables
+ * ============================================================================
+ * 
+ * Este archivo centraliza todas las clases de utilidad que se pueden aplicar
+ * directamente en el markup o componentes.
+ * 
+ * IMPORTANTE: Este archivo debe importarse DESPUÉS de design-tokens.css
+ * para que las variables CSS estén disponibles.
+ * 
+ * Organización:
+ * 1. Gradientes de texto
+ * 2. Espaciado
+ * 3. Display y Layout
+ * 4. Accesibilidad
+ * ============================================================================
+ */
+
+/* ============================================================================
+ * 1. GRADIENTES DE TEXTO
+ * ============================================================================ */
+
+/**
+ * Clase para aplicar gradiente primary al texto
+ * Uso: <h1 class="gradient-text">Título</h1>
+ */
+.gradient-text {
+  background: var(--custom-gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent; /* Fallback para navegadores sin soporte */
+}
+
+/**
+ * Clase para aplicar gradiente de marca al texto
+ */
+.gradient-text-brand {
+  background: var(--custom-gradient-brand);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/**
+ * Clase para aplicar gradiente azul al texto
+ */
+.gradient-text-blue {
+  background: var(--custom-gradient-blue);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/**
+ * Clase para aplicar gradiente mint al texto
+ */
+.gradient-text-mint {
+  background: var(--custom-gradient-mint);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ============================================================================
+ * 2. ESPACIADO
+ * ============================================================================ */
+
+/* Margins */
+.m-0 { margin: 0; }
+.m-1 { margin: var(--custom-space-1); }
+.m-2 { margin: var(--custom-space-2); }
+.m-3 { margin: var(--custom-space-3); }
+.m-4 { margin: var(--custom-space-4); }
+.m-6 { margin: var(--custom-space-6); }
+.m-8 { margin: var(--custom-space-8); }
+
+/* Margin top */
+.mt-0 { margin-top: 0; }
+.mt-2 { margin-top: var(--custom-space-2); }
+.mt-4 { margin-top: var(--custom-space-4); }
+.mt-6 { margin-top: var(--custom-space-6); }
+.mt-8 { margin-top: var(--custom-space-8); }
+
+/* Margin bottom */
+.mb-0 { margin-bottom: 0; }
+.mb-2 { margin-bottom: var(--custom-space-2); }
+.mb-4 { margin-bottom: var(--custom-space-4); }
+.mb-6 { margin-bottom: var(--custom-space-6); }
+.mb-8 { margin-bottom: var(--custom-space-8); }
+
+/* Paddings */
+.p-0 { padding: 0; }
+.p-2 { padding: var(--custom-space-2); }
+.p-4 { padding: var(--custom-space-4); }
+.p-6 { padding: var(--custom-space-6); }
+.p-8 { padding: var(--custom-space-8); }
+
+/* ============================================================================
+ * 3. DISPLAY Y LAYOUT
+ * ============================================================================ */
+
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.flex-row { flex-direction: row; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+.gap-2 { gap: var(--custom-space-2); }
+.gap-4 { gap: var(--custom-space-4); }
+
+.block { display: block; }
+.inline-block { display: inline-block; }
+.hidden { display: none; }
+
+/* Width */
+.w-full { width: 100%; }
+.w-auto { width: auto; }
+
+/* Text align */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+
+/* ============================================================================
+ * 4. ACCESIBILIDAD
+ * ============================================================================ */
+
+/**
+ * Ocultar visualmente pero mantener accesible para lectores de pantalla
+ * Uso: <span class="sr-only">Descripción para lectores de pantalla</span>
+ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/**
+ * Versión que se muestra al hacer focus (útil para skip links)
+ */
+.sr-only-focusable:focus,
+.sr-only-focusable:active {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/**
+ * Skip to content link - accesible pero visualmente oculto hasta focus
+ */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--a11y-skip-link-bg);
+  color: var(--a11y-skip-link-color);
+  padding: var(--custom-space-2) var(--custom-space-4);
+  text-decoration: none;
+  z-index: var(--custom-z-modal);
+  border-radius: 0 0 var(--custom-radius-md) 0;
+  font-weight: var(--custom-font-weight-semibold);
+  transition: top var(--custom-duration-fast) var(--custom-timing-ease-out);
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* ============================================================================
+ * 5. ANIMACIONES APLICADAS
+ * ============================================================================ */
+
+/**
+ * Clase para animar títulos con slide
+ */
+.animate-title {
+  animation: slideIn var(--custom-duration-medium) var(--custom-timing-ease-out);
+}
+
+/**
+ * Clase para animar con fade in
+ */
+.animate-fade-in {
+  animation: fadeIn var(--custom-duration-medium) var(--custom-timing-ease-out);
+}
+
+/**
+ * Clase para animar con scale in
+ */
+.animate-scale-in {
+  animation: scaleIn var(--custom-duration-medium) var(--custom-timing-ease-out);
+}
+
+/* ============================================================================
+ * 6. ESTADOS
+ * ============================================================================ */
+
+.disabled {
+  opacity: var(--custom-opacity-disabled);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.loading {
+  cursor: wait;
+  pointer-events: none;
+}
+

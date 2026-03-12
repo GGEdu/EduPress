@@ -1,0 +1,903 @@
+/**
+ * ============================================================================
+ * SISTEMA DE TOKENS DE DISEÑO - VitePress Theme
+ * ============================================================================
+ * 
+ * Este archivo centraliza todas las variables de diseño del tema.
+ * Extiende y personaliza las variables nativas de VitePress.
+ * 
+ * CONVENCIÓN DE NOMENCLATURA:
+ * --[scope]-[category]-[property]-[size/variant]
+ * 
+ * EJEMPLOS:
+ * --custom-space-4           (scope: custom, category: space, size: 4)
+ * --custom-font-size-lg      (scope: custom, category: font-size, size: lg)
+ * --custom-radius-md         (scope: custom, category: radius, size: md)
+ * --custom-border-width-lg   (scope: custom, category: border-width, size: lg)
+ * --component-box-padding    (scope: component, element: box, property: padding)
+ * --vp-c-brand              (scope: vp, category: c (color), name: brand)
+ * 
+ * SISTEMA DE TAMAÑOS ESTANDARIZADO:
+ * xs (extra small) → sm (small) → md (medium) → lg (large) → xl (extra large)
+ * 
+ * NÚMEROS (espaciado): 1, 2, 3, 4, 5, 6, 7, 8, 10, 12
+ * 
+ * IMPORTANTE:
+ * - Variables VitePress nativas: --vp-*
+ * - Variables personalizadas globales: --custom-*
+ * - Variables de componentes: --component-*
+ * - Variables de accesibilidad: --a11y-*
+ * 
+ * Organización:
+ * 1. Colores Base y Marca
+ * 2. Colores Semánticos
+ * 3. Tipografía
+ * 4. Espaciado
+ * 5. Bordes y Radios
+ * 6. Sombras
+ * 7. Transiciones y Animaciones
+ * 8. Layouts
+ * 9. Z-Index
+ * 10. Gradientes
+ * 11. Variables Específicas de Componentes
+ * 
+ * Documentación VitePress: https://vitepress.dev/guide/extending-default-theme#customizing-css
+ * ============================================================================
+ */
+
+:root {
+  /* ========================================================================
+   * 1. COLORES BASE Y MARCA
+   * ======================================================================== */
+  
+  /* Colores primarios - Basados en VitePress */
+  --vp-c-brand: #ed6e51;
+  --vp-c-brand-1: #ed6e51;           /* Alias principal */
+  --vp-c-brand-2: #ff7f5f;           /* Versión más clara */
+  --vp-c-brand-3: #ff9173;           /* Versión aún más clara */
+  --vp-c-brand-soft: rgba(237, 110, 81, 0.14);
+  
+  /* Hero Theme (Degradado en la página de inicio) */
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, var(--vp-c-brand-2) 30%, var(--vp-c-brand-dark));
+  --vp-home-hero-image-background-image: linear-gradient(-45deg, var(--vp-c-brand-soft) 30%, var(--vp-c-brand-2));
+  
+  /* Colores de marca extendidos (para nuestro sistema) */
+  --custom-brand-light: #ff7f5f;
+  --custom-brand-lighter: #ff9173;
+  --custom-brand-dark: #ed3728;
+  --custom-brand-darker: #d62d1f;
+  
+  /* Colores de acento - Gradientes del diseño */
+  --custom-accent-mint: #63d1c1;     /* Verde menta/celeste */
+  --custom-accent-teal: #41b8a5;     /* Verde profundo */
+  --custom-accent-purple: #a836f4;   /* Púrpura del gradiente */
+  --custom-accent-indigo: #4e8af1;   /* Índigo del gradiente */
+  
+  /* ========================================================================
+   * 2. COLORES SEMÁNTICOS
+   * ======================================================================== */
+  
+  /* Estados y notificaciones - Extendiendo VitePress */
+  --vp-c-note: #4e8af1;
+  --vp-c-tip: #26a69a;
+  --vp-c-warning: #ffc107;
+  --vp-c-caution: #a836f4;
+  --vp-c-important: var(--custom-brand-dark);
+  
+  /* Colores de texto accesibles para fondos claros (WCAG AAA) - Ajustados para impresión */
+  --vp-c-note-text: #064e3b;         /* Emerald 900 - >7:1 AAA */
+  --vp-c-tip-text: #064e3b;          /* Emerald 900 - >7:1 AAA */
+  --vp-c-warning-text: #78350f;      /* Amber 900 - >7:1 AAA */
+  --vp-c-caution-text: #4c1d95;      /* Violet 900 - >7:1 AAA */
+  --vp-c-important-text: #7f1d1d;    /* Red 900 - >7:1 AAA */
+  
+  /* Colores con transparencia para overlays */
+  --custom-overlay-light: rgba(255, 255, 255, 0.1);
+  --custom-overlay-medium: rgba(255, 255, 255, 0.2);
+  --custom-overlay-heavy: rgba(255, 255, 255, 0.8);
+  --custom-overlay-dark: rgba(0, 0, 0, 0.05);
+  --custom-overlay-dark-medium: rgba(0, 0, 0, 0.1);
+  --custom-overlay-dark-heavy: rgba(0, 0, 0, 0.15);
+  
+  /* Fondos específicos */
+  --custom-bg-terminal: #1a202c;
+  --custom-bg-gradient-subtle: linear-gradient(135deg, #fff, #f8f8f8);
+  
+  /* Colores para texto en gradientes */
+  --custom-text-on-gradient: #ffffff;
+  --custom-text-on-gradient-dark: #222222;
+  
+  /* ========================================================================
+   * 3. TIPOGRAFÍA
+   * ======================================================================== */
+  
+  /* Familias de fuentes - Usando variables de VitePress */
+  --vp-font-family-base: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  --vp-font-family-mono: 'Cascadia Code', 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+  
+  /* Tamaños de fuente - Sistema de escala */
+  --custom-font-size-xs: 0.75rem;    /* 12px */
+  --custom-font-size-sm: 0.875rem;   /* 14px */
+  --custom-font-size-base: 1rem;     /* 16px */
+  --custom-font-size-lg: 1.125rem;   /* 18px */
+  --custom-font-size-xl: 1.25rem;    /* 20px */
+  --custom-font-size-2xl: 1.5rem;    /* 24px */
+  --custom-font-size-3xl: 1.875rem;  /* 30px */
+  --custom-font-size-4xl: 2rem;      /* 32px */
+  --custom-font-size-5xl: 2.5rem;    /* 40px */
+  
+  /* Pesos de fuente */
+  --custom-font-weight-light: 300;
+  --custom-font-weight-normal: 400;
+  --custom-font-weight-medium: 500;
+  --custom-font-weight-semibold: 600;
+  --custom-font-weight-bold: 700;
+  
+  /* Altura de línea */
+  --custom-line-height-tight: 1.2;
+  --custom-line-height-snug: 1.3;
+  --custom-line-height-normal: 1.4;
+  --custom-line-height-relaxed: 1.5;
+  --custom-line-height-loose: 1.6;
+  
+  /* Espaciado de letras */
+  --custom-letter-spacing-tighter: -0.02em;
+  --custom-letter-spacing-tight: -0.01em;
+  --custom-letter-spacing-normal: 0;
+  --custom-letter-spacing-wide: 0.01em;
+  
+  /* ========================================================================
+   * 4. ESPACIADO
+   * ======================================================================== */
+  
+  /* Sistema de espaciado (múltiplos de 0.25rem = 4px) */
+  --custom-space-1: 0.25rem;   /* 4px */
+  --custom-space-2: 0.5rem;    /* 8px */
+  --custom-space-3: 0.75rem;   /* 12px */
+  --custom-space-4: 1rem;      /* 16px */
+  --custom-space-5: 1.25rem;   /* 20px */
+  --custom-space-6: 1.5rem;    /* 24px */
+  --custom-space-7: 1.75rem;   /* 28px */
+  --custom-space-8: 2rem;      /* 32px */
+  --custom-space-10: 2.5rem;   /* 40px */
+  --custom-space-12: 3rem;     /* 48px */
+  
+  /* Espaciado específico de componentes */
+  --custom-component-padding-sm: var(--custom-space-4);
+  --custom-component-padding-md: var(--custom-space-6);
+  --custom-component-padding-lg: var(--custom-space-10);
+  --custom-component-gap-sm: var(--custom-space-4);
+  --custom-component-gap-md: var(--custom-space-8);
+  --custom-component-gap-lg: var(--custom-space-12);
+  
+  /* ========================================================================
+   * 5. BORDES Y RADIOS
+   * ======================================================================== */
+  
+  /* Anchos de borde (sistema estandarizado xs, sm, md, lg, xl) */
+  --custom-border-width-xs: 1px;
+  --custom-border-width-sm: 1px;
+  --custom-border-width-md: 2px;
+  --custom-border-width-lg: 4px;
+  --custom-border-width-xl: 5px;
+  
+  /* Aliases para retrocompatibilidad (DEPRECATED - usar xs/sm/md/lg/xl) */
+  --custom-border-width-thin: var(--custom-border-width-xs);
+  --custom-border-width-medium: var(--custom-border-width-md);
+  --custom-border-width-thick: var(--custom-border-width-lg);
+  --custom-border-width-heavy: var(--custom-border-width-xl);
+  
+  /* Radios de borde */
+  --custom-radius-sm: 4px;
+  --custom-radius-md: 6px;
+  --custom-radius-lg: 8px;
+  --custom-radius-xl: 12px;
+  --custom-radius-2xl: 16px;
+  --custom-radius-full: 9999px;
+  
+  /* ========================================================================
+   * 6. SOMBRAS
+   * ======================================================================== */
+  
+  /* Sombras de elevación */
+  --custom-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --custom-shadow-base: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --custom-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --custom-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+  --custom-shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.15);
+  --custom-shadow-2xl: 0 16px 32px rgba(0, 0, 0, 0.2);
+  
+  /* Sombras específicas */
+  --custom-shadow-image: 0 8px 16px rgba(0, 0, 0, 0.15);
+  --custom-shadow-float: 0 6px 24px rgba(0, 0, 0, 0.08);
+  --custom-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.1);
+  
+  /* Sombras de texto */
+  --custom-text-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --custom-text-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --custom-text-shadow-lg: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --custom-text-shadow-gradient: 0 1px 6px rgba(0, 0, 0, 0.25), 0 0 2px rgba(34, 34, 34, 1);
+  
+  /* Glows y efectos especiales */
+  --custom-glow-brand: 0 0 15px rgba(105, 151, 202, 0.4);
+  --custom-glow-brand-subtle: 0 0 5px rgba(105, 151, 202, 0.2);
+  
+  /* ========================================================================
+   * 7. TRANSICIONES Y ANIMACIONES
+   * ======================================================================== */
+  
+  /* Duraciones */
+  --custom-duration-fast: 150ms;
+  --custom-duration-base: 200ms;
+  --custom-duration-medium: 300ms;
+  --custom-duration-slow: 8s;
+  
+  /* Timing functions */
+  --custom-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --custom-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --custom-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --custom-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* Transiciones completas */
+  --custom-transition-fast: all var(--custom-duration-fast) var(--custom-ease-out);
+  --custom-transition-base: all var(--custom-duration-base) var(--custom-ease-out);
+  --custom-transition-medium: all var(--custom-duration-medium) var(--custom-ease-in-out);
+  --custom-transition-transform: transform var(--custom-duration-medium) var(--custom-ease-out);
+  --custom-transition-color: color var(--custom-duration-base) var(--custom-ease-out);
+  
+  /* ========================================================================
+   * 8. LAYOUTS
+   * ======================================================================== */
+  
+  /* Anchos máximos */
+  --vp-layout-max-width: 1440px;
+  --custom-content-width: 900px;
+  --custom-content-width-wide: 1200px;
+  --custom-content-width-narrow: 720px;
+  
+  /* Alturas específicas */
+  --custom-slide-min-height: 80vh;
+  --custom-slide-min-height-mobile: 70vh;
+  
+  /* Grid y columnas */
+  --custom-grid-gap: var(--custom-space-8);
+  --custom-columns-two: 1fr 1fr;
+  --custom-columns-sidebar: 40% 60%;
+  --custom-columns-sidebar-reverse: 60% 40%;
+  
+  /* ========================================================================
+   * 9. Z-INDEX
+   * ======================================================================== */
+  
+  --custom-z-base: 1;
+  --custom-z-dropdown: 1000;
+  --custom-z-sticky: 1020;
+  --custom-z-fixed: 1030;
+  --custom-z-modal-backdrop: 1040;
+  --custom-z-modal: 1050;
+  --custom-z-popover: 1060;
+  --custom-z-tooltip: 1070;
+  --custom-z-toast: 1080;
+  
+  /* ========================================================================
+   * 10. GRADIENTES (SLIDES Y COMPONENTES)
+   * ======================================================================== */
+  
+  /* Gradientes principales */
+  --custom-gradient-primary: var(--custom-gradient-brand);
+  --custom-gradient-brand: linear-gradient(120deg, var(--vp-c-brand), var(--custom-brand-dark));
+  --custom-gradient-mint: linear-gradient(135deg, #4ebdae 0%, #2ca390 100%); /* Slightly darker */
+  --custom-gradient-blue: linear-gradient(90deg, #3182ce 0%, #2b6cb0 100%); /* Darker blue */
+  
+  /* Gradientes sólidos para AccentBox (alta saturación y contraste - Ajustados para accesibilidad) */
+  --custom-gradient-success-solid: linear-gradient(135deg, #059669 0%, #047857 100%); /* Verde más oscuro para contraste */
+  --custom-gradient-warning-solid: linear-gradient(135deg, #d97706 0%, #b45309 100%); /* Naranja más oscuro */
+  --custom-gradient-danger-solid: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); /* Rojo más oscuro */
+  --custom-gradient-info-solid: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); /* Azul más oscuro */
+  --custom-gradient-purple: linear-gradient(135deg, #5b72e0 0%, #683ba2 100%); /* Púrpura más oscuro */
+  --custom-gradient-orange: linear-gradient(135deg, #e07ceb 0%, #d64558 100%); /* Naranja/rosa más oscuro */
+  --custom-gradient-teal: linear-gradient(135deg, #3aa0e0 0%, #00b4c5 100%); /* Turquesa más oscuro (menos neón) */
+  
+  /* Gradientes de fondo suaves */
+  --custom-gradient-bg-soft: linear-gradient(135deg, var(--vp-c-bg-soft) 0%, var(--vp-c-bg-alt) 100%);
+  --custom-gradient-bg-white: linear-gradient(135deg, #fff, #f8f8f8);
+  
+  /* Gradientes con transparencia para overlays */
+  --custom-gradient-overlay-note: linear-gradient(135deg, rgba(78, 138, 241, 0.1), rgba(78, 138, 241, 0.05));
+  --custom-gradient-overlay-tip: linear-gradient(135deg, rgba(38, 166, 154, 0.1), rgba(38, 166, 154, 0.05));
+  --custom-gradient-overlay-warning: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.05));
+  --custom-gradient-overlay-caution: linear-gradient(135deg, rgba(168, 54, 244, 0.1), rgba(168, 54, 244, 0.05));
+  --custom-gradient-overlay-info: linear-gradient(135deg, rgba(100, 149, 237, 0.1), rgba(100, 149, 237, 0.05));
+  --custom-gradient-overlay-important: linear-gradient(135deg, rgba(237, 55, 40, 0.1), rgba(237, 55, 40, 0.05));
+  --custom-gradient-overlay-details: linear-gradient(135deg, rgba(100, 100, 100, 0.1), rgba(100, 100, 100, 0.05));
+  
+  /* Alias para custom blocks (más semánticos) */
+  --custom-gradient-note: var(--custom-gradient-overlay-note);
+  --custom-gradient-tip: var(--custom-gradient-overlay-tip);
+  --custom-gradient-warning: var(--custom-gradient-overlay-warning);
+  --custom-gradient-caution: var(--custom-gradient-overlay-caution);
+  --custom-gradient-info: var(--custom-gradient-overlay-info);
+  --custom-gradient-important: var(--custom-gradient-overlay-important);
+  --custom-gradient-details: var(--custom-gradient-overlay-details);
+  --custom-gradient-subtle: var(--custom-gradient-bg-white);
+  
+  /* ========================================================================
+   * 11. VARIABLES ESPECÍFICAS DE COMPONENTES
+   * ======================================================================== */
+  
+  /* SlideBase y Slides */
+  --slide-padding: var(--custom-component-padding-lg) var(--custom-component-padding-md);
+  --slide-padding-mobile: var(--custom-space-8) var(--custom-space-6);
+  --slide-gap: var(--custom-component-gap-md);
+  --slide-border-radius: var(--custom-radius-xl);
+  --slide-top-accent-height: 4px;
+  
+  /* Boxes (InfoBox, NoteBox, AccentBox) */
+  --box-padding: var(--custom-component-padding-md);
+  --box-border-radius: var(--custom-radius-lg);
+  --box-border-width: var(--custom-border-width-thick);
+  --box-margin: var(--custom-space-4) 0;
+  
+  /* Código */
+  --code-padding: var(--custom-space-1) var(--custom-space-2);
+  --code-border-radius: var(--custom-radius-sm);
+  --code-block-padding: var(--custom-component-padding-md);
+  --code-block-border-radius: var(--custom-radius-lg);
+  
+  /* Tablas */
+  --table-cell-padding: var(--custom-space-3) var(--custom-space-4);
+  
+  /* Listas */
+  --list-padding-left: var(--custom-space-6);
+  --list-margin-left: var(--custom-space-4);
+  --list-item-margin: var(--custom-space-2) 0;
+  
+  /* Lightbox */
+  --lightbox-backdrop-bg: rgba(0, 0, 0, 0.9);
+  --lightbox-z-index: var(--custom-z-modal);
+  --lightbox-control-bg: var(--vp-c-bg-elv);
+  --lightbox-control-bg-hover: var(--vp-c-bg-soft);
+  --lightbox-control-text: var(--vp-c-text-1);
+  --lightbox-control-border: var(--vp-c-divider);
+  --lightbox-control-shadow: var(--custom-shadow-md);
+  --lightbox-control-disabled-opacity: 0.5;
+  
+  /* Logos y elementos visuales */
+  --custom-size-logo: 60px;
+  --custom-size-logo-sm: 50px;
+  --custom-scale-hover: 1.1;
+  --custom-rotate-hover: -5deg;
+  
+  /* Tamaños de botones */
+  --custom-button-size-sm: 32px;
+  --custom-button-size-md: 40px;
+  --custom-button-size-lg: 50px;
+  
+  /* Backgrounds adicionales */
+  --custom-bg-brand-subtle: rgba(105, 151, 202, 0.1);
+  
+  /* Overlays para lightbox y modales */
+  --custom-overlay-white-heavy: rgba(255, 255, 255, 0.9);
+  --custom-overlay-white-medium: rgba(255, 255, 255, 0.7);
+  
+  /* Colores específicos */
+  --custom-color-dark: #333;
+  
+  /* Opacidad */
+  --custom-opacity-disabled: 0.3;
+  
+  /* Filtros de sombra */
+  --custom-shadow-filter-light: drop-shadow(0 var(--custom-space-1) var(--custom-space-2) rgba(0,0,0,0.1));
+  --custom-shadow-color-light: rgba(105, 151, 202, 0.2);
+  --custom-shadow-color-medium: rgba(105, 151, 202, 0.4);
+  
+  /* Timing functions adicionales */
+  --custom-timing-ease-in-out: ease-in-out;
+  --custom-timing-ease-out: ease-out;
+}
+
+/* ============================================================================
+ * MODO OSCURO
+ * ============================================================================ */
+
+.dark {
+  /* Ajustar colores de marca para modo oscuro (naranjas EduPress adaptados) */
+  --vp-c-brand: #f48061;             /* Naranja coral brillante (Contrast > 4.5:1 en dark mode) */
+  --vp-c-brand-1: #fc9578;           /* Hover más claro */
+  --vp-c-brand-2: #ffab93;           /* Textos en hover */
+  --vp-c-brand-3: #953d26;           /* Fondos invertidos */
+  --vp-c-brand-soft: rgba(237, 110, 81, 0.16);
+
+  /* Hero Theme Modo Oscuro */
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, var(--vp-c-brand-1) 30%, var(--vp-c-brand-3));
+  --vp-home-hero-image-background-image: linear-gradient(-45deg, var(--vp-c-brand-soft) 30%, var(--vp-c-brand));
+
+  /* Ajustar colores custom brand para modo oscuro */
+  --custom-brand-light: #c0482d;     
+  --custom-brand-lighter: #d95a3d;   
+  --custom-brand-dark: #f48061;      
+  --custom-brand-darker: #fca087;    
+
+  /* Ajustar colores para modo oscuro */
+  --custom-overlay-light: rgba(255, 255, 255, 0.05);
+  --custom-overlay-medium: rgba(255, 255, 255, 0.1);
+  --custom-overlay-heavy: rgba(255, 255, 255, 0.2);
+  
+  /* Overlays específicos para dark mode */
+  --custom-overlay-white-heavy: rgba(255, 255, 255, 0.15);
+  --custom-overlay-white-medium: rgba(255, 255, 255, 0.1);
+  
+  /* Sombras más sutiles en modo oscuro */
+  --custom-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --custom-shadow-base: 0 1px 3px rgba(0, 0, 0, 0.4);
+  --custom-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
+  --custom-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.6);
+  --custom-shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.7);
+  
+  /* Terminal background más claro en dark mode */
+  --custom-bg-terminal: #2d3748;
+  
+  /* Gradientes ajustados para dark mode - MÁS CONTRASTE Y VISIBILIDAD */
+  --custom-gradient-bg-soft: linear-gradient(135deg, var(--vp-c-bg) 0%, var(--vp-c-bg-soft) 100%);
+  --custom-gradient-bg-white: linear-gradient(135deg, var(--vp-c-bg), var(--vp-c-bg-soft));
+  
+  /* Gradientes con transparencia MEJORADOS para dark mode - Más opacos */
+  --custom-gradient-overlay-note: linear-gradient(135deg, rgba(78, 138, 241, 0.25), rgba(78, 138, 241, 0.15));
+  --custom-gradient-overlay-tip: linear-gradient(135deg, rgba(38, 166, 154, 0.25), rgba(38, 166, 154, 0.15));
+  --custom-gradient-overlay-warning: linear-gradient(135deg, rgba(255, 193, 7, 0.25), rgba(255, 193, 7, 0.15));
+  --custom-gradient-overlay-caution: linear-gradient(135deg, rgba(168, 54, 244, 0.25), rgba(168, 54, 244, 0.15));
+  --custom-gradient-overlay-info: linear-gradient(135deg, rgba(100, 149, 237, 0.25), rgba(100, 149, 237, 0.15));
+  --custom-gradient-overlay-important: linear-gradient(135deg, rgba(237, 55, 40, 0.25), rgba(237, 55, 40, 0.15));
+  --custom-gradient-overlay-details: linear-gradient(135deg, rgba(150, 150, 150, 0.25), rgba(150, 150, 150, 0.15));
+  
+  /* Fondos para componentes en dark mode */
+  --custom-bg-brand-subtle: rgba(237, 110, 81, 0.15);
+  
+  /* Colores para texto en gradientes en dark mode */
+  --custom-text-on-gradient: #ffffff;
+  --custom-text-on-gradient-dark: #1a1a1a;
+  
+  /* Sombra de texto en gradientes para dark mode */
+  --custom-text-shadow-gradient: 0 1px 6px rgba(0, 0, 0, 0.4), 0 0 2px rgba(0, 0, 0, 0.6);
+  
+  /* Color específico para textos en dark mode */
+  --custom-color-dark: #e5e5e5;
+
+  /* Colores de texto accesibles para fondos oscuros (WCAG AA/AAA) */
+  /* En dark mode, los colores brillantes originales tienen buen contraste */
+  --vp-c-note-text: var(--vp-c-note);
+  --vp-c-tip-text: var(--vp-c-tip);
+  --vp-c-warning-text: var(--vp-c-warning);
+  --vp-c-caution-text: var(--vp-c-caution);
+  --vp-c-important-text: var(--vp-c-important);
+
+  /* Lightbox controls en dark: más contraste sin hardcoding */
+  --lightbox-control-bg: var(--vp-c-bg-elv);
+  --lightbox-control-bg-hover: var(--vp-c-bg-soft);
+  --lightbox-control-text: var(--vp-c-text-1);
+  --lightbox-control-border: var(--vp-c-divider);
+  --lightbox-control-shadow: var(--custom-shadow-lg);
+}
+
+/* ============================================================================
+ * RESPONSIVE BREAKPOINTS
+ * ============================================================================ */
+
+/* Breakpoints como variables CSS (no se pueden usar en @media, solo para JS) */
+:root {
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+}
+
+/* ============================================================================
+ * RESPONSIVE: Mobile First (max-width: 480px)
+ * ============================================================================ */
+@media (max-width: 480px) {
+  :root {
+    /* Fuentes extra pequeñas para pantallas muy pequeñas */
+    --custom-font-size-2xl: 1.25rem;  /* 20px */
+    --custom-font-size-3xl: 1.375rem; /* 22px */
+    --custom-font-size-4xl: 1.5rem;   /* 24px */
+    --custom-font-size-5xl: 1.75rem;  /* 28px */
+    
+    /* Espaciado reducido */
+    --custom-space-8: 1.5rem;   /* 24px */
+    --custom-space-10: 2rem;    /* 32px */
+    --custom-space-12: 2.5rem;  /* 40px */
+    
+    /* Componentes más compactos */
+    --custom-component-padding-lg: var(--custom-space-6);
+    --custom-component-gap-lg: var(--custom-space-6);
+    --box-padding: var(--custom-space-4);
+    
+    /* Slides más compactos */
+    --slide-padding: var(--custom-space-4) var(--custom-space-3);
+    --slide-gap: var(--custom-space-4);
+    --slide-border-radius: var(--custom-radius-md);
+    --slide-min-height: auto;
+    
+    /* Reducir sombras en móvil (mejor performance) */
+    --custom-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --custom-shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.12);
+    --custom-shadow-xl: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* ============================================================================
+ * RESPONSIVE: Tablet (max-width: 768px)
+ * ============================================================================ */
+@media (max-width: 768px) {
+  :root {
+    /* Reducir tamaños de fuente en tablet/móvil */
+    --custom-font-size-3xl: 1.5rem;   /* 24px */
+    --custom-font-size-4xl: 1.75rem;  /* 28px */
+    --custom-font-size-5xl: 2rem;     /* 32px */
+    
+    /* Reducir espaciado en móvil */
+    --custom-component-padding-lg: var(--custom-space-8);
+    --custom-component-gap-lg: var(--custom-space-8);
+    
+    /* Ajustar slides */
+    --slide-padding: var(--slide-padding-mobile);
+    --slide-min-height: var(--custom-slide-min-height-mobile);
+    
+    /* Reducir border radius en móvil */
+    --custom-radius-xl: 10px;
+    --custom-radius-2xl: 12px;
+  }
+}
+
+/* ============================================================================
+ * ANIMACIONES CENTRALIZADAS
+ * ============================================================================ */
+
+/**
+ * TABLA DE ANIMACIONES DISPONIBLES
+ * =================================
+ * 
+ * Estas animaciones están disponibles globalmente y pueden usarse en cualquier
+ * componente mediante la propiedad CSS `animation`.
+ * 
+ * SINTAXIS DE USO:
+ * animation: [nombre] [duración] [timing-function];
+ * 
+ * EJEMPLO:
+ * .mi-elemento {
+ *   animation: fadeIn var(--custom-duration-medium) var(--custom-ease-out);
+ * }
+ * 
+ * LISTA DE ANIMACIONES:
+ * ---------------------
+ * 
+ * 1. fadeIn          - Aparición con desplazamiento vertical hacia arriba
+ *                      Uso: Elementos que entran en pantalla
+ * 
+ * 2. fadeOut         - Desaparición gradual
+ *                      Uso: Elementos que salen de pantalla
+ * 
+ * 3. slideIn         - Deslizamiento horizontal desde la izquierda
+ *                      Uso: Títulos, elementos laterales
+ * 
+ * 4. scaleIn         - Aparición con escala desde 95% a 100%
+ *                      Uso: Modales, tarjetas, elementos destacados
+ * 
+ * 5. zoomIn          - Zoom dramático desde 80% (para lightbox)
+ *                      Uso: Imágenes en lightbox, overlays
+ * 
+ * 6. floatAnimation  - Flotación suave arriba-abajo (infinita)
+ *                      Uso: Logos, iconos decorativos
+ * 
+ * 7. glowAnimation   - Pulso de brillo (infinita)
+ *                      Uso: Elementos que requieren atención
+ * 
+ * 8. titleSlide      - Deslizamiento específico para títulos
+ *                      Uso: Encabezados principales
+ * 
+ * 9. fadeInUp        - Aparición con desplazamiento sutil hacia arriba
+ *                      Uso: Listas, párrafos en secuencia
+ * 
+ * 10. fadeInScale    - Combinación de fade + scale
+ *                      Uso: Botones, badges
+ * 
+ * 11. spin           - Rotación completa 360° (infinita)
+ *                      Uso: Spinners de carga
+ * 
+ * 12. shine          - Efecto de brillo diagonal (para AccentBox)
+ *                      Uso: Elementos con gradiente que requieren efecto "shine"
+ * 
+ * 13. pulseOnce      - Pulso único (no infinito)
+ *                      Uso: Feedback de interacción
+ * 
+ * VARIABLES DE DURACIÓN RECOMENDADAS:
+ * ------------------------------------
+ * --custom-duration-fast:   150ms  (Transiciones rápidas)
+ * --custom-duration-base:   200ms  (Por defecto)
+ * --custom-duration-medium: 300ms  (Animaciones suaves)
+ * --custom-duration-slow:   8s     (Animaciones infinitas lentas)
+ * 
+ * TIMING FUNCTIONS DISPONIBLES:
+ * ------------------------------
+ * --custom-ease-in:      Aceleración gradual
+ * --custom-ease-out:     Desaceleración gradual (más natural)
+ * --custom-ease-in-out:  Suave al inicio y final
+ * --custom-ease-bounce:  Efecto rebote
+ */
+
+/* Animación de entrada - Fade In */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(var(--custom-space-5));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación de salida - Fade Out */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Animación de deslizamiento horizontal */
+@keyframes slideIn {
+  from {
+    transform: translateX(calc(-1 * var(--custom-space-5)));
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Animación de escala */
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Animación de zoom (para lightbox) */
+@keyframes zoomIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Animación de flotación */
+@keyframes floatAnimation {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(calc(-1 * var(--custom-space-3)));
+  }
+}
+
+/* Animación de brillo */
+@keyframes glowAnimation {
+  0%, 100% {
+    filter: drop-shadow(0 0 var(--custom-space-1) var(--custom-shadow-color-light));
+  }
+  50% {
+    filter: drop-shadow(0 0 var(--custom-space-4) var(--custom-shadow-color-medium));
+  }
+}
+
+/* Animación de título */
+@keyframes titleSlide {
+  from {
+    opacity: 0;
+    transform: translateX(calc(-1 * var(--custom-space-8)));
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animación de fade in hacia arriba */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(var(--custom-space-2));
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animación de fade in con escala */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animación de rotación */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Animación de brillo (shine) */
+@keyframes shine {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+/* Animación de pulso */
+@keyframes pulseOnce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+/* ============================================================================
+ * ACCESIBILIDAD (a11y)
+ * ============================================================================ */
+
+/* Focus States - Visibles y consistentes para navegación por teclado */
+:root {
+  /* Focus ring colors */
+  --a11y-focus-color: var(--vp-c-brand-1);
+  --a11y-focus-color-dark: var(--vp-c-brand-light);
+  --a11y-focus-offset: 2px;
+  --a11y-focus-width: 2px;
+  
+  /* Skip link */
+  --a11y-skip-link-bg: var(--vp-c-brand-1);
+  --a11y-skip-link-color: white;
+  
+  /* Contraste mínimo WCAG AA */
+  --a11y-contrast-ratio-text: 4.5; /* Para texto normal */
+  --a11y-contrast-ratio-large: 3;  /* Para texto grande */
+}
+
+/* Focus visible universal - solo cuando se navega con teclado */
+:focus-visible {
+  outline: var(--a11y-focus-width) solid var(--a11y-focus-color);
+  outline-offset: var(--a11y-focus-offset);
+  border-radius: var(--custom-radius-sm);
+}
+
+/* Remover outline por defecto (solo se usa focus-visible) */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Focus en dark mode */
+.dark :focus-visible {
+  outline-color: var(--a11y-focus-color-dark);
+}
+
+/* Focus para elementos interactivos específicos */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible,
+[role="link"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: var(--a11y-focus-width) solid var(--a11y-focus-color);
+  outline-offset: var(--a11y-focus-offset);
+}
+
+/* Clases .skip-to-content, .sr-only y .sr-only-focusable movidas a utilities.css */
+
+/* Indicador de estado de carga para lectores de pantalla */
+[aria-busy="true"] {
+  cursor: wait;
+}
+
+/* Elementos deshabilitados */
+[aria-disabled="true"],
+[disabled] {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Mejoras de contraste en modo reducido de movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Alto contraste para usuarios con preferencia */
+@media (prefers-contrast: high) {
+  :root {
+    --a11y-focus-width: 3px;
+  }
+  
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    border-width: 2px;
+  }
+}
+
+/* ============================================================================
+ * NOTA: CLASES DE UTILIDAD
+ * ============================================================================ */
+
+/* Las clases de utilidad (.gradient-text, .sr-only, etc.) se han movido a
+ * utilities.css para evitar duplicación y mejorar la organización.
+ * 
+ * Ver: .vitepress/theme/css/utilities.css
+ */
+
+/* ============================================================================
+ * ESTILOS DE IMPRESIÓN
+ * ============================================================================ */
+
+@media print {
+  :root {
+    /* Eliminar sombras de texto para evitar distorsión en PDF/Impresión */
+    --custom-text-shadow-sm: none !important;
+    --custom-text-shadow-md: none !important;
+    --custom-text-shadow-lg: none !important;
+    --custom-text-shadow-gradient: none !important;
+    
+    /* Ajustes adicionales de impresión */
+    --custom-shadow-sm: none !important;
+    --custom-shadow-md: none !important;
+    --custom-shadow-lg: none !important;
+    --custom-shadow-xl: none !important;
+    --custom-shadow-2xl: none !important;
+    
+    /* Opcional: Asegurar colores sólidos en impresión */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  /* Forzar fondo blanco y texto contraste */
+  .vp-doc {
+    background: white !important;
+    color: black !important;
+  }
+}

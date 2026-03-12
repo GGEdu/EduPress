@@ -1,0 +1,29 @@
+/**
+ * ============================================================================
+ * INDEX CSS - Punto de entrada único para todos los estilos del tema
+ * ============================================================================
+ * 
+ * Este archivo implementa CSS Cascade Layers (@layer) para controlar mejor
+ * la especificidad y el orden de los estilos.
+ * 
+ * ORDEN DE CAPAS (de menor a mayor especificidad):
+ * 1. tokens    - Variables y design tokens
+ * 2. base      - Estilos base del documento
+ * 3. components - Componentes específicos (slides, lightbox)
+ * 4. utilities  - Clases de utilidad (siempre tienen prioridad)
+ * 
+ * Documentación CSS Layers:
+ * https://developer.mozilla.org/en-US/docs/Web/CSS/@layer
+ * ============================================================================
+ */
+
+/* Declarar capas en orden de prioridad (menor → mayor) */
+@layer tokens, base, components, utilities;
+
+/* Importar archivos en sus respectivas capas */
+@import './design-tokens.css' layer(tokens);
+@import './styles.css' layer(base);
+@import './slides.css' layer(components);
+@import './lightbox.css' layer(components);
+@import './utilities.css' layer(utilities);
+
