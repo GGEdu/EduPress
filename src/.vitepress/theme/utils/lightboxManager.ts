@@ -292,11 +292,13 @@ function updateLightboxContent(): void {
 /**
  * Crea y muestra el lightbox con el elemento proporcionado
  */
-function createLightbox(element: HTMLElement, index: number = 0): void {
+export function createLightbox(element: HTMLElement, initialIndex: number = 0): void {
   // Prevenir la creación de múltiples lightboxes
-  if (lightboxOverlay) return;
+  if (lightboxOverlay) { console.log("[Lightbox] already exists!"); return; }
 
-  currentIndex = index;
+  // Recalcular índice real por cambios asíncronos en DOM si fuera posible
+  const realIndex = allImages.indexOf(element);
+  currentIndex = realIndex !== -1 ? realIndex : initialIndex;
 
   // Crear overlay
   lightboxOverlay = document.createElement('div');
@@ -549,37 +551,40 @@ function createLightbox(element: HTMLElement, index: number = 0): void {
 /**
  * Adjunta los event listeners a las imágenes y contenedores de Mermaid
  */
-function attachLightboxListeners(): void {
+export function attachLightboxListeners(): void {
   // Recopilar todas las imágenes y diagramas disponibles
   allImages = [];
   
-  // Recopilar todas las imágenes dentro de .vp-doc (contenido principal)
-  // Incluir imágenes dentro de slides también
-  // Excluir logos y elementos de UI
-  const docContainer = document.querySelector('.vp-doc') || document.body;
-  docContainer.querySelectorAll('img').forEach((img) => {
-    const isUIElement = img.closest('.VPNav, .VPSidebar, .VPFooter, .VPLocalNav, .VPHomeHero, .VPHomeFeatures');
-    // Excluir también imágenes que sean parte de componentes de UI
-    const isLogo = img.closest('header, footer, nav, .logo, .VPImage');
-    // Incluir imágenes dentro de slides (diapositivas)
-    const isInSlide = img.closest('.slide');
-    if (!isUIElement && !isLogo) {
-      allImages.push(img as HTMLElement);
-      // Asegurar que las imágenes en slides tengan cursor pointer
-      if (isInSlide) {
-        (img as HTMLElement).style.cursor = 'pointer';
+  // Recopilar todas las imágenes dentro de .vp-doc y también en el visor de slides (que es un teleport a body)
+  const containers = [document.querySelector('.vp-doc'), document.querySelector('.slide-lightbox-overlay')].filter(Boolean);
+  if (containers.length === 0) containers.push(document.body);
+  
+  containers.forEach(container => {
+    container.querySelectorAll('img').forEach((img) => {
+      const isUIElement = img.closest('.VPNav, .VPSidebar, .VPFooter, .VPLocalNav, .VPHomeHero, .VPHomeFeatures');
+      // Excluir también imágenes que sean parte de componentes de UI
+      const isLogo = img.closest('header, footer, nav, .logo, .VPImage');
+      // Incluir imágenes dentro de slides (diapositivas)
+      const isInSlide = img.closest('.slide');
+      if (!isUIElement && !isLogo) {
+        console.log('[Lightbox] Found image:', img.src); allImages.push(img as HTMLElement);
+        // Asegurar que las imágenes en slides tengan cursor pointer o zoom-in
+        if (isInSlide) {
+          (img as HTMLElement).style.cursor = 'zoom-in';
+        }
       }
-    }
-  });
+    });
 
-  // Recopilar todos los contenedores de Mermaid dentro del contenido
-  docContainer.querySelectorAll('.mermaid-container, .mermaid').forEach((container) => {
-    allImages.push(container as HTMLElement);
+    // Recopilar todos los contenedores de Mermaid dentro del contenido
+    container.querySelectorAll('.mermaid-container, .mermaid').forEach((mermaidEl) => {
+      allImages.push(mermaidEl as HTMLElement);
+    });
   });
 
   // Añadir event listeners a cada elemento
   let newAttachments = 0;
   allImages.forEach((element, index) => {
+    console.log('[Lightbox] Processing img/mermaid. Attached?:', element.getAttribute('data-lightbox-attached'), element.outerHTML.substring(0, 50));
     if (!element.getAttribute('data-lightbox-attached')) {
       element.setAttribute('data-lightbox-attached', 'true');
       (element as HTMLElement).style.cursor = 'pointer';
@@ -590,7 +595,7 @@ function attachLightboxListeners(): void {
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
-        createLightbox(element, index);
+        console.log('[Lightbox] Image clicked in manager!', element); createLightbox(element, index);
         return false;
       }, { capture: true, passive: false });
     }

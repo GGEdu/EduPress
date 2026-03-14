@@ -1,8 +1,20 @@
-/* Estilos específicos para pestañas dentro de slides */
+/**
+ * slides.css - Estilos para sistema de slides refactorizado
+ * 
+ * REFACTORIZACIÓN FASE 5:
+ * - Todos los valores hardcodeados reemplazados por design tokens
+ * - Organizado en secciones temáticas
+ * - Mejor mantenibilidad y consistencia
+ */
+
+/* ============================================================================
+ * TABS (PESTAÑAS) DENTRO DE SLIDES
+ * ============================================================================ */
+
 .slide .plugin-tabs {
-  margin: 1.5rem 0;
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
+  margin: var(--custom-space-2) 0;
+  border: var(--custom-border-width-sm) solid var(--vp-c-divider);
+  border-radius: var(--custom-radius-md);
   overflow: hidden;
   width: 100%;
 }
@@ -10,21 +22,21 @@
 .slide .plugin-tabs--tab-list {
   display: flex;
   background-color: var(--vp-c-bg-alt);
-  border-bottom: 1px solid var(--vp-c-divider);
+  border-bottom: var(--custom-border-width-sm) solid var(--vp-c-divider);
   margin: 0;
   padding: 0;
 }
 
 .slide .plugin-tabs--tab {
   flex: 1;
-  padding: 0.75rem 1rem;
+  padding: var(--custom-space-3) var(--custom-space-4);
   border: none;
   background: transparent;
   color: var(--vp-c-text-2);
-  font-weight: 500;
+  font-weight: var(--custom-font-weight-medium);
   cursor: pointer;
-  transition: all 0.2s ease;
-  border-right: 1px solid var(--vp-c-divider);
+  transition: var(--custom-transition-fast);
+  border-right: var(--custom-border-width-sm) solid var(--vp-c-divider);
 }
 
 .slide .plugin-tabs--tab:last-child {
@@ -39,48 +51,53 @@
 .slide .plugin-tabs--tab[aria-selected="true"] {
   background-color: var(--vp-c-brand);
   color: white;
-  font-weight: 600;
+  font-weight: var(--custom-font-weight-semibold);
 }
 
 .slide .plugin-tabs--content {
-  padding: 1.5rem;
+  padding: var(--custom-space-3) var(--custom-space-4);
   background-color: var(--vp-c-bg);
 }
+
+/* ============================================================================
+ * CONTENEDOR DE SLIDES
+ * ============================================================================ */
 
 .slides-container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  padding: 1rem 0;
-  max-width: var(--vp-layout-max-width);
+  gap: var(--custom-space-8);
+  padding: var(--custom-space-4);
+  width: 100%;
   margin: 0 auto;
 }
 
+/* ============================================================================
+ * SLIDE INDIVIDUAL
+ * ============================================================================ */
+
 .slide {
-  background: linear-gradient(135deg, var(--vp-c-bg-soft) 0%, var(--vp-c-bg-alt) 100%);
-  padding: 3rem 2.5rem;
-  border-radius: 12px;
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.1),
-    0 1px 3px rgba(0, 0, 0, 0.05);
+  background: var(--custom-gradient-bg-soft);
+  padding: var(--slide-padding);
+  border-radius: var(--slide-border-radius);
+  box-shadow: var(--custom-shadow-md);
   scroll-snap-align: start;
-  min-height: 80vh;
+  min-height: var(--custom-slide-min-height);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   box-sizing: border-box;
-  border: 1px solid var(--vp-c-divider);
-  transition: all 0.3s ease;
+  border: var(--custom-border-width-sm) solid var(--vp-c-divider);
+  transition: var(--custom-transition-base);
   position: relative;
   overflow: hidden;
+  width: 100%;
 }
 
 .slide:hover {
-  box-shadow: 
-    0 8px 24px rgba(0, 0, 0, 0.15),
-    0 2px 6px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
+  box-shadow: var(--custom-shadow-xl);
+  transform: translateY(calc(-1 * var(--custom-space-1)));
 }
 
 .slide::before {
@@ -89,63 +106,68 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--vp-c-brand), var(--vp-c-brand-light));
-  border-radius: 12px 12px 0 0;
+  height: var(--slide-top-accent-height);
+  background: var(--custom-gradient-brand);
+  border-radius: var(--slide-border-radius) var(--slide-border-radius) 0 0;
 }
 
-/* Títulos respetando el tema de VitePress */
+/* ============================================================================
+ * TIPOGRAFÍA EN SLIDES
+ * ============================================================================ */
+
+/* Títulos */
 .slide h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1.2;
-  margin: 0 0 1.5rem 0;
+  font-size: var(--custom-font-size-4xl);
+  font-weight: var(--custom-font-weight-bold);
+  line-height: var(--custom-line-height-tight);
+  margin: 0 0 var(--custom-space-3) 0;
   color: var(--vp-c-text-1);
-  letter-spacing: -0.02em;
+  letter-spacing: var(--custom-letter-spacing-tight);
 }
 
 .slide h2 {
-  font-size: 2rem;
-  font-weight: 600;
-  line-height: 1.3;
-  margin: 0 0 1.25rem 0;
+  font-size: var(--custom-font-size-3xl);
+  font-weight: var(--custom-font-weight-semibold);
+  line-height: var(--custom-line-height-snug);
+  margin: 0 0 var(--custom-space-3) 0;
   color: var(--vp-c-text-1);
-  letter-spacing: -0.01em;
+  letter-spacing: var(--custom-letter-spacing-tight);
 }
 
 .slide h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  line-height: 1.4;
-  margin: 0 0 1rem 0;
+  font-size: var(--custom-font-size-2xl);
+  font-weight: var(--custom-font-weight-semibold);
+  line-height: var(--custom-line-height-normal);
+  margin: 0 0 var(--custom-space-3) 0;
   color: var(--vp-c-text-2);
 }
 
 .slide h4 {
-  font-size: 1.25rem;
-  font-weight: 500;
-  line-height: 1.4;
-  margin: 0 0 0.75rem 0;
+  font-size: var(--custom-font-size-xl);
+  font-weight: var(--custom-font-weight-medium);
+  line-height: var(--custom-line-height-normal);
+  margin: 0 0 var(--custom-space-3) 0;
   color: var(--vp-c-text-2);
 }
 
 .slide h5, .slide h6 {
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.5;
-  margin: 0 0 0.5rem 0;
+  font-size: var(--custom-font-size-base);
+  font-weight: var(--custom-font-weight-medium);
+  line-height: var(--custom-line-height-relaxed);
+  margin: 0 0 var(--custom-space-2) 0;
   color: var(--vp-c-text-2);
 }
 
 /* Párrafos y texto */
 .slide p {
-  font-size: 1rem;
-  margin: 0 0 1rem 0;
+  font-size: var(--custom-font-size-base);
+  margin: 0 0 var(--custom-space-3) 0;
+  line-height: var(--custom-line-height-relaxed);
 }
 
 .slide strong {
   color: var(--vp-c-brand);
-  font-weight: 600;
+  font-weight: var(--custom-font-weight-semibold);
 }
 
 .slide em {
@@ -153,50 +175,101 @@
   font-style: italic;
 }
 
-/* Listas */
+/* ============================================================================
+ * LISTAS EN SLIDES
+ * ============================================================================ */
+
 .slide ul, .slide ol {
-  margin: 1rem 0;
-  padding-left: 1.5rem;
+  margin: var(--custom-space-4) 0;
+  padding-left: var(--list-padding-left);
 }
 
 .slide li {
-  margin: 0.5rem 0;
-  line-height: 1.6;
+  margin: var(--custom-space-2) 0;
+  line-height: var(--custom-line-height-loose);
   color: var(--vp-c-text-1);
+  transition: transform var(--custom-transition-fast);
+  animation: fadeInUp 0.3s ease-out backwards;
+}
+
+.slide li:nth-child(n) { animation-delay: 0.05s; }
+.slide li:nth-child(2) { animation-delay: 0.1s; }
+.slide li:nth-child(3) { animation-delay: 0.15s; }
+.slide li:nth-child(4) { animation-delay: 0.2s; }
+.slide li:nth-child(5) { animation-delay: 0.25s; }
+.slide li:nth-child(6) { animation-delay: 0.3s; }
+.slide li:nth-child(7) { animation-delay: 0.35s; }
+.slide li:nth-child(8) { animation-delay: 0.4s; }
+.slide li:nth-child(9) { animation-delay: 0.45s; }
+
+.slide li:hover {
+  transform: translateX(var(--custom-space-1));
 }
 
 .slide li::marker {
   color: var(--vp-c-brand);
 }
 
-/* Blockquotes */
+/* ============================================================================
+ * BLOCKQUOTES EN SLIDES
+ * ============================================================================ */
+
 .slide blockquote {
-  margin: 1.5rem 0;
-  padding: 1rem 1.5rem;
+  position: relative;
+  margin: var(--custom-space-4) 0;
+  padding: var(--custom-space-4) var(--custom-space-6) var(--custom-space-4) 3rem; /* margen izquierdo extra para la comilla */
   background-color: var(--vp-c-bg-alt);
-  border-left: 4px solid var(--vp-c-brand);
-  border-radius: 0 8px 8px 0;
+  border-left: var(--custom-border-width-lg) solid var(--vp-c-brand);
+  border-radius: 0 var(--custom-radius-md) var(--custom-radius-md) 0;
   font-style: italic;
-  color: var(--vp-c-text-2);
+  color: var(--vp-c-text-1);
+  transition: transform var(--custom-transition-fast);
+  z-index: 1;
 }
 
-/* Tablas */
+.slide blockquote:hover {
+  transform: translateX(var(--custom-space-1));
+}
+
+.slide blockquote::before {
+  content: '"';
+  position: absolute;
+  top: var(--custom-space-1);
+  left: var(--custom-space-3);
+  font-size: 3rem;
+  font-weight: var(--custom-font-weight-bold);
+  color: var(--vp-c-brand);
+  opacity: 0.32;
+  line-height: 0.85;
+  font-family: Georgia, serif;
+  z-index: 0;
+}
+
+.slide blockquote p {
+  margin: 0;
+  color: inherit;
+}
+
+/* ============================================================================
+ * TABLAS EN SLIDES
+ * ============================================================================ */
+
 .slide table {
   width: 100%;
   border-collapse: collapse;
-  margin: 1.5rem 0;
-  font-size: 0.9rem;
+  margin: var(--custom-space-2) 0;
+  font-size: var(--custom-font-size-sm);
 }
 
 .slide th, .slide td {
-  padding: 0.75rem 1rem;
+  padding: var(--table-cell-padding);
   text-align: left;
-  border-bottom: 1px solid var(--vp-c-divider);
+  border-bottom: var(--custom-border-width-sm) solid var(--vp-c-divider);
 }
 
 .slide th {
   background-color: var(--vp-c-bg-alt);
-  font-weight: 600;
+  font-weight: var(--custom-font-weight-semibold);
   color: var(--vp-c-text-1);
 }
 
@@ -204,23 +277,26 @@
   color: var(--vp-c-text-2);
 }
 
-/* Código */
+/* ============================================================================
+ * CÓDIGO EN SLIDES
+ * ============================================================================ */
+
 .slide code {
   background-color: var(--vp-c-bg-mute);
   color: var(--vp-c-text-code);
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
-  font-size: 0.9em;
+  padding: var(--code-padding);
+  border-radius: var(--code-border-radius);
+  font-size: var(--custom-font-size-sm);
   font-family: var(--vp-font-family-mono);
 }
 
 .slide pre {
   background-color: var(--vp-c-bg-alt);
-  padding: 1.5rem;
-  border-radius: 8px;
+  padding: var(--code-block-padding);
+  border-radius: var(--code-block-border-radius);
   overflow-x: auto;
-  margin: 1.5rem 0;
-  border: 1px solid var(--vp-c-divider);
+  margin: var(--custom-space-2) 0;
+  border: var(--custom-border-width-sm) solid var(--vp-c-divider);
 }
 
 .slide pre code {
@@ -229,16 +305,40 @@
   color: var(--vp-c-text-1);
 }
 
-/* Contenedores de Mermaid */
+/* Ocultar elementos de UI en bloques de código dentro de slides */
+.slide :is(.vp-adaptive-theme .copy,
+           .vp-adaptive-theme button[title="Copy Code"],
+           .vp-adaptive-theme .lang,
+           div[class*="language-"] button.copy,
+           div[class*="language-"] span.lang) {
+  display: none;
+}
+
+/* Ajustar padding del bloque de código sin los elementos de UI */
+.slide div[class*="language-"] {
+  position: relative;
+  margin: var(--custom-space-2) 0;
+}
+
+  .slide div[class*="language-"] pre {
+  margin: 0;
+  padding: var(--custom-space-4);
+}
+
+/* ============================================================================
+ * DIAGRAMAS MERMAID EN SLIDES
+ * ============================================================================ */
+
 .slide .mermaid-container {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin: 2rem 0;
-  padding: 1rem;
-  background-color: var(--vp-c-bg);
-  border-radius: 8px;
-  border: 1px solid var(--vp-c-divider);
+  margin: var(--custom-space-3) 0;
+  padding: var(--custom-space-3);
+  background-color: #ffffff; /* Fuerzo blanco porque mermaid se inicializa con theme='default' */
+  border-radius: var(--custom-radius-md);
+  border: var(--custom-border-width-sm) solid var(--vp-c-divider);
+  max-height: 50vh;
 }
 
 .slide .mermaid-container svg {
@@ -246,22 +346,219 @@
   height: auto;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* ============================================================================
+ * NOTA: CLASES DE UTILIDAD MOVIDAS
+ * ============================================================================ */
+
+/* Las clases .gradient-text y .gradient-text-blue se han movido a utilities.css
+ * para evitar duplicación.
+ * Ver: .vitepress/theme/css/utilities.css
+ */
+
+/* ============================================================================
+ * SLIDE GRID (AUTODETECCIÓN)
+ * ============================================================================ */
+
+.slide-grid {
+  display: grid;
+  width: 100%;
+  gap: var(--slide-gap, var(--custom-space-8));
+  align-items: center;
+}
+
+.slide-grid.image-right {
+  grid-template-columns: 1.5fr 1fr;
+}
+
+.slide-grid.image-left {
+  grid-template-columns: 1fr 1.5fr;
+}
+
+.slide-grid.no-image {
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+/* ============================================================================
+ * RESPONSIVE
+ * ============================================================================ */
+
+/* Mobile Small (max-width: 480px) - Máxima compactación */
+@media (max-width: 480px) {
+  .slides-container {
+    gap: var(--custom-space-4);
+    padding: var(--custom-space-1);
+  }
+
   .slide {
-    padding: 2rem 1.5rem;
-    min-height: 70vh;
+    min-height: auto;
+    padding: var(--custom-space-4) var(--custom-space-3);
+    border-radius: var(--custom-radius-md);
+    /* Reducir sombra en móvil pequeño */
+    box-shadow: var(--custom-shadow-sm);
   }
   
+  /* Eliminar borde decorativo en móvil */
+  .slide::before {
+    height: 2px;
+  }
+  
+  /* Reducir hover effect en móvil */
+  .slide:hover {
+    transform: none;
+    box-shadow: var(--custom-shadow-sm);
+  }
+  
+  /* Tipografía más compacta */
   .slide h1 {
-    font-size: 2rem;
+    font-size: var(--custom-font-size-2xl);
+    margin-bottom: var(--custom-space-3);
   }
   
   .slide h2 {
-    font-size: 1.5rem;
+    font-size: var(--custom-font-size-xl);
+    margin-bottom: var(--custom-space-3);
   }
   
   .slide h3 {
-    font-size: 1.25rem;
+    font-size: var(--custom-font-size-lg);
+    margin-bottom: var(--custom-space-2);
   }
+  
+  .slide h4,
+  .slide h5,
+  .slide h6 {
+    font-size: var(--custom-font-size-base);
+    margin-bottom: var(--custom-space-2);
+  }
+  
+  .slide p {
+    font-size: var(--custom-font-size-sm);
+    margin-bottom: var(--custom-space-2);
+  }
+  
+  /* Listas más compactas */
+  .slide ul,
+  .slide ol {
+    margin: var(--custom-space-2) 0;
+    padding-left: var(--custom-space-4);
+  }
+  
+  .slide li {
+    margin: var(--custom-space-1) 0;
+  }
+  
+  /* Código más compacto */
+  .slide pre {
+    margin: var(--custom-space-3) 0;
+    padding: var(--custom-space-3);
+    font-size: var(--custom-font-size-xs);
+  }
+  
+  .slide code {
+    font-size: var(--custom-font-size-xs);
+  }
+  
+  /* Tablas más compactas */
+  .slide table {
+    font-size: var(--custom-font-size-xs);
+  }
+  
+  .slide th,
+  .slide td {
+    padding: var(--custom-space-1) var(--custom-space-2);
+  }
+  
+  /* Blockquotes más compactos */
+  .slide blockquote {
+    margin: var(--custom-space-3) 0;
+    padding: var(--custom-space-2) var(--custom-space-3);
+  }
+  
+  /* Tabs más compactas */
+  .slide .plugin-tabs {
+    margin: var(--custom-space-3) 0;
+  }
+  
+  .slide .plugin-tabs--tab {
+    padding: var(--custom-space-2) var(--custom-space-3);
+    font-size: var(--custom-font-size-xs);
+  }
+  
+  .slide .plugin-tabs--content {
+    padding: var(--custom-space-3);
+  }
+  
+  /* Diagramas Mermaid más compactos */
+  .slide .mermaid-container {
+    margin: var(--custom-space-4) 0;
+    padding: var(--custom-space-2);
+    max-height: 40vh;
+  }
+  
+  /* Colapsar slide-grid en móvil */
+  .slide-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--custom-space-4) !important;
+  }
+}
+
+/* Tablet (max-width: 768px) */
+@media (max-width: 768px) {
+  .slides-container {
+    gap: var(--custom-space-6);
+    padding: var(--custom-space-2);
+  }
+
+  .slide {
+    min-height: var(--custom-slide-min-height-mobile);
+    padding: var(--slide-padding-mobile);
+    /* Reducir sombra en tablet */
+    box-shadow: var(--custom-shadow-md);
+  }
+  
+  /* Reducir efecto hover en tablet */
+  .slide:hover {
+    transform: translateY(calc(-0.5 * var(--custom-space-1)));
+  }
+  
+  .slide h1 {
+    font-size: var(--custom-font-size-3xl);
+  }
+  
+  .slide h2 {
+    font-size: var(--custom-font-size-2xl);
+  }
+  
+  .slide h3 {
+    font-size: var(--custom-font-size-xl);
+  }
+  
+  /* Tabs más compactas en tablet */
+  .slide .plugin-tabs--tab {
+    padding: var(--custom-space-2) var(--custom-space-3);
+  }
+  
+  .slide .plugin-tabs--content {
+    padding: var(--custom-space-4);
+  }
+  
+  /* Colapsar slide-grid en tablet */
+  .slide-grid {
+    grid-template-columns: 1fr !important;
+    gap: var(--custom-space-6) !important;
+  }
+}
+
+
+/* ============================================================================
+ * IMAGEN CENTRADA (Bypass Grid)
+ * ============================================================================ */
+.slide p img[alt*="#center"] {
+  display: block;
+  margin: 0 auto 1.5rem auto;
+  max-width: 80%;
+  max-height: 45vh;
+  border-radius: var(--custom-radius-lg);
+  box-shadow: var(--custom-shadow-md);
 }

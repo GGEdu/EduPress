@@ -1,18 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 
 :root {
-  --vp-c-brand: rgb(237, 110, 81);
-  --vp-c-brand-light: #ff7f5f;
-  --vp-c-brand-lighter: #ff9173;
-  --vp-c-brand-dark: #ed3728;
-  --vp-c-brand-darker: #d62d1f;
-  
-  --vp-c-note: #4e8af1; /* Información adicional */
-  --vp-c-tip: #26a69a; /* Analogía útil / Ejemplo */
-  --vp-c-warning: #ffc107; /* Advertencia */
-  --vp-c-caution: #a836f4; /* Precaución */
-  --vp-c-important: var(--vp-c-brand-dark); /* A tener en cuenta */
-
   --vp-font-family-base: 'Roboto', sans-serif;
   --vp-font-family-mono: 'Cascadia Code', monospace;
   
@@ -75,11 +63,11 @@
 
 .vp-doc h1 {
   font-size: 2.5rem;
-  background: linear-gradient(120deg, var(--vp-c-brand), var(--vp-c-brand-dark));
+  background: linear-gradient(120deg, var(--vp-c-brand), var(--vp-c-brand-3));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: transparent; /* Fallback para navegadores que no soportan background-clip */
+  color: var(--vp-c-brand);
   margin-bottom: 2rem;
 }
 
@@ -105,7 +93,7 @@
 
 /* Contenedores personalizados */
 .tip, .info {
-  background: linear-gradient(135deg, #fff, #f8f8f8);
+  background: var(--custom-gradient-bg-white);
   border-radius: 12px;
   padding: 1.5rem;
   margin: 1.5rem 0;
@@ -131,36 +119,36 @@
 }
 
 .custom-block.note {
-  background: linear-gradient(135deg, rgba(78, 138, 241, 0.1), rgba(78, 138, 241, 0.05)) !important;
+  background: var(--custom-gradient-note) !important;
   border-color: var(--vp-c-note) !important;
 }
 
 .custom-block.tip {
-  background: linear-gradient(135deg, rgba(38, 166, 154, 0.1), rgba(38, 166, 154, 0.05)) !important;
+  background: var(--custom-gradient-tip) !important;
   border-color: var(--vp-c-tip) !important;
 }
 
 .custom-block.important {
-  background: linear-gradient(135deg, rgba(237, 55, 40, 0.1), rgba(237, 55, 40, 0.05)) !important;
+  background: var(--custom-gradient-important) !important;
   border-color: var(--vp-c-important) !important;
 }
 
 .custom-block.warning {
-  background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.05)) !important;
+  background: var(--custom-gradient-warning) !important;
   border-color: var(--vp-c-warning) !important;
 }
 
 .custom-block.caution {
-  background: linear-gradient(135deg, rgba(168, 54, 244, 0.1), rgba(168, 54, 244, 0.05)) !important;
+  background: var(--custom-gradient-caution) !important;
   border-color: var(--vp-c-caution) !important;
 }
 
 .custom-block.info {
-  background: linear-gradient(135deg, rgba(100,149,237,0.1), rgba(100,149,237,0.05)) !important;
+  background: var(--custom-gradient-info) !important;
 }
 
 .custom-block.details {
-  background: linear-gradient(135deg, rgba(100,100,100,0.1), rgba(100,100,100,0.05)) !important;
+  background: var(--custom-gradient-details) !important;
 }
 
 .custom-block:hover {
@@ -219,16 +207,17 @@
 }
 
 .vp-doc blockquote {
-  background-color: rgba(237, 110, 81, 0.5);
-  color: rgb(43, 43, 43);
-  border-left: 3px solid rgba(237, 110, 81, 1);;
+  background-color: var(--custom-overlay-heavy);
+  color: var(--vp-c-text-1);
+  border-left: 3px solid var(--vp-c-brand);
   margin: 1em 0;
   padding: 1em;
+  border-radius: 0 var(--custom-radius-md) var(--custom-radius-md) 0;
   font-size: 1.05em;
 }
 
 .dark blockquote {
-  color: #e2e2e2;
+  color: var(--vp-c-text-1);
 }
 
 .vp-doc blockquote ul {
@@ -323,7 +312,7 @@
 }
 
 .vp-doc a:hover {
-  background-color: rgba(237,110,81,0.1);
+  background-color: var(--vp-c-brand-soft);
   color: var(--vp-c-brand-dark);
 }
 
@@ -362,9 +351,6 @@ html {
 }
 
 @media (prefers-color-scheme: dark) {
-  .vp-doc blockquote {
-    color: #ffffff !important;
-  }
   .VPFlyout.active a:hover {
     color: var(--vp-c-brand-light) !important;
   }
@@ -380,4 +366,17 @@ html {
 
 .tabs .tab-content > :not([data-tab="Java"]) {
   display: none !important;
+}
+/* Mejorar contraste en bloques */
+.custom-block p,
+.custom-block li {
+  color: var(--vp-c-text-1) !important;
+}
+
+/* Asegurar legibilidad del diagrama mermaid en dark mode */
+.vp-doc .mermaid-container,
+.vp-doc .mermaid {
+  background-color: #ffffff !important;
+  border-radius: var(--custom-radius-md);
+  padding: 1rem;
 }
