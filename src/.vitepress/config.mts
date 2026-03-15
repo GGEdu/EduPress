@@ -1,5 +1,23 @@
 import { defineConfig } from 'vitepress'
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
+import container from 'markdown-it-container'
+
+// Helper to create custom Vue component containers
+function createContainer(name: string, componentType: string, variant?: string) {
+  return [container, name, {
+    render(tokens: any[], idx: number) {
+      const token = tokens[idx]
+      if (token.nesting === 1) {
+        const title = token.info.trim().slice(name.length).trim()
+        const titleAttr = title ? ` title="${title}"` : ''
+        const variantAttr = variant ? ` variant="${variant}"` : ''
+        return `<${componentType}${variantAttr}${titleAttr}>\n`
+      } else {
+        return `</${componentType}>\n`
+      }
+    }
+  }]
+}
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -8,6 +26,14 @@ export default defineConfig({
   markdown: {
     config(md) {
       md.use(tabsMarkdownPlugin)
+      
+      // Extensiones para bloques ricos en Markdown
+      md.use(...createContainer('info-box', 'InfoBox', 'info'))
+      md.use(...createContainer('warning-box', 'InfoBox', 'warning'))
+      md.use(...createContainer('danger-box', 'InfoBox', 'danger'))
+      md.use(...createContainer('tip-box', 'InfoBox', 'tip'))
+      md.use(...createContainer('note-box', 'NoteBox'))
+      md.use(...createContainer('accent-box', 'AccentBox'))
     }
   },
   head: [
@@ -32,7 +58,7 @@ export default defineConfig({
               items: [
                 { text: '1. Introducción', link: '/contenidos/1-introduccion' },
                 { text: '2. Diapositivas', link: '/contenidos/diapositivas' },
-
+                { text: '3. Ejemplo Simple', link: '/contenidos/ejemplo-diapositivas-simple' },
               ]
             },            
           ],
@@ -52,7 +78,8 @@ export default defineConfig({
           collapsed: true,
           items: [
             { text: '1. Introducción', link: '/contenidos/1-introduccion' },
-            { text: '2. Diapositivas', link: '/contenidos/diapositivas' },
+            { text: '2. Diapositivas', link: '/contenidos/2-diapositivas' },
+            { text: '3. Ejemplos Diapositivas', link: '/contenidos/3-diapositivas-demo' },
           ]
         },
         {
