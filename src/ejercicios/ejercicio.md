@@ -4,6 +4,7 @@ sidebar: true
 outline: false
 aside: false
 title: Ejercicio
+pageClass: ejercicios-page
 ---
 
 <div class="cap">

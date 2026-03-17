@@ -1,5 +1,46 @@
 /* Estilos del capítulo integrados con scoping .cap para no afectar todo el sitio */
+.ejercicios-page .VPDoc .container,
+.ejercicios-page .VPDoc .content,
+.ejercicios-page .VPDoc .content-container,
+.ejercicios-page .VPDoc .vp-doc {
+    max-width: none;
+    width: 100%;
+}
+
+.ejercicios-page .VPDoc .content {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.ejercicios-page .VPDoc {
+    padding-left: 0;
+    padding-right: 10px;    
+    padding-top: 10px;
+}
+
+@media (min-width: 960px) {
+    .ejercicios-page .VPNavBar:not(.home.top) .content {
+        background-color: var(--vp-nav-bg-color);
+        transition: background-color 0.5s;
+    }
+
+    .ejercicios-page .VPNavBar:not(.home.top) .content-body {
+        background-color: transparent;
+    }
+
+    .ejercicios-page .VPNavBar:not(.home.top) .divider {
+        background-color: var(--vp-nav-bg-color);
+    }
+
+    .ejercicios-page .VPNavBar:not(.home.top) .divider-line {
+        background-color: var(--vp-c-gutter);
+    }
+}
+
 .cap * { box-sizing: border-box; }
+.cap {
+    width: 100%;
+}
 .cap header { 
     position: sticky; 
     top: 50vh; /* Inicialmente centrado verticalmente */
