@@ -159,14 +159,54 @@ cd /path/to/ciencias-curso
 
 ## 🎨 Personalización
 
-### CSS Personalizado
+### Configuración de Colores e Identidad Institucional
 
-- `src/.vitepress/theme/css/styles.css` - Estilos generales
-- `src/.vitepress/theme/css/ejercicios.css` - Estilos para ejercicios
+EduPress cuenta con un sistema de tokens en CSS estricto diseñado para respetar tanto el **modo claro como el modo oscuro** automáticamente, manteniendo una alta accesibilidad y contraste tipográfico. 
 
-### Componentes Vue
+Todos los colores de la interfaz se derivan de variables en el archivo maestro de estilos de EduPress. Para adaptar los colores de la interfaz a tu marca o institución educativa, debes editar el archivo `design-tokens.css`:
 
-Agrega componentes personalizados en `src/.vitepress/theme/`
+**1. Edición de `design-tokens.css`**:  
+Abre el archivo `src/.vitepress/theme/css/design-tokens.css`.  
+Encontrarás dos bloques principales de configuración (root para el light-mode y .dark para el modo nocturno).  
+
+**2. Cambiar los Valores de Identidad**:  
+El color primario está asignado al alias corporativo `--vp-c-brand`. Solo tienes que sustituir ese código Hexadecimal por el de tu institución.  
+
+```css
+:root {
+  /* Sustituye este color por el primario de tu organización */
+  --vp-c-brand: #ed6e51;    
+  --vp-c-brand-1: #ed6e51;  
+  --vp-c-brand-2: #ed6e51;  
+  --vp-c-brand-3: #ed6e51;  
+}
+
+.dark {
+  /* Usa siempre una variante ligeramente más clara en modo oscuro para cumplir con WCAG */
+  --vp-c-brand: #f48061;    
+  --vp-c-brand-1: #fc9578;  
+}
+```
+
+EduPress usará internamente estas variables para dar color a enlaces, botones, bordes, elementos activos en el menú de navegación lateral superior, custom-blocks, y más.
+
+### CSS y Estructuras Adicionales
+
+- `src/.vitepress/theme/css/styles.css` - Estilos generales, layout principal de Vitepress.
+- `src/.vitepress/theme/css/design-tokens.css` - Sistema de Colores, tipografía y sombras corporativos de forma unificada.
+- `src/.vitepress/theme/css/ejercicios.css` - Estilos dedicados para la visualización de ejercicios.
+- `src/.vitepress/theme/css/slides.css` - Estilos para el motor visual de presentaciones (Diapositivas y Lightbox Custom).
+
+## 🚀 Resumen del Alcance Actual
+
+Este template, en su alcance actual documentado, se consolida como un robusto **LMS Estático Generador de Documentación (LMS-Doc)** con capacidades interactivas ampliadas frente a la base clásica de VitePress.
+
+Actualmente proporciona:
+- **Motor de Renderizado Markdown**: Compilación ultrarrápida del texto docente enriquecido mediante SSR (Vite y Vue).
+- **Sistema de Presentaciones Full-Screen (Slides)**: Capacidad para redactar presentaciones tipo Powerpoint/RevealJS nativas desde Markdown e injertarlas dentro de la página con su propio modo panorámico (Lightbox).
+- **Zoom Dinámico Avanzado**: Sistema de visualización fotográfica y de slides que bloquea eventos y delegados sobrepuestos de terceros para garantizar un zoom limpio, arrastre mediante transformaciones, y controles de magnificación sin interferencias.
+- **Dark/Light Mode y Accesibilidad Optimizada**: Revisión manual del contraste de cajas informativas (Info/Danger/Tip) e identidad de marca (EduPress Orange) en ambas modalidades de visualización para legibilidad ininterrumpida.
+- **Listos para Despliegue con Github Actions**: Docker preparado y pre-configurado para publicar temarios online en servidores propios o Github Pages.
 
 ## 🔧 Solución de Problemas
 
