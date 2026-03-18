@@ -32,3 +32,8 @@ src/.vitepress/temp/
 *.sln
 *.sw?
 *:Zone.Identifier
+
+.agent
+.agents
+copilot-instructions.md
+skills-lock.json

@@ -1,6 +1,8 @@
 import { defineConfig } from 'vitepress'
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 import container from 'markdown-it-container'
+import { getActiveUnit, UNITS } from './units'
+import { getNavbarForUnit, getSidebarForUnit } from './unitHelpers'
 
 // Helper to create custom Vue component containers
 function createContainer(name: string, componentType: string, variant?: string) {
@@ -19,9 +21,27 @@ function createContainer(name: string, componentType: string, variant?: string) 
   }]
 }
 
+// Get active unit configuration
+const activeUnit = getActiveUnit()
+
+// Base path configuration (can be customized per deployment)
+const BASE_PATH = '/EduPress/'
+
+// Generate navbar with unit prefix transformation
+const navbar = getNavbarForUnit(activeUnit.navbar, activeUnit.code)
+
+// Generate sidebar with unit prefix transformation
+const sidebar = getSidebarForUnit(activeUnit.sidebar, activeUnit.code)
+
+// Logo paths (scoped to base path)
+const logoPath = `${BASE_PATH}img/logo.png`
+const logoAutorPath = `${BASE_PATH}img/logo-autor.png`
+const logoGvaPath = `${BASE_PATH}img/logo-gva.png`
+const logoCentroPath = `${BASE_PATH}img/logo-centro.png`
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  base: '/EduPress/',
+  base: BASE_PATH,
   outDir: '../docs',
   markdown: {
     config(md) {
@@ -37,31 +57,21 @@ export default defineConfig({
     }
   },
   head: [
-    ['link', { rel: 'icon', href: '/EduPress/img/logo.png' }]
+    ['link', { rel: 'icon', href: logoPath }]
   ],
-  // Metadatos por idioma (guía i18n)
+  // Metadatos por idioma (locales with unit configuration)
   locales: {
     root: {
       label: 'Español',
       lang: 'es-ES',
       link: '/',
-      title: 'Título del sitio',
-      description: 'Descripción breve del sitio',
+      title: activeUnit.fullTitle,
+      description: `${activeUnit.title} - EduPress Modular`,
       themeConfig: {
-        siteTitle: 'Nombre del sitio',
+        siteTitle: activeUnit.siteTitle,
         outline: { label: 'En esta página' },
-          docFooter: { prev: 'Anterior', next: 'Siguiente' },
-          nav: [
-            { text: '🏠 Inicio', link: '/' },
-            { 
-              text: '📚 Contenidos', 
-              items: [
-                { text: '1. Introducción', link: '/contenidos/1-introduccion' },
-                { text: '2. Diapositivas', link: '/contenidos/diapositivas' },
-                { text: '3. Ejemplo Simple', link: '/contenidos/ejemplo-diapositivas-simple' },
-              ]
-            },            
-          ],
+        docFooter: { prev: 'Anterior', next: 'Siguiente' },
+        nav: navbar,
       }
     },
   },
@@ -72,37 +82,27 @@ export default defineConfig({
       { icon: 'github', link: 'https://github.com/GGEdu' }
     ],
     sidebar: {
-      '/': [
-        {
-          text: '📚 Contenidos',
-          collapsed: true,
-          items: [
-            { text: '1. Introducción', link: '/contenidos/1-introduccion' },
-            { text: '2. Diapositivas', link: '/contenidos/2-diapositivas' },
-            { text: '3. Ejemplos Diapositivas', link: '/contenidos/3-diapositivas-demo' },
-          ]
-        },
-        {
-              text: '🗂️ Ejercicios',
-              collapsed: true,
-              items: [
-                { text: 'Inicio', link: '/ejercicios/' },
-                { text: 'Ejercicio', link: '/ejercicios/ejercicio' },
-                { text: 'Final', link: '/ejercicios/final' }
-              ]
-            },
-        {
-          items: [
-            { text: '<img src="/EduPress/img/logo-autor.png" class="logo-anim" style="vertical-align:middle; height:165px; margin:0 auto;">', link: '' },
-            { text: '<img src="/EduPress/img/logo-gva.png" class="logo-anim" style="vertical-align:middle; height:60px; margin:0 auto;">', link: '' },
-            { text: '<img src="/EduPress/img/logo-centro.png" class="logo-anim" style="vertical-align:middle; height:90px; margin:0 auto;">', link: '' }
-          ]
-        }
-      ],
+      '/': sidebar.length > 0 ? [...sidebar, ...buildLogoFooter()] : buildLogoFooter(),
     },
     footer: {
-      message: '<img src="/EduPress/img/logo-autor.png" alt="Autor" style="height:75px; margin: 0 auto; display:block;" />',
+      message: `<img src="${logoAutorPath}" alt="Autor" style="height:75px; margin: 0 auto; display:block;" />`,
       copyright: 'Copyright © 2025'
     }
   }
 })
+
+/**
+ * Helper to build logo footer items.
+ * Kept separate to maintain sidebar logic cleanly.
+ */
+function buildLogoFooter() {
+  return [
+    {
+      items: [
+        { text: `<img src="${logoAutorPath}" class="logo-anim" style="vertical-align:middle; height:165px; margin:0 auto;">`, link: '' },
+        { text: `<img src="${logoGvaPath}" class="logo-anim" style="vertical-align:middle; height:60px; margin:0 auto;">`, link: '' },
+        { text: `<img src="${logoCentroPath}" class="logo-anim" style="vertical-align:middle; height:90px; margin:0 auto;">`, link: '' }
+      ]
+    }
+  ]
+}
