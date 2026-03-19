@@ -66,7 +66,6 @@
   background: linear-gradient(120deg, var(--vp-c-brand), var(--vp-c-brand-3));
   -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-fill-color: transparent;
   color: var(--vp-c-brand);
   margin-bottom: 2rem;
 }

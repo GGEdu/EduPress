@@ -7,7 +7,7 @@ title: Enunciado
 pageClass: ejercicios-page
 ---
 
-# Enunciado - Modelo estándar Markdown
+# 📋 Enunciado - Modelo estándar Markdown
 
 Este ejercicio muestra el **modelo B**: una estructura sencilla y mantenible basada en Markdown, sin bloques parallax.
 

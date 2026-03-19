@@ -6,7 +6,7 @@ outline: true
 aside: true
 ---
 
-# Introducción a EduPress
+# 🧭 Introducción a EduPress
 
 EduPress es una plantilla educativa construida sobre VitePress, diseñada para que los docentes puedan crear cursos, temarios y materiales didácticos online sin necesidad de conocimientos técnicos avanzados.
 

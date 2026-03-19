@@ -1,4 +1,4 @@
-# 04 - Crear Contenidos
+# ✏️ Crear Contenidos
 
 Los contenidos son páginas Markdown dentro de `src/{unidad}/contenidos/`.
 

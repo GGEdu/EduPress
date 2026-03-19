@@ -1,4 +1,4 @@
-# 03 - Módulo único vs Unidades
+# 🧩 Módulo único vs Unidades
 
 EduPress soporta dos modos de organización: un módulo único o múltiples unidades independientes. La elección se hace en `src/.vitepress/units.ts`.
 

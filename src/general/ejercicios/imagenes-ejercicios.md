@@ -1,4 +1,4 @@
-# Imágenes en Ejercicios
+# 🖼️ Imágenes en Ejercicios
 
 Las imágenes funcionan de forma diferente según el tipo de ejercicio que uses.
 

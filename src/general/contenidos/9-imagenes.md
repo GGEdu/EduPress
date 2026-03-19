@@ -1,4 +1,4 @@
-# Imágenes para Contenidos
+# 🖼️ Imágenes para Contenidos
 
 Las imágenes para contenidos viven en `src/public/img/contenidos/`. VitePress las sirve como estáticos.
 

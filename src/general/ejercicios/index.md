@@ -6,7 +6,7 @@ aside: true
 title: Ejercicios
 ---
 
-# Ejercicios en EduPress
+# 🎮 Ejercicios en EduPress
 
 EduPress ofrece dos enfoques para presentar ejercicios al alumnado. Puedes usarlos por separado o combinarlos en el mismo módulo.
 

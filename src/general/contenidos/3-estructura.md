@@ -1,4 +1,4 @@
-# 02 - Estructura del Proyecto
+# 🗂️ Estructura del Proyecto
 
 ## Árbol de directorios
 

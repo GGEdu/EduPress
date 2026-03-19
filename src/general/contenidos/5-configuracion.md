@@ -1,4 +1,4 @@
-# 07 - Configuración e Identidad Institucional
+# ⚙️ Configuración e Identidad Institucional
 
 Adapta EduPress a los colores y logos de tu institución sin tocar el código de los componentes.
 
