@@ -1,0 +1,85 @@
+# 02 - Estructura del Proyecto
+
+## Árbol de directorios
+
+```
+EduPress/
+├── src/
+│   ├── index.md                    # Página de inicio del sitio
+│   ├── general/                    # Módulo principal (estructura modelo)
+│   │   ├── index.md                # Portada del módulo
+│   │   ├── contenidos/
+│   │   │   ├── 1-introduccion.md
+│   │   │   ├── 2-instalacion.md
+│   │   │   ├── 3-estructura.md
+│   │   │   ├── 4-modulos.md
+│   │   │   ├── 5-configuracion.md
+│   │   │   ├── 6-crear-contenidos.md
+│   │   │   ├── 7-diapositivas.md
+│   │   │   ├── 8-diapositivas-demo.md
+│   │   │   ├── 9-imagenes.md
+│   │   │   └── 10-despliegue.md
+│   │   └── ejercicios/
+│   │       ├── index.md            # Introducción y guía de modelos
+│   │       ├── ejercicio.md        # Ejercicio gamificado (Modelo A)
+│   │       ├── enunciado.md        # Enunciado estándar (Modelo B)
+│   │       ├── imagenes-ejercicios.md  # Imágenes en ejercicios
+│   │       └── final.md            # Proyecto final
+│   ├── .vitepress/
+│   │   ├── config.mts              # ⭐ Configuración principal VitePress
+│   │   ├── units.ts                # ⭐ Registro declarativo de unidades/módulos
+│   │   ├── unitHelpers.ts          # Transformadores de rutas por unidad
+│   │   ├── contentPaths.ts         # Rutas centralizadas
+│   │   └── theme/
+│   │       ├── index.ts            # Bootstrap del tema Vue
+│   │       ├── css/
+│   │       │   ├── styles.css          # Estilos generales y layout
+│   │       │   ├── design-tokens.css   # Tokens de color e identidad
+│   │       │   ├── ejercicios.css      # Layout parallax para ejercicios
+│   │       │   ├── ejer_imgs.css       # Mapa de imágenes parallax → CSS
+│   │       │   └── slides.css          # Motor visual de diapositivas
+│   │       └── components/         # Componentes Vue reutilizables
+│   └── public/
+│       └── img/
+│           ├── logo.png            # Logo navbar (48x48px)
+│           ├── logo-autor.png      # Footer docente (165px alto)
+│           ├── logo-gva.png        # Institución 1 (60px)
+│           ├── logo-centro.png     # Institución 2 (90px)
+│           ├── contenidos/         # Imágenes para páginas de contenido
+│           └── ejercicios/         # Imágenes para el parallax de ejercicios
+├── docker-compose.yml
+├── package.json
+├── start-project.sh                # ⭐ Arranque fácil del servidor
+├── stop-project.sh
+└── status-project.sh
+```
+
+## Archivos clave
+
+| Archivo | Propósito |
+|---------|-----------|
+| `src/.vitepress/config.mts` | Configuración VitePress: base, title, nav, plugins |
+| `src/.vitepress/units.ts` | Registro de unidades/módulos, navbar y sidebar base |
+| `src/.vitepress/theme/css/design-tokens.css` | Colores institucionales (modo claro y oscuro) |
+| `src/.vitepress/theme/css/ejer_imgs.css` | Mapa CSS de imágenes parallax para ejercicios |
+| `src/general/` | Módulo de contenido principal (sirve como plantilla de módulo) |
+
+## Convención de rutas
+
+Las rutas del sitio siguen el patrón:
+
+```
+/EduPress/{unidad}/contenidos/{archivo}
+/EduPress/{unidad}/ejercicios/{archivo}
+```
+
+Ejemplo con unidad `general`:
+
+```
+/EduPress/general/contenidos/1-introduccion
+/EduPress/general/ejercicios/ejercicio
+```
+
+La unidad activa se configura en `src/.vitepress/units.ts` mediante la constante `ACTIVE_UNIT`.
+
+**Siguiente paso:** [Módulos y Unidades](./4-modulos)

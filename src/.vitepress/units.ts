@@ -23,8 +23,8 @@ const baseNavbar: DefaultTheme.NavItem[] = [
     text: '📚 Contenidos',
     items: [
       { text: '1. Introducción', link: '/contenidos/1-introduccion' },
-      { text: '2. Diapositivas', link: '/contenidos/2-diapositivas' },
-      { text: '3. Ejemplo Simple', link: '/contenidos/3-diapositivas-demo' },
+      { text: '2. Diapositivas', link: '/contenidos/7-diapositivas' },
+      { text: '3. Catálogo de Patrones', link: '/contenidos/8-diapositivas-demo' },
     ]
   },
 ];
@@ -38,18 +38,31 @@ const baseSidebar: DefaultTheme.SidebarItem[] = [
     text: '📚 Contenidos',
     collapsed: true,
     items: [
-      { text: '1. Introducción', link: '/contenidos/1-introduccion' },
-      { text: '2. Diapositivas', link: '/contenidos/2-diapositivas' },
-      { text: '3. Ejemplos Diapositivas', link: '/contenidos/3-diapositivas-demo' },
+      { text: 'Introducción', link: '/contenidos/1-introduccion' },
+      { text: 'Instalación y Arranque', link: '/contenidos/2-instalacion' },
+      { text: 'Estructura del Proyecto', link: '/contenidos/3-estructura' },
+      { text: 'Módulos y Unidades', link: '/contenidos/4-modulos' },
+      { text: 'Configuración e Identidad', link: '/contenidos/5-configuracion' },
+      { text: 'Crear Contenidos', link: '/contenidos/6-crear-contenidos' },
+      { text: 'Crear Diapositivas', link: '/contenidos/7-diapositivas' },
+      { text: 'Catálogo de Patrones', link: '/contenidos/8-diapositivas-demo' },
+      { text: 'Imágenes para Contenido', link: '/contenidos/9-imagenes' },
+      { text: 'Despliegue', link: '/contenidos/10-despliegue' },
     ]
   },
   {
     text: '🗂️ Ejercicios',
     collapsed: true,
     items: [
-      { text: 'Inicio', link: '/ejercicios/' },
-      { text: 'Ejercicio', link: '/ejercicios/ejercicio' },
-      { text: 'Final', link: '/ejercicios/final' }
+      { text: 'Introducción', link: '/ejercicios/' },
+      { text: 'Imágenes en Ejercicios', link: '/ejercicios/imagenes-ejercicios' },
+      {
+        text: 'Ejemplos',
+        items: [
+          { text: 'Historia gamificada (parallax)', link: '/ejercicios/ejercicio' },
+          { text: 'Enunciado directo (Markdown)', link: '/ejercicios/enunciado' },
+        ]
+      }
     ]
   }
 ];
@@ -71,7 +84,7 @@ export interface UnitConfig {
 
 /**
  * Central unit registry.
- * Start with pilot units (UD1, UD2) to test modularity before scaling.
+ * Start with a default module and optional extra units to test modularity before scaling.
  */
 export const UNITS: Record<string, UnitConfig> = {
   root: {
@@ -87,38 +100,27 @@ export const UNITS: Record<string, UnitConfig> = {
     sidebar: []
   },
 
-  UD1: {
-    id: 'UD1',
-    code: 'UD1',
-    title: 'Unidad 1',
-    fullTitle: 'Unidad 1 - Fundamentos',
-    siteTitle: 'Unidad 1</br>Fundamentos',
+  MODULO: {
+    id: 'MODULO',
+    code: 'general',
+    title: 'Modulo General',
+    fullTitle: 'Modulo General - Fundamentos',
+    siteTitle: 'Modulo</br>General',
     icon: '📘',
     navbar: baseNavbar,
     sidebar: baseSidebar
   },
-
-  UD2: {
-    id: 'UD2',
-    code: 'UD2',
-    title: 'Unidad 2',
-    fullTitle: 'Unidad 2 - Profundización',
-    siteTitle: 'Unidad 2</br>Profundización',
-    icon: '📗',
-    navbar: baseNavbar,
-    sidebar: baseSidebar
-  }
 };
 
 /**
  * Active unit selector.
  * Change this to switch between units without modifying config.mts.
- * Examples: 'root', 'UD1', 'UD2'
+ * Examples: 'root', 'MODULO', 'UD2'
  * 
- * ✅ NOW ACTIVE: 'UD1' with content in src/UD1/contenidos/ and src/UD1/ejercicios/
- * Routes are prefixed by unitHelpers: /contenidos/x → /UD1/contenidos/x
+ * ✅ NOW ACTIVE: 'MODULO' with content in src/general/contenidos/ and src/general/ejercicios/
+ * Routes are prefixed by unitHelpers: /contenidos/x -> /general/contenidos/x
  */
-export const ACTIVE_UNIT = 'UD1';
+export const ACTIVE_UNIT = 'MODULO';
 
 /**
  * Helper to get all units as array for iteration.

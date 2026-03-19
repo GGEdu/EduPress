@@ -57,7 +57,7 @@ Esta plantilla educativa está diseñada para facilitar la creación de material
 ### 🗂️ Unidades Didácticas
 
 | Unidad | Título | Duración | Tipo |
-|:---:|:---|:---:|:---:|
+| :---: | :--- | :---: | :---: |
 | **UD1** | Introducción y Fundamentos | 8h | Teórico-Práctica |
 | **UD2** | Desarrollo de Competencias | 12h | Práctica |
 | **UD3** | Casos de Estudio | 10h | Análisis |
@@ -147,7 +147,20 @@ Esta plantilla educativa está diseñada para facilitar la creación de material
 
 ### 📁 Entregables y Actividades
 
-::: details 📋 Lista de Actividades por Unidad
+::: tabs
+
+== General (módulo único)
+
+**📌 Módulo General: Fundamentos y Aplicación**
+
+- Cuestionario inicial de conocimientos
+- Ejercicios de conceptos básicos
+- Prácticas guiadas paso a paso
+- Resolución de casos problema
+- Ensayo reflexivo
+- Proyecto integrador final
+
+== Unidades diferenciadas
 
 **📌 Unidad 1: Fundamentos**
 
@@ -182,8 +195,8 @@ Esta plantilla educativa está diseñada para facilitar la creación de material
 ::: tip 🎯 ¡Empezamos!
 ¿Listo para comenzar tu aprendizaje? Explora los contenidos y actividades:
 
-- 📖 [**Contenidos Teóricos**](./contenidos/1-introduccion) - Material de estudio
-- 💻 [**Ejercicios Prácticos**](./ejercicios/) - Actividades y casos
+- 📖 [**Contenidos Teóricos**](./general/contenidos/1-introduccion) - Material de estudio
+- 💻 [**Ejercicios Prácticos**](./general/ejercicios/) - Actividades y casos
 - 🎯 **Evaluación Continua** - Seguimiento de tu progreso
 - 💬 **Foros y Dudas** - Comunicación con profesores y compañeros
 

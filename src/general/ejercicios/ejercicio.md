@@ -27,6 +27,6 @@ pageClass: ejercicios-page
     <p>Párrafo 11</p>
   </div>
   <div class="container img-first_2">
-    <a href="#">Conseguir el ejercicio</a>
+    <a href="./enunciado">Ver enunciado</a>
   </div>
 </div>

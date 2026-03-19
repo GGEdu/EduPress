@@ -126,6 +126,16 @@ Destaca aquí una métrica, porcentaje o beneficio final. Por ejemplo: "El uso d
 
 ---
 
+## H2 · Exposición Lineal con Imagen Centrada
+
+![Esquema visual ampliado #center](/img/contenidos/introduccion.jpg)
+
+::: info-box Patrón de lectura enfocada
+Este diseño, con la etiqueta `#center` en la imagen, rompe las columnas para forzar un flujo vertical de lectura (Imagen panorámica -> Texto explicativo debajo). Perfecto para visuales panorámicos o capturas de interfaz amplias.
+:::
+
+---
+
 ## I · Explicación de Código o Proceso Secuencial
 
 Usa esta diapositiva (sin imagen, para maximizar espacio) cuando necesites mostrar un bloque de código, un algoritmo o una receta textual.
@@ -436,16 +446,6 @@ Próximos pasos recomendados · Repasar el glosario main
 Actividades complementarias · Realizar la práctica autónoma 1.0
 
 Próxima lección · *Introducción al concepto de nivel 2*
-:::
-
----
-
-## X · Exposición Lineal con Imagen Centrada
-
-![Esquema visual ampliado #center](/img/contenidos/introduccion.jpg)
-
-::: info-box Patrón de lectura enfocada
-Este diseño, con la etiqueta `#center` en la imagen, rompe las columnas para forzar un flujo vertical de lectura (Imagen panorámica -> Texto explicativo debajo). Perfecto para visuales panorámicos o capturas de interfaz amplias.
 :::
 
 </SlidesViewer>
