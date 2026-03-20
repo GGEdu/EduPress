@@ -22,9 +22,16 @@ const baseNavbar: DefaultTheme.NavItem[] = [
   {
     text: '📚 Contenidos',
     items: [
-      { text: '1. Introducción', link: '/contenidos/1-introduccion' },
-      { text: '2. Diapositivas', link: '/contenidos/7-diapositivas' },
-      { text: '3. Catálogo de Patrones', link: '/contenidos/8-diapositivas-demo' },
+      { text: 'Introducción', link: '/contenidos/1-introduccion' },
+      { text: 'Instalación y Arranque', link: '/contenidos/2-instalacion' },
+      { text: 'Estructura del Proyecto', link: '/contenidos/3-estructura' },
+      { text: 'Módulos y Unidades', link: '/contenidos/4-modulos' },
+      { text: 'Configuración e Identidad', link: '/contenidos/5-configuracion' },
+      { text: 'Crear Contenidos', link: '/contenidos/6-crear-contenidos' },
+      { text: 'Crear Diapositivas', link: '/contenidos/7-diapositivas' },
+      { text: 'Catálogo de Patrones', link: '/contenidos/8-diapositivas-demo' },
+      { text: 'Imágenes para Contenido', link: '/contenidos/9-imagenes' },
+      { text: 'Despliegue', link: '/contenidos/10-despliegue' },
     ]
   },
 ];
@@ -46,6 +53,7 @@ const baseSidebar: DefaultTheme.SidebarItem[] = [
       { text: 'Crear Contenidos', link: '/contenidos/6-crear-contenidos' },
       { text: 'Crear Diapositivas', link: '/contenidos/7-diapositivas' },
       { text: 'Catálogo de Patrones', link: '/contenidos/8-diapositivas-demo' },
+      { text: 'Diapositivas con Imágenes', link: '/contenidos/8-diapositivas-img' },
       { text: 'Imágenes para Contenido', link: '/contenidos/9-imagenes' },
       { text: 'Despliegue', link: '/contenidos/10-despliegue' },
     ]

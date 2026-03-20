@@ -120,7 +120,7 @@ graph TD
 Usa el sufijo `#center` en el atributo `alt` de la imagen:
 
 ```markdown
-![Descripción del esquema #center](/img/contenidos/mi-imagen.jpg)
+![Descripción del esquema #center](/img/contenidos/general/mi-imagen.jpg)
 ```
 
 ## Bloques en diapositivas (SlidesViewer)

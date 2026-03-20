@@ -1,7 +1,10 @@
 <script setup lang="ts">
 
 import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
+import { useData } from 'vitepress'
 import { attachLightboxListeners, createLightbox } from '../utils/lightboxManager'
+
+const { frontmatter } = useData()
 
 const props = defineProps({
   isOpen: {
@@ -190,6 +193,7 @@ onBeforeUnmount(() => {
   <Teleport to="body" v-if="isOpen">
     <div 
       class="slide-lightbox-overlay" 
+      :class="frontmatter.pageClass"
       @click.self="handleClose"
     >
       <!-- Contenido del slide -->

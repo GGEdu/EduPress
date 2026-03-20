@@ -562,3 +562,58 @@
   border-radius: var(--custom-radius-lg);
   box-shadow: var(--custom-shadow-md);
 }
+
+/* ============================================================================
+ * SLIDES DE IMAGEN COMPLETA (pageClass: slides-img-page)
+ *
+ * buildSmartSlide reestructura el DOM: la imagen acaba en .media-container > .media-image
+ * dentro de un .slide-grid con columnas alternas y maxWidth:500px como inline style.
+ * Por eso los selectores apuntan al DOM real post-proceso y usamos !important
+ * para superar los inline styles inyectados por el composable.
+ *
+ * El overlay del lightbox es <Teleport to="body">, fuera del .Layout que recibe
+ * el pageClass. SlideLightbox.vue propaga frontmatter.pageClass al overlay div,
+ * por lo que estos mismos selectores cubren ambos contextos (embebido + lightbox).
+ * ============================================================================ */
+.slides-img-page .slide {
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+/* Colapsar el grid a 1 columna full-width (inline style usa display:grid) */
+.slides-img-page .slide .slide-grid {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* El media-container ocupa todo el slide sin padding */
+.slides-img-page .slide .media-container {
+  width: 100% !important;
+  height: 100% !important;
+  padding: 0 !important;
+  text-align: unset !important;
+}
+
+/* La imagen cubre el slide completo, anulando los inline styles */
+.slides-img-page .slide .media-image {
+  width: 100% !important;
+  max-width: none !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  display: block !important;
+}
+
+/* Ocultar la columna de texto vacía */
+.slides-img-page .slide .slide-content:empty {
+  display: none;
+}
+
+/* En el lightbox, el .slide tiene padding propio — también anularlo */
+.slides-img-page .slide-lightbox-content .slide {
+  padding: 0 !important;
+}

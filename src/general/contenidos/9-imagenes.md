@@ -22,13 +22,13 @@ src/public/img/
 
 ```markdown
 # Imagen normal
-![Descripción](/img/contenidos/mi-imagen.jpg)
+![Descripción](/img/contenidos/general/mi-imagen.jpg)
 
 # Imagen centrada (sufijo #center en el alt)
-![Descripción del diagrama #center](/img/contenidos/diagrama.png)
+![Descripción del diagrama #center](/img/contenidos/general/diagrama.png)
 
 # Imagen con tamaño personalizado (HTML directo)
-<img src="/img/contenidos/mi-imagen.jpg" style="width: 300px; margin: 0 auto; display: block;" />
+<img src="/img/contenidos/general/mi-imagen.jpg" style="width: 300px; margin: 0 auto; display: block;" />
 ```
 
 > Las rutas son **absolutas desde `src/public/`**: empiezan siempre con `/img/...`

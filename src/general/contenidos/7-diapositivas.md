@@ -55,6 +55,39 @@ Al renderizar la presentación vía `<SlidesViewer>`, verás que las diapositiva
 - **Modo Pantalla Completa:** En la parte inferior derecha de cada presentación incrustada verás un icono de expansión (⛶). Si lo pulsas, la diapositiva cambiará a un diseño *Lightbox Fullscreen* bloqueando el avance en del scroll del sitio.
 - **Navegación Táctil y Teclado:** Utiliza las flechas `←` y `→` de tu teclado para moverte entre la diapositiva, o las flechas de navegación visuales a izquierda y derecha.
 
+## 🖼️ Diapositivas de imagen completa
+
+Por defecto, cuando una diapositiva contiene una imagen, `SlidesViewer` la coloca en un grid de dos columnas junto al texto. Si quieres que las imágenes ocupen **todo el ancho del slide** (por ejemplo, para presentaciones basadas en capturas o láminas exportadas), añade `pageClass: slides-img-page` al frontmatter de la página:
+
+```md
+---
+layout: page
+title: Mi presentación
+pageClass: slides-img-page
+---
+
+<SlidesViewer>
+
+![Portada](/img/contenidos/mi-curso/01.jpg)
+
+---
+
+![Diapositiva 2](/img/contenidos/mi-curso/02.jpg)
+
+---
+
+![Diapositiva 3](/img/contenidos/mi-curso/03.jpg)
+
+</SlidesViewer>
+```
+
+::: info-box Cuándo usar cada modo
+- **Sin `pageClass`** (por defecto): diapositivas con contenido mixto — texto, bloques, imágenes en grid. Ideal para lecciones elaboradas en Markdown.
+- **`pageClass: slides-img-page`**: imagen a sangre completa, sin padding. Ideal para presentaciones exportadas como imágenes (PowerPoint, Keynote, Canva...).
+:::
+
+En el modo `slides-img-page` la imagen también ocupa el 100% al ampliar en lightbox.
+
 ## 💡 Recomendaciones
 
 1. **Evita la sobrecarga cognitiva:** Al escribir dentro del `<SlidesViewer>`, limita la cantidad de texto al mínimo estricto. Usa viñetas y bloques de diseño (`::: tip`) para llamar la atención en el modo panorámico.

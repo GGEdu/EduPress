@@ -49,7 +49,7 @@ Utiliza este formato para listar los resultados de aprendizaje o las metas al co
 
 ## D · Introducción de un Concepto con Analogía
 
-![Imagen Representativa](/img/contenidos/introduccion.jpg)
+![Imagen Representativa](/img/contenidos/general/introduccion.jpg)
 
 Este esquema de dos columnas es perfecto para introducir una idea. Muestra una imagen visual en un lado y texto explicativo en el otro. Utiliza analogías para facilitar la comprensión.
 
@@ -65,7 +65,7 @@ Remata la diapositiva con la conclusión principal que el alumno debe retener so
 
 ## E · Exposición de Filosofía o Reglas
 
-![Apoyo Visual](/img/contenidos/introduccion.jpg)
+![Apoyo Visual](/img/contenidos/general/introduccion.jpg)
 
 Cuando necesites explicar las "reglas del juego", principios fundamentales o una filosofía de trabajo, este diseño ofrece un balance perfecto entre peso visual y texto con autoridad.
 
@@ -81,7 +81,7 @@ Explica en esta caja cómo esa filosofía afecta directamente al trabajo o tarea
 
 ## F · Enumeración de Herramientas o Pasos
 
-![Instrumentos](/img/contenidos/introduccion.jpg)
+![Instrumentos](/img/contenidos/general/introduccion.jpg)
 
 Ideal para presentar una lista estructurada, como una caja de herramientas, requisitos previos o pasos iniciales:
 
@@ -97,7 +97,7 @@ Añade aquí una recomendación profesional o un atajo ("tip") que los expertos 
 
 ## G · Requisitos e Información Técnica
 
-![Esquema](/img/contenidos/introduccion.jpg)
+![Esquema](/img/contenidos/general/introduccion.jpg)
 
 ::: info-box Contexto o Requisitos (`info-box`)
 
@@ -114,7 +114,7 @@ Este patrón de doble caja (Info + Tip) con imagen es excelente para separar lo 
 
 ## H · Impacto o Resultado Esperado
 
-![Gráfico o Resultado](/img/contenidos/introduccion.jpg)
+![Gráfico o Resultado](/img/contenidos/general/introduccion.jpg)
 
 > Utiliza este espacio para mostrar la trascendencia del tema analizado. ¿Por qué importa lo que estamos estudiando?
 >
@@ -128,7 +128,7 @@ Destaca aquí una métrica, porcentaje o beneficio final. Por ejemplo: "El uso d
 
 ## H2 · Exposición Lineal con Imagen Centrada
 
-![Esquema visual ampliado #center](/img/contenidos/introduccion.jpg)
+![Esquema visual ampliado #center](/img/contenidos/general/introduccion.jpg)
 
 ::: info-box Patrón de lectura enfocada
 Este diseño, con la etiqueta `#center` en la imagen, rompe las columnas para forzar un flujo vertical de lectura (Imagen panorámica -> Texto explicativo debajo). Perfecto para visuales panorámicos o capturas de interfaz amplias.
@@ -171,7 +171,7 @@ Añade los matices, excepciones o el contexto histórico que ayuda a entender de
 
 ## K · Resaltar un Argumento de Autoridad
 
-![Esquema minimalista](/img/contenidos/introduccion.jpg)
+![Esquema minimalista](/img/contenidos/general/introduccion.jpg)
 
 Este patrón minimalista es ideal para hacer una pausa, invitar a la reflexión o lanzar una pregunta retórica a la audiencia.
 
@@ -187,7 +187,7 @@ Refuerza en esta caja la respuesta a esa reflexión, creando un momento "Aha!" o
 
 ## L · Histórico, Cronograma o Evolución
 
-![Línea temporal](/img/contenidos/introduccion.jpg)
+![Línea temporal](/img/contenidos/general/introduccion.jpg)
 
 ::: info-box El Pasado
 Describe aquí cómo se hacían las cosas antes o cuál era el problema original que motivó un cambio.
@@ -293,7 +293,7 @@ Ejemplo práctico del Tipo C
 
 ## P · Restricciones o Barreras
 
-![Seguridad o límites](/img/contenidos/introduccion.jpg)
+![Seguridad o límites](/img/contenidos/general/introduccion.jpg)
 
 > Utiliza este diseño para hablar de qué **NO** se debe hacer, los límites del sistema, o validaciones y requisitos estrictos.
 
