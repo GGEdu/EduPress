@@ -48,8 +48,6 @@ Esta plantilla educativa está diseñada para facilitar la creación de material
 - **CP4**: Pensamiento crítico y toma de decisiones
 :::
 
-:::
-
 ## 📚 Estructura del Temario {.animate-title}
 
 ::: info 📖 Organización de Contenidos
@@ -93,8 +91,6 @@ Esta plantilla educativa está diseñada para facilitar la creación de material
 
 :::
 
-:::
-
 ## 🎯 Metodología y Evaluación {.animate-title}
 
 ::: tip 🚀 Aprendizaje Activo y Personalizado
@@ -123,8 +119,6 @@ Esta plantilla educativa está diseñada para facilitar la creación de material
 - Asistencia mínima: **80%**
 - Nota mínima en proyecto final: **5.0**
 - Entrega puntual de todas las actividades
-:::
-
 :::
 
 ## 📚 Recursos y Materiales {.animate-title}
@@ -185,8 +179,6 @@ Esta plantilla educativa está diseñada para facilitar la creación de material
 - Propuesta y planificación
 - Desarrollo y documentación
 - Presentación y defensa
-
-:::
 
 :::
 

@@ -9,6 +9,8 @@ import { initializeHeaderScrollController } from './js/headerScrollController'
 import { initLightbox } from './utils/lightboxManager'
 import SlidesViewer from './components/SlidesViewer.vue'
 import SlidesLayout from './components/SlidesLayout.vue'
+import SidebarLogos from './components/SidebarLogos.vue'
+import FooterLogo from './components/FooterLogo.vue'
 
 // Importar los estilos personalizados
 import './css/design-tokens.css'
@@ -47,7 +49,11 @@ export default {
         if (frontmatter.value.layout === 'slides') {
           return h(SlidesLayout)
         }
-        return h(DefaultTheme.Layout)
+        // Inyectar logos institucionales en el sidebar y footer via slots
+        return h(DefaultTheme.Layout, null, {
+          'sidebar-nav-after': () => h(SidebarLogos),
+          'layout-bottom':     () => h(FooterLogo),
+        })
       }
     }
   },

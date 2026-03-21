@@ -9,32 +9,53 @@ Copia los logos a `src/public/img/`:
 | Archivo | Tamaño | Uso |
 |---------|--------|-----|
 | `logo.png` | 48x48px | Navbar principal |
-| `logo-autor.png` | 165px alto | Footer (docente/autor) |
+| `logo-autor.png` | 165px alto | Sidebar y footer (docente/autor) |
 | `logo-gva.png` | 60px alto | Institución 1 (comunidad autónoma) |
 | `logo-centro.png` | 90px alto | Institución 2 (centro educativo) |
 
 **Formato recomendado:** PNG con fondo transparente.
 
-## Paso 2: Actualizar `config.mts`
+## Paso 2: Configurar logos claro/oscuro
 
-Edita `src/.vitepress/config.mts`:
+Edita el archivo `src/.vitepress/branding.ts`. Es el **único lugar** donde decides cómo se adaptan los logos al cambiar entre modo claro y oscuro:
 
 ```typescript
-// Base path del sitio (debe coincidir con el nombre del repositorio en GitHub)
-const BASE_PATH = '/mi-repositorio/'
-
-// Rutas de logos (siguen BASE_PATH automáticamente)
-const logoAutorPath = `${BASE_PATH}img/logo-autor.png`
-const logoGvaPath = `${BASE_PATH}img/logo-gva.png`
-const logoCentroPath = `${BASE_PATH}img/logo-centro.png`
+export const LOGO_BRANDING: LogoBrandingConfig = {
+  mode: 'same',      // ← elige el modo (ver tabla)
+  darkSuffix: '-dark',
+}
 ```
 
-Actualiza también el pie de página:
+Elige el `mode` según tu caso:
+
+| Modo | Cuándo usarlo | Archivos necesarios |
+|------|---------------|---------------------|
+| `'same'` | El logo se ve bien en ambos fondos (p.ej. logo a color sobre fondo transparente) | Solo los 4 archivos base |
+| `'invert'` | Logo negro sobre fondo transparente — se convierte en blanco automáticamente en dark mode mediante CSS | Solo los 4 archivos base |
+| `'separate'` | Quieres un logo completamente distinto en dark mode | Los 4 archivos base + sus variantes `*-dark.png` |
+
+### Modo `'separate'`: archivos adicionales
+
+Coloca las versiones oscuras en la misma carpeta `src/public/img/` con el sufijo `-dark` antes de la extensión:
+
+```
+src/public/img/
+├── logo.png                ← claro (navbar)
+├── logo-dark.png           ← oscuro (navbar)
+├── logo-autor.png          ← claro (sidebar + footer)
+├── logo-autor-dark.png     ← oscuro (sidebar + footer)
+├── logo-gva.png            ← claro
+├── logo-gva-dark.png       ← oscuro
+├── logo-centro.png         ← claro
+└── logo-centro-dark.png    ← oscuro
+```
+
+Si usas un sufijo diferente, actualiza `darkSuffix`:
 
 ```typescript
-footer: {
-  message: `<img src="${logoAutorPath}" alt="Docente" style="height:75px; margin: 0 auto; display:block;" />`,
-  copyright: 'Copyright © 2025 - Tu Institución'
+export const LOGO_BRANDING: LogoBrandingConfig = {
+  mode: 'separate',
+  darkSuffix: '-oscuro',   // → logo-autor-oscuro.png
 }
 ```
 

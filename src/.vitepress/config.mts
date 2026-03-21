@@ -3,6 +3,7 @@ import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 import container from 'markdown-it-container'
 import { getActiveUnit, UNITS } from './units'
 import { getNavbarForUnit, getSidebarForUnit } from './unitHelpers'
+import { LOGO_BRANDING, getDarkLogoPath } from './branding'
 
 // Helper to create custom Vue component containers
 function createContainer(name: string, componentType: string, variant?: string) {
@@ -34,10 +35,33 @@ const navbar = getNavbarForUnit(activeUnit.navbar, activeUnit.code)
 const sidebar = getSidebarForUnit(activeUnit.sidebar, activeUnit.code)
 
 // Logo paths (scoped to base path)
-const logoPath = `${BASE_PATH}img/logo.png`
+const logoPath      = `${BASE_PATH}img/logo.png`
 const logoAutorPath = `${BASE_PATH}img/logo-autor.png`
-const logoGvaPath = `${BASE_PATH}img/logo-gva.png`
+const logoGvaPath   = `${BASE_PATH}img/logo-gva.png`
 const logoCentroPath = `${BASE_PATH}img/logo-centro.png`
+
+// Navbar logo: VitePress antepone BASE_PATH automáticamente, así que aquí
+// usamos la ruta relativa al directorio public (sin BASE_PATH).
+const navbarLogoSrc = '/img/logo.png'
+const navbarLogo = LOGO_BRANDING.mode === 'separate'
+  ? {
+      light: navbarLogoSrc,
+      dark:  getDarkLogoPath(navbarLogoSrc, LOGO_BRANDING.darkSuffix ?? '-dark'),
+    }
+  : navbarLogoSrc
+
+// Objeto logoBranding: pasado a los componentes Vue via themeConfig
+// Los componentes lo leen con:  useData().theme.value.logoBranding
+const logoBranding = {
+  mode:       LOGO_BRANDING.mode,
+  darkSuffix: LOGO_BRANDING.darkSuffix ?? '-dark',
+  logos: {
+    autor:  { src: logoAutorPath,  height: '165px' },
+    gva:    { src: logoGvaPath,    height: '60px'  },
+    centro: { src: logoCentroPath, height: '90px'  },
+    footer: { src: logoAutorPath,  height: '75px'  },
+  },
+}
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -77,32 +101,22 @@ export default defineConfig({
   },
   // Tema por idioma
   themeConfig: {
-    logo: '/img/logo.png',
+    logo: navbarLogo,
     socialLinks: [
       { icon: 'github', link: 'https://github.com/GGEdu' }
     ],
+    // Los logos institucionales (autor, GVA, centro) se inyectan en el sidebar
+    // y footer mediante componentes Vue reactivos (SidebarLogos.vue / FooterLogo.vue).
+    // Configurar el modo en src/.vitepress/branding.ts
+    logoBranding,
     sidebar: {
-      '/': sidebar.length > 0 ? [...sidebar, ...buildLogoFooter()] : buildLogoFooter(),
+      '/': sidebar.length > 0 ? sidebar : [],
     },
     footer: {
-      message: `<img src="${logoAutorPath}" alt="Autor" style="height:75px; margin: 0 auto; display:block;" />`,
       copyright: 'Copyright © 2025'
     }
-  }
+  } as any
 })
 
-/**
- * Helper to build logo footer items.
- * Kept separate to maintain sidebar logic cleanly.
- */
-function buildLogoFooter() {
-  return [
-    {
-      items: [
-        { text: `<img src="${logoAutorPath}" class="logo-anim" style="vertical-align:middle; height:165px; margin:0 auto;">`, link: '' },
-        { text: `<img src="${logoGvaPath}" class="logo-anim" style="vertical-align:middle; height:60px; margin:0 auto;">`, link: '' },
-        { text: `<img src="${logoCentroPath}" class="logo-anim" style="vertical-align:middle; height:90px; margin:0 auto;">`, link: '' }
-      ]
-    }
-  ]
-}
+// buildLogoFooter() eliminada: los logos se inyectan via SidebarLogos.vue (sidebar-nav-after)
+// y FooterLogo.vue (layout-bottom) con soporte reactivo light/dark.
