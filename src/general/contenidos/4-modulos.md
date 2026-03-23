@@ -32,8 +32,8 @@ src/
 └── mi-modulo/
     ├── index.md              ← portada del módulo
     ├── contenidos/
-    │   ├── 1-tema.md
-    │   └── 2-tema.md
+    │   ├── 1-introduccion.md
+    │   └── 2-desarrollo.md
     └── ejercicios/
         └── ejercicio.md
 ```
@@ -52,8 +52,8 @@ const navbar: DefaultTheme.NavItem[] = [
     text: '📘 Contenidos',
     items: [
       { text: 'Portada del módulo', link: '/index' },
-      { text: 'Tema 1',             link: '/contenidos/1-tema' },
-      { text: 'Tema 2',             link: '/contenidos/2-tema' },
+      { text: 'Introducción',       link: '/contenidos/1-introduccion' },
+      { text: 'Desarrollo',         link: '/contenidos/2-desarrollo' },
     ]
   },
 ]
@@ -64,8 +64,8 @@ const sidebar: DefaultTheme.SidebarItem[] = [
     text: '📘 Mi Módulo',
     collapsed: false,
     items: [
-      { text: 'Tema 1', link: '/contenidos/1-tema' },
-      { text: 'Tema 2', link: '/contenidos/2-tema' },
+      { text: 'Introducción', link: '/contenidos/1-introduccion' },
+      { text: 'Desarrollo',         link: '/contenidos/2-desarrollo' },
     ]
   },
   {
@@ -171,8 +171,8 @@ const ud2Navbar: DefaultTheme.NavItem[] = [
     text: '📗 Unidad 2',
     items: [
       { text: 'Portada',        link: '/index' },
-      { text: 'Bases de Datos', link: '/contenidos/1-bbdd' },
-      { text: 'SQL',            link: '/contenidos/2-sql' },
+      { text: 'Concepto A',     link: '/contenidos/1-concepto-a' },
+      { text: 'Concepto B',     link: '/contenidos/2-concepto-b' },
     ]
   },
 ]
@@ -180,19 +180,19 @@ const ud2Navbar: DefaultTheme.NavItem[] = [
 // ── Sidebar de Unidad 2 ──────────────────────────────────────────────────────
 const ud2Sidebar: DefaultTheme.SidebarItem[] = [
   {
-    text: '📗 Unidad 2 — Bases de Datos',
+    text: '📗 Unidad 2 — Avanzado',
     collapsed: false,
     items: [
-      { text: 'Bases de Datos', link: '/contenidos/1-bbdd' },
-      { text: 'SQL',            link: '/contenidos/2-sql' },
+      { text: 'Concepto A',     link: '/contenidos/1-concepto-a' },
+      { text: 'Concepto B',     link: '/contenidos/2-concepto-b' },
     ]
   },
   {
     text: '🗂️ Ejercicios',
     collapsed: true,
     items: [
-      { text: 'Ejercicio SELECT', link: '/ejercicios/select' },
-      { text: 'Ejercicio JOIN',   link: '/ejercicios/join' },
+      { text: 'Ejercicio 2',    link: '/ejercicios/ej2' },
+      { text: 'Ejercicio 3',    link: '/ejercicios/ej3' },
     ]
   },
 ]
@@ -216,8 +216,8 @@ export const UNITS: Record<string, UnitConfig> = {
     id: 'UD2',
     code: 'UD2',               // → archivos en src/UD2/
     title: 'Unidad 2',
-    fullTitle: 'Unidad 2 — Bases de Datos',
-    siteTitle: 'Unidad 2</br>Bases de Datos',
+    fullTitle: 'Unidad 2 — Avanzado',
+    siteTitle: 'Unidad 2</br>Avanzado',
     icon: '📗',
     navbar: ud2Navbar,
     sidebar: ud2Sidebar,
