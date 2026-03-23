@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+/* La fuente se carga desde config/colors.ts (fontImportUrl) vía <head>. */
 
 :root {
   --vp-font-family-base: 'Roboto', sans-serif;

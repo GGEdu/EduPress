@@ -26,7 +26,7 @@ outline: true
 Tu contenido aquí...
 ```
 
-**3. Registrar en `src/.vitepress/units.ts`:**
+**3. Registrar en `src/.vitepress/config/units.ts`:**
 
 ```typescript
 const baseNavbar: DefaultTheme.NavItem[] = [

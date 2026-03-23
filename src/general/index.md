@@ -1,7 +1,10 @@
 ---
-layout: page
+layout: doc
 title: EduPress — Módulo de demostración
 description: Módulo general de EduPress. Explora los contenidos, ejercicios y el catálogo de diapositivas.
+sidebar: true
+outline: true
+aside: true
 ---
 
 # 📘 EduPress

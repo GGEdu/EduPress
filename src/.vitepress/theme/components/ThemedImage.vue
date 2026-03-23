@@ -16,8 +16,8 @@
  */
 import { computed } from 'vue'
 import { useData } from 'vitepress'
-import { getDarkLogoPath } from '../../branding'
-import type { LogoMode } from '../../branding'
+import { getDarkLogoPath } from '../../config/logos'
+import type { LogoMode } from '../../config/logos'
 
 const props = withDefaults(defineProps<{
   src: string

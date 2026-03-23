@@ -17,12 +17,14 @@ Copia los logos a `src/public/img/`:
 
 ## Paso 2: Configurar logos claro/oscuro
 
-Edita el archivo `src/.vitepress/branding.ts`. Es el **único lugar** donde decides cómo se adaptan los logos al cambiar entre modo claro y oscuro:
+Edita `src/.vitepress/config/logos.ts`. Es el **único lugar** donde decides cómo se adaptan los logos al cambiar entre modo claro y oscuro:
 
 ```typescript
-export const LOGO_BRANDING: LogoBrandingConfig = {
-  mode: 'same',      // ← elige el modo (ver tabla)
+// src/.vitepress/config/logos.ts
+export const LOGOS = {
+  mode: 'same',        // ← elige el modo (ver tabla)
   darkSuffix: '-dark',
+  // ...
 }
 ```
 
@@ -50,21 +52,23 @@ src/public/img/
 └── logo-centro-dark.png    ← oscuro
 ```
 
-Si usas un sufijo diferente, actualiza `darkSuffix`:
+Si usas un sufijo diferente, actualiza `darkSuffix` en `config/logos.ts`:
 
 ```typescript
-export const LOGO_BRANDING: LogoBrandingConfig = {
+// src/.vitepress/config/logos.ts
+export const LOGOS = {
   mode: 'separate',
   darkSuffix: '-oscuro',   // → logo-autor-oscuro.png
+  // ...
 }
 ```
 
-## Paso 3: Personalizar el título en `units.ts`
+## Paso 3: Personalizar el título en `config/units.ts`
 
 El campo `siteTitle` aparece en el navbar. El `</br>` fuerza un salto de línea:
 
 ```typescript
-// src/.vitepress/units.ts
+// src/.vitepress/config/units.ts
 export const UNITS: Record<string, UnitConfig> = {
   general: {
     siteTitle: 'Tu Centro</br>Educativo',
@@ -76,27 +80,33 @@ export const UNITS: Record<string, UnitConfig> = {
 
 ## Paso 4: Colores corporativos
 
-Edita `src/.vitepress/theme/css/design-tokens.css`.
+Edita `src/.vitepress/config/colors.ts`. No es necesario tocar ningún archivo CSS.
 
-EduPress usa un sistema de tokens CSS que respeta automáticamente el modo claro y oscuro. Solo necesitas cambiar el color primario de tu institución:
+Las dos variables principales son `brand` (modo claro) y `darkBrand` (modo oscuro). El resto de variaciones se puede dejar como está o ajustar a tu gusto.
 
-```css
-:root {
-  /* Color primario (modo claro) — sustituye por el HEX corporativo */
-  --vp-c-brand:   #ed6e51;
-  --vp-c-brand-1: #ed6e51;
-  --vp-c-brand-2: #ed6e51;
-  --vp-c-brand-3: #ed6e51;
-}
+**Ejemplo: cambiar al azul corporativo de tu centro**
 
-.dark {
-  /* Modo oscuro: usa una variante ligeramente más clara para cumplir WCAG */
-  --vp-c-brand:   #f48061;
-  --vp-c-brand-1: #fc9578;
-}
+```typescript
+// src/.vitepress/config/colors.ts
+
+// ── Colores modo claro ────────────────────────────────────────────────────────
+const brand        = '#2563eb'   // ← tu color corporativo
+const brandLight   = '#3b82f6'   // un poco más claro
+const brandLighter = '#60a5fa'   // aún más claro
+const brandDark    = '#1d4ed8'   // más oscuro (hover intenso)
+const brandDarker  = '#1e40af'   // el más oscuro
+
+// ── Colores modo oscuro ───────────────────────────────────────────────────────
+const darkBrand    = '#60a5fa'   // ← versión más clara para fondo oscuro
 ```
 
-El color primario se aplica automáticamente a:
+::: tip-box Regla general para el color oscuro
+El `darkBrand` debe ser una versión **más clara** del `brand` de modo claro, para mantener contraste sobre el fondo oscuro del sitio. Normalmente subir 2-3 tonos en la paleta es suficiente.
+:::
+
+Los colores configurados aquí se inyectan automáticamente en el `<head>` del sitio con mayor prioridad que el sistema de tokens CSS interno. **No necesitas editar `design-tokens.css`.**
+
+El color principal se aplica automáticamente a:
 
 - Enlaces activos y hover
 - Botones y elementos interactivos
@@ -105,12 +115,14 @@ El color primario se aplica automáticamente a:
 
 ## Archivos CSS del sistema
 
+Estos archivos forman el motor visual — **no necesitas tocarlos** para personalizar el sitio:
+
 | Archivo | Propósito |
 |---------|-----------|
-| `design-tokens.css` | Colores, tipografía, sombras (editar aquí para branding) |
-| `styles.css` | Estilos generales y layout de VitePress (no suele tocarse) |
+| `design-tokens.css` | Sistema completo de tokens CSS (colores, tipografía, sombras) |
+| `styles.css` | Estilos generales y layout de VitePress |
 | `ejercicios.css` | Layout parallax para ejercicios gamificados |
-| `ejer_imgs.css` | Mapa de clases CSS → imágenes parallax (ver [Imágenes en Ejercicios](../ejercicios/imagenes-ejercicios)) |
+| `ejer_imgs.css` | URLs de imágenes parallax — generadas desde `config/project.ts` |
 | `slides.css` | Motor visual de diapositivas y lightbox |
 
 **Siguiente paso:** [Crear Contenidos](./6-crear-contenidos)

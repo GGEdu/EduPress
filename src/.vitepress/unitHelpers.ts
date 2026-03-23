@@ -19,11 +19,11 @@ export function transformNavbarLinks(
     ...item,
     items: item.items?.map(subitem => ({
       ...subitem,
-      link: subitem.link?.startsWith('/') && !subitem.link.includes('://')
+      link: subitem.link?.startsWith('/') && subitem.link !== '/' && !subitem.link.includes('://')
         ? `/${unitCode}${subitem.link}`
         : subitem.link
     })),
-    link: item.link?.startsWith('/') && !item.link.includes('://')
+    link: item.link?.startsWith('/') && item.link !== '/' && !item.link.includes('://')
       ? `/${unitCode}${item.link}`
       : item.link
   }));

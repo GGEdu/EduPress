@@ -4,10 +4,10 @@
 
 **1. Crear repositorio** en GitHub con el nombre que usará el sitio (p.ej. `mi-curso`).
 
-**2. Actualizar `BASE_PATH`** en `src/.vitepress/config.mts`:
+**2. Actualizar `basePath`** en `src/.vitepress/config/project.ts`:
 
 ```typescript
-const BASE_PATH = '/mi-curso/'  // Debe coincidir exactamente con el nombre del repositorio
+basePath: '/mi-curso/',   // Debe coincidir exactamente con el nombre del repositorio
 ```
 
 **3. Hacer push:**
@@ -36,7 +36,7 @@ https://tu-usuario.github.io/mi-curso/
 - [ ] Logos copiados a `src/public/img/`
 - [ ] `siteTitle` actualizado en `units.ts`
 - [ ] `copyright` actualizado en `config.mts`
-- [ ] `BASE_PATH` apunta al nombre correcto del repositorio
+- [ ] `basePath` en `config/project.ts` apunta al nombre correcto del repositorio
 - [ ] Al menos un contenido redactado en `contenidos/`
 - [ ] Build sin errores: `npm run docs:build`
 - [ ] GitHub Pages activado
@@ -52,7 +52,7 @@ https://tu-usuario.github.io/mi-curso/
 | `#center` no funciona en imagen | El sufijo va en el `alt`, no en el `src`: `![descripción #center](/img/...)` |
 | Navbar no actualiza tras cambios | Reinicia el servidor: `./stop-project.sh` + `./start-project.sh` |
 | Parallax no aparece | Verifica que la clase esté declarada en `ejer_imgs.css` con `background-image` |
-| URL 404 en producción | Comprueba que `BASE_PATH` coincide exactamente con el nombre del repositorio |
+| URL 404 en producción | Comprueba que `basePath` en `config/project.ts` coincide exactamente con el nombre del repositorio |
 
 ## Comandos de referencia rápida
 

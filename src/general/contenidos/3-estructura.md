@@ -26,10 +26,13 @@ EduPress/
 │   │       ├── imagenes-ejercicios.md  # Imágenes en ejercicios
 │   │       └── final.md            # Proyecto final
 │   ├── .vitepress/
-│   │   ├── config.mts              # ⭐ Configuración principal VitePress
-│   │   ├── units.ts                # ⭐ Registro declarativo de unidades/módulos
-│   │   ├── unitHelpers.ts          # Transformadores de rutas por unidad
-│   │   ├── contentPaths.ts         # Rutas centralizadas
+│   │   ├── config.mts              # Motor VitePress — lee de config/ (no tocar)
+│   │   ├── config/                 # ⭐ AQUÍ SE PERSONALIZA EL SITIO
+│   │   │   ├── project.ts          # ⭐ URL base, idioma, redes sociales, copyright
+│   │   │   ├── colors.ts           # ⭐ Colores corporativos y tipografía
+│   │   │   ├── logos.ts            # ⭐ Logos y modo claro/oscuro
+│   │   │   └── units.ts            # ⭐ Módulos, navbar y sidebar
+│   │   ├── unitHelpers.ts          # Transformadores de rutas (no tocar)
 │   │   └── theme/
 │   │       ├── index.ts            # Bootstrap del tema Vue
 │   │       ├── css/
@@ -58,10 +61,12 @@ EduPress/
 
 | Archivo | Propósito |
 |---------|-----------|
-| `src/.vitepress/config.mts` | Configuración VitePress: base, title, nav, plugins |
-| `src/.vitepress/units.ts` | Registro de unidades/módulos, navbar y sidebar base |
-| `src/.vitepress/theme/css/design-tokens.css` | Colores institucionales (modo claro y oscuro) |
-| `src/.vitepress/theme/css/ejer_imgs.css` | Mapa CSS de imágenes parallax para ejercicios |
+| `src/.vitepress/config/project.ts` | ⭐ URL base, idioma, redes sociales, copyright |
+| `src/.vitepress/config/colors.ts` | ⭐ Colores corporativos y tipografía |
+| `src/.vitepress/config/logos.ts` | ⭐ Logos y modo claro/oscuro |
+| `src/.vitepress/config/units.ts` | ⭐ Módulos: navbar y sidebar |
+| `src/.vitepress/config.mts` | Motor VitePress — lee de `config/` (no tocar) |
+| `src/.vitepress/theme/css/design-tokens.css` | Sistema de tokens CSS completo (no tocar) |
 | `src/general/` | Módulo de contenido principal (sirve como plantilla de módulo) |
 
 ## Convención de rutas
@@ -80,6 +85,6 @@ Ejemplo con unidad `general`:
 /EduPress/general/ejercicios/ejercicio
 ```
 
-La unidad activa se configura en `src/.vitepress/units.ts` mediante la constante `ACTIVE_UNIT`.
+La ruta de cada unidad corresponde al valor de `code` en `src/.vitepress/config/units.ts`.
 
 **Siguiente paso:** [Módulos y Unidades](./4-modulos)
