@@ -5,6 +5,11 @@ Diseñada para docentes que necesitan una presentación clara y mantenible sin c
 
 ---
 
+## [Demo](https://ggedu.github.io/EduPress/)
+
+> *Navega a [Unidades -> General](https://ggedu.github.io/EduPress/general/) para ver toda la documentación*
+---
+
 ## ¿Qué incluye?
 
 - **Motor Markdown enriquecido** — Bloques informativos (`info-box`, `warning-box`, `tip-box`...), pestañas, diagramas Mermaid, imágenes centradas.
@@ -30,7 +35,7 @@ Diseñada para docentes que necesitan una presentación clara y mantenible sin c
 ### Instalación
 
 ```bash
-git clone URL_DEL_REPOSITORIO
+git clone https://github.com/GGEdu/EduPress.git
 cd EduPress
 npm install
 ```
@@ -61,25 +66,6 @@ Todos los ajustes se hacen en los 4 archivos de `src/.vitepress/config/`:
 | `config/colors.ts` | Colores corporativos (light + dark) y tipografía |
 | `config/logos.ts` | Rutas de logos, alturas y modo claro/oscuro |
 | `config/units.ts` | Módulos/unidades activas, navbar y sidebar |
-
----
-
-## Documentación por temas
-
-Las guías están integradas en el sitio VitePress, accesibles desde el sidebar bajo **"Guías del Sistema"** y **"Ejercicios"**. También puedes leerlas directamente:
-
-| Guía | Ruta en el proyecto |
-|------|---------------------|
-| Instalación y Arranque | `src/general/contenidos/2-instalacion.md` |
-| Estructura del Proyecto | `src/general/contenidos/3-estructura.md` |
-| Módulos y Unidades | `src/general/contenidos/4-modulos.md` |
-| Configuración e Identidad | `src/general/contenidos/5-configuracion.md` |
-| Crear Contenidos | `src/general/contenidos/6-crear-contenidos.md` |
-| Crear Diapositivas | `src/general/contenidos/7-diapositivas.md` |
-| Catálogo de Patrones | `src/general/contenidos/8-diapositivas-demo.md` |
-| Imágenes para Contenido | `src/general/contenidos/9-imagenes.md` |
-| Despliegue y Troubleshooting | `src/general/contenidos/10-despliegue.md` |
-| Imágenes en Ejercicios | `src/general/ejercicios/imagenes-ejercicios.md` |
 
 ---
 
