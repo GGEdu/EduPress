@@ -23,6 +23,7 @@
 // ============================================================================
 
 import { DefaultTheme } from 'vitepress'
+import type { NavGroup } from '../shared/navigation'
 
 // ============================================================================
 // 1. NAVBARS Y SIDEBARS
@@ -152,3 +153,12 @@ export function getAllUnitsArray(): UnitConfig[] {
 export function getUnitByCode(code: string): UnitConfig | undefined {
   return UNITS[code]
 }
+
+// ── Navbar dinámico por unidad (opcional) ────────────────────────────────
+// Si el curso tiene múltiples sesiones/unidades, define aquí qué dropdown
+// mostrar en el navbar según la URL activa.
+// Ejemplo:
+// export const unitNavbars: Record<string, NavGroup[]> = {
+//   'general': [{ text: '📚 Módulos', items: [{ text: 'General', link: '/general/' }] }],
+// }
+export const unitNavbars: Record<string, NavGroup[]> = {}

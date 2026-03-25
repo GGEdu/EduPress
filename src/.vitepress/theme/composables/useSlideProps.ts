@@ -12,6 +12,7 @@
  */
 
 import type { PropType } from 'vue'
+import { DEFAULT_SLIDE_MEDIA } from '../config/slideMedia'
 
 /**
  * Tipos de media soportados
@@ -85,9 +86,17 @@ export const mediaProps = {
   },
   imageObjectFit: {
     type: String as PropType<'contain' | 'cover' | 'fill' | 'none' | 'scale-down'>,
-    default: 'cover' as const,
+    default: DEFAULT_SLIDE_MEDIA.objectFit,
     validator: (value: string): boolean => 
       ['contain', 'cover', 'fill', 'none', 'scale-down'].includes(value)
+  },
+  mediaMaxWidth: {
+    type: String,
+    default: () => DEFAULT_SLIDE_MEDIA.maxWidth
+  },
+  mediaAspectRatio: {
+    type: String,
+    default: () => DEFAULT_SLIDE_MEDIA.aspectRatio
   },
   mediaType: {
     type: String as PropType<MediaType>,
@@ -279,7 +288,9 @@ export const defaultValues = {
   image: 'left' as ImagePosition,
   imageWidth: '40%',
   imageHeight: 'auto',
-  imageObjectFit: 'cover' as const,
+  imageObjectFit: DEFAULT_SLIDE_MEDIA.objectFit,
+  mediaMaxWidth: DEFAULT_SLIDE_MEDIA.maxWidth,
+  mediaAspectRatio: DEFAULT_SLIDE_MEDIA.aspectRatio,
   mediaType: 'image' as MediaType,
   
   // Background

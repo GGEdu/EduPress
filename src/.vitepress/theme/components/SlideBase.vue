@@ -104,6 +104,8 @@ const subtitleStyle = computed(() => {
         :image-alt="imageAlt || subtitle || 'Imagen de diapositiva'"
         :image-width="imageWidth"
         :image-height="imageHeight"
+        :media-max-width="mediaMaxWidth"
+        :media-aspect-ratio="mediaAspectRatio"
         :image-border-radius="imageBorderRadius"
         :image-shadow="imageShadow"
         :image-object-fit="imageObjectFit"

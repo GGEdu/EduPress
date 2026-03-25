@@ -2,7 +2,7 @@
 layout: doc
 title: Introducción
 sidebar: true
-outline: true
+outline: [2, 3]
 aside: true
 ---
 

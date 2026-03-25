@@ -1,7 +1,7 @@
 ---
 layout: doc
 title: Tutorial — Crear un curso desde cero
-outline: true
+outline: [2, 3]
 ---
 
 # 🛠️ Tutorial: Crear un curso desde cero

@@ -1,0 +1,32 @@
+/* ============================================================================
+ * Dynamic Navbar - integración con el layout de VitePress
+ * ============================================================================
+ * Estas reglas pertenecen al tema, no al componente Vue, porque reordenan
+ * elementos hermanos del navbar base de VitePress.
+ */
+
+.VPNavBar .content-body > .menu {
+  order: 20;
+}
+
+.VPNavBar .content-body > .translations {
+  order: 30;
+}
+
+.VPNavBar .content-body > .dynamic-nav-groups {
+  order: 35;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.VPNavBar .content-body > .appearance {
+  order: 40;
+}
+
+.VPNavBar .content-body > .social-links {
+  order: 50;
+}
+
+.VPNavBar .content-body > .extra {
+  order: 60;
+}

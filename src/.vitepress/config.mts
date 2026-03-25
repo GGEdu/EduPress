@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import type { HeadConfig } from 'vitepress'
+import type Token from 'markdown-it/lib/token.mjs'
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 import container from 'markdown-it-container'
 
@@ -9,13 +10,17 @@ import container from 'markdown-it-container'
 import { PROJECT } from './config/project'
 import { COLORS }  from './config/colors'
 import { LOGOS, getDarkLogoPath } from './config/logos'
-import { UNITS, getAllUnitsArray } from './config/units'
+import { UNITS, getAllUnitsArray, unitNavbars } from './config/units'
 import { getNavbarForUnit, getSidebarForUnit } from './unitHelpers'
 
 // ── Helper: contenedores Markdown → componentes Vue ────────────────────────
-function createContainer(name: string, componentType: string, variant?: string) {
+function createContainer(
+  name: string,
+  componentType: string,
+  variant?: string,
+): [typeof container, string, { render(tokens: Token[], idx: number): string }] {
   return [container, name, {
-    render(tokens: any[], idx: number) {
+    render(tokens: Token[], idx: number) {
       const token = tokens[idx]
       if (token.nesting === 1) {
         const title = token.info.trim().slice(name.length).trim()
@@ -149,6 +154,14 @@ if (COLORS.typography.fontImportUrl) {
   headTags.push(['link', { rel: 'stylesheet', href: COLORS.typography.fontImportUrl }])
 }
 
+// ── Pre-extraer contenedores Markdown ────────────────────────────────────────
+const infoBoxContainer    = createContainer('info-box',    'InfoBox', 'info')
+const warningBoxContainer = createContainer('warning-box', 'InfoBox', 'warning')
+const dangerBoxContainer  = createContainer('danger-box',  'InfoBox', 'danger')
+const tipBoxContainer     = createContainer('tip-box',     'InfoBox', 'tip')
+const noteBoxContainer    = createContainer('note-box',    'NoteBox')
+const accentBoxContainer  = createContainer('accent-box',  'AccentBox')
+
 // ── Exportar configuración VitePress ───────────────────────────────────────
 export default defineConfig({
   base:   basePath,
@@ -156,12 +169,12 @@ export default defineConfig({
   markdown: {
     config(md) {
       md.use(tabsMarkdownPlugin)
-      md.use(...createContainer('info-box',    'InfoBox', 'info'))
-      md.use(...createContainer('warning-box', 'InfoBox', 'warning'))
-      md.use(...createContainer('danger-box',  'InfoBox', 'danger'))
-      md.use(...createContainer('tip-box',     'InfoBox', 'tip'))
-      md.use(...createContainer('note-box',    'NoteBox'))
-      md.use(...createContainer('accent-box',  'AccentBox'))
+      md.use(...infoBoxContainer)
+      md.use(...warningBoxContainer)
+      md.use(...dangerBoxContainer)
+      md.use(...tipBoxContainer)
+      md.use(...noteBoxContainer)
+      md.use(...accentBoxContainer)
     }
   },
   head: headTags,
@@ -174,7 +187,7 @@ export default defineConfig({
       description: PROJECT.description,
       themeConfig: {
         siteTitle: primaryUnit.siteTitle,
-        outline: { label: 'En esta página' },
+        outline: { label: 'En esta página', level: [2, 3] },
         docFooter: { prev: 'Anterior', next: 'Siguiente' },
         nav: navbar,
       }
@@ -184,6 +197,7 @@ export default defineConfig({
     logo: navbarLogo,
     socialLinks: PROJECT.socialLinks,
     logoBranding,
+    unitNavbars,
     sidebar: sidebar,
     footer: { copyright: PROJECT.copyright }
   } as any

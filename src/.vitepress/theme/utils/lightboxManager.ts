@@ -161,10 +161,8 @@ function updateLightboxContent(): void {
   existingContent.innerHTML = '';
 
   // Crear el nuevo contenido según el tipo de elemento
-  console.log('[Lightbox] updateLightboxContent on element:', element.outerHTML.substring(0, 100));
   if (element.classList.contains('mermaid-container') || element.classList.contains('mermaid')) {
     const svg = element.tagName.toLowerCase() === 'svg' ? element as unknown as SVGSVGElement : element.querySelector('svg');
-    console.log('[Lightbox] SVG found:', !!svg);
     if (svg) {
       const svgClone = svg.cloneNode(true) as SVGElement;
       
@@ -177,7 +175,6 @@ function updateLightboxContent(): void {
 
       try {
         const bbox = svg.getBBox();
-        console.log('[Lightbox] SVG bbox:', bbox);
         if (bbox.width > 0 && bbox.height > 0) {
           width = bbox.width;
           height = bbox.height;
@@ -198,8 +195,6 @@ function updateLightboxContent(): void {
           }
         }
       }
-
-      console.log('[Lightbox] Render width:', width, 'height:', height);
 
       const maxWidth = window.innerWidth * 0.90;
       const maxHeight = window.innerHeight * 0.90;
@@ -294,7 +289,7 @@ function updateLightboxContent(): void {
  */
 export function createLightbox(element: HTMLElement, initialIndex: number = 0): void {
   // Prevenir la creación de múltiples lightboxes
-  if (lightboxOverlay) { console.log("[Lightbox] already exists!"); return; }
+  if (lightboxOverlay) { return; }
 
   // Recalcular índice real por cambios asíncronos en DOM si fuera posible
   const realIndex = allImages.indexOf(element);
@@ -567,7 +562,7 @@ export function attachLightboxListeners(): void {
       // Incluir imágenes dentro de slides (diapositivas)
       const isInSlide = img.closest('.slide');
       if (!isUIElement && !isLogo) {
-        console.log('[Lightbox] Found image:', img.src); allImages.push(img as HTMLElement);
+        allImages.push(img as HTMLElement);
         // Asegurar que las imágenes en slides tengan cursor pointer o zoom-in
         if (isInSlide) {
           (img as HTMLElement).style.cursor = 'zoom-in';
@@ -584,7 +579,6 @@ export function attachLightboxListeners(): void {
   // Añadir event listeners a cada elemento
   let newAttachments = 0;
   allImages.forEach((element, index) => {
-    console.log('[Lightbox] Processing img/mermaid. Attached?:', element.getAttribute('data-lightbox-attached'), element.outerHTML.substring(0, 50));
     if (!element.getAttribute('data-lightbox-attached')) {
       element.setAttribute('data-lightbox-attached', 'true');
       (element as HTMLElement).style.cursor = 'pointer';
@@ -595,16 +589,13 @@ export function attachLightboxListeners(): void {
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
-        console.log('[Lightbox] Image clicked in manager!', element); createLightbox(element, index);
+        createLightbox(element, index);
         return false;
       }, { capture: true, passive: false });
     }
   });
   
-  // Debug: mostrar cuántas imágenes se encontraron (solo en desarrollo)
-  if (newAttachments > 0 && typeof window !== 'undefined' && window.location.hostname === 'localhost') {
-    console.log(`[Lightbox] ${newAttachments} nuevas imágenes/diagramas configurados para lightbox (Total: ${allImages.length})`);
-  }
+
 }
 
 /**

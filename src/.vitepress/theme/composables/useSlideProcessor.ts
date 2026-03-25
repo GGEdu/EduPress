@@ -9,6 +9,7 @@
  */
 
 import { ref, nextTick, type Ref } from 'vue'
+import { DEFAULT_SLIDE_MEDIA } from '../config/slideMedia'
 
 /**
  * Opciones de configuración para useSlideProcessor
@@ -180,25 +181,28 @@ export function useSlideProcessor(
       slideGrid.style.gridTemplateColumns = imageIsRight ? '1.5fr 1fr' : '1fr 1.5fr'
       slideGrid.style.width = '100%'
       slideGrid.style.gap = 'var(--slide-gap, 2rem)'
-      slideGrid.style.alignItems = 'center'
+      slideGrid.style.alignItems = 'stretch'
       
-      // Contenedor de Media
+      // Contenedor de Media — ocupa toda la celda del grid (ancho y alto completo)
       const mediaContainer = document.createElement('div')
       mediaContainer.className = 'media-container'
-      mediaContainer.style.padding = 'var(--custom-space-4)'
-      mediaContainer.style.textAlign = 'center'
       mediaContainer.style.width = '100%'
+      mediaContainer.style.height = '100%'
       mediaContainer.style.minWidth = '0'
       mediaContainer.style.overflow = 'hidden'
+      mediaContainer.style.display = 'flex'
+      mediaContainer.style.alignItems = 'center'
+      mediaContainer.style.justifyContent = 'center'
       
       mainImage.className = 'media-image'
       mainImage.style.width = '100%'
-      mainImage.style.maxWidth = '500px'
-      mainImage.style.maxHeight = '45vh'
-      mainImage.style.height = 'auto'
+      mainImage.style.maxWidth = '100%'
+      mainImage.style.height = '100%'
+      mainImage.style.maxHeight = '100%'
       mainImage.style.borderRadius = 'var(--custom-radius-lg)'
       mainImage.style.boxShadow = 'var(--custom-shadow-lg)'
-      mainImage.style.objectFit = 'cover'
+      mainImage.style.objectFit = DEFAULT_SLIDE_MEDIA.objectFit
+      mainImage.style.objectPosition = DEFAULT_SLIDE_MEDIA.objectPosition
       mainImage.style.display = 'block'
       
       mediaContainer.appendChild(mainImage)

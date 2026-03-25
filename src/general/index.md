@@ -3,7 +3,7 @@ layout: doc
 title: EduPress — Módulo de demostración
 description: Módulo general de EduPress. Explora los contenidos, ejercicios y el catálogo de diapositivas.
 sidebar: true
-outline: true
+outline: [2, 3]
 aside: true
 ---
 

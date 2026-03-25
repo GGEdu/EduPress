@@ -5,7 +5,7 @@
 //    y copyright del sitio.
 // ============================================================================
 
-import type { SocialLink } from 'vitepress'
+import type { DefaultTheme } from 'vitepress'
 
 export const PROJECT = {
 
@@ -47,7 +47,7 @@ export const PROJECT = {
   // Deja el array vacío [] si no quieres mostrar ningún enlace social.
   socialLinks: [
     { icon: 'github', link: 'https://github.com/GGEdu' },
-  ] as SocialLink[],
+  ] as DefaultTheme.SocialLink[],
 
   // --------------------------------------------------------------------------
   // DIRECTORIO DE SALIDA DEL BUILD

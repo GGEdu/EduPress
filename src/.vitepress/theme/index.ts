@@ -11,9 +11,12 @@ import SlidesViewer from './components/SlidesViewer.vue'
 import SlidesLayout from './components/SlidesLayout.vue'
 import SidebarLogos from './components/SidebarLogos.vue'
 import FooterLogo from './components/FooterLogo.vue'
+import DynamicNav from './components/DynamicNav.vue'
+import DynamicNavScreen from './components/DynamicNavScreen.vue'
 
 // Importar los estilos personalizados
 import './css/design-tokens.css'
+import './css/dynamic-nav.css'
 import './css/utilities.css'
 import './css/styles.css'
 import './css/ejercicios.css'
@@ -51,23 +54,26 @@ export default {
         }
         // Inyectar logos institucionales en el sidebar y footer via slots
         return h(DefaultTheme.Layout, null, {
-          'sidebar-nav-after': () => h(SidebarLogos),
-          'layout-bottom':     () => h(FooterLogo),
+          'sidebar-nav-after':         () => h(SidebarLogos),
+          'layout-bottom':             () => h(FooterLogo),
+          'nav-bar-content-after':     () => h(DynamicNav),
+          'nav-screen-content-before': () => h(DynamicNavScreen),
         })
       }
     }
   },
   enhanceApp(ctx: EnhanceAppContext) {
-    // 1) Crida l'enhanceApp original si existeix
+    // 1) Setup de DefaultTheme y plugins
     DefaultTheme.enhanceApp?.(ctx)
-    // 2) Activa el plugin de Tabs
     enhanceAppWithTabs(ctx.app)
-    // Override PluginTabsTab para usar v-show (necesario para que SlideLightbox capture todos los paneles)
-    ctx.app.component('PluginTabsTab', PluginTabsTab)
     // 3) Aplica el teu filtre de pestanyes
     customEnhanceApp(ctx)
-    
-    // 4) Registra el component globalment
+
+    // 4) Registra componentes globales.
+    // Usamos el registro interno para sobreescribir sin warning los componentes que
+    // DefaultTheme (Badge) y vitepress-plugin-tabs (PluginTabsTab) ya registraron.
+    const components = (ctx.app as any)._context.components
+    components['PluginTabsTab'] = PluginTabsTab  // override: usar v-show en vez de v-if
     ctx.app.component('SlidesViewer', SlidesViewer)
     ctx.app.component('SlideBase', SlideBase)
     ctx.app.component('SlideLightbox', SlideLightbox)
@@ -77,7 +83,7 @@ export default {
     ctx.app.component('Quote', Quote)
     ctx.app.component('TwoColumns', TwoColumns)
     ctx.app.component('BulletPoints', BulletPoints)
-    ctx.app.component('Badge', Badge)
+    components['Badge'] = Badge  // override: Badge extendido (8 variantes, dot, closeable...)
     ctx.app.component('Button', Button)
     ctx.app.component('Card', Card)
     ctx.app.component('Input', Input)

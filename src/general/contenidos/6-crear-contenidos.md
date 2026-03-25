@@ -18,7 +18,7 @@ touch src/general/contenidos/4-tema-nuevo.md
 layout: doc
 title: Tema Nuevo
 sidebar: true
-outline: true
+outline: [2, 3]
 ---
 
 # 4. Tema Nuevo

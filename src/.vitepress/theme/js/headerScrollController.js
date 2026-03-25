@@ -4,6 +4,9 @@ import { setupHeaderScroll } from './headerScroll';
 
 // Función para configurar el efecto de scroll
 export function setupHeaderEffect() {
+  // Solo inicializar en páginas que tienen el layout de ejercicios (.cap)
+  if (!document.querySelector('.cap')) return;
+
   try {
     setupHeaderScroll();
     
@@ -27,6 +30,8 @@ export function monitorUrlChanges() {
           lastUrl = window.location.href;
           setTimeout(() => {
             try {
+              // Solo reinicializar si estamos en una página con layout de ejercicios
+              if (!document.querySelector('.cap')) return;
               setupHeaderScroll();
             } catch (error) {
               console.error('Error al reinicializar el scroll después del cambio de URL:', error);
