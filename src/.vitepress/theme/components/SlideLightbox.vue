@@ -261,7 +261,7 @@ onBeforeUnmount(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.95);
+  background: var(--lightbox-backdrop-bg);
   backdrop-filter: blur(8px);
   z-index: var(--lightbox-z-index);
   display: flex;

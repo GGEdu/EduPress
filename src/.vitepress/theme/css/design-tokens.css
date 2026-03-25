@@ -50,47 +50,14 @@
    * 1. COLORES BASE Y MARCA
    * ======================================================================== */
   
-  /* Colores primarios - Basados en VitePress */
-  --vp-c-brand: #ed6e51;
-  --vp-c-brand-1: #ed6e51;           /* Alias principal */
-  --vp-c-brand-2: #ff7f5f;           /* Versión más clara */
-  --vp-c-brand-3: #ff9173;           /* Versión aún más clara */
-  --vp-c-brand-soft: rgba(237, 110, 81, 0.14);
-  
   /* Hero Theme (Degradado en la página de inicio) */
   --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, var(--vp-c-brand-2) 30%, var(--vp-c-brand-dark));
+  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, var(--vp-c-brand-2) 30%, var(--custom-brand-dark));
   --vp-home-hero-image-background-image: linear-gradient(-45deg, var(--vp-c-brand-soft) 30%, var(--vp-c-brand-2));
-  
-  /* Colores de marca extendidos (para nuestro sistema) */
-  --custom-brand-light: #ff7f5f;
-  --custom-brand-lighter: #ff9173;
-  --custom-brand-dark: #ed3728;
-  --custom-brand-darker: #d62d1f;
-  
-  /* Colores de acento - Gradientes del diseño */
-  --custom-accent-mint: #63d1c1;     /* Verde menta/celeste */
-  --custom-accent-teal: #41b8a5;     /* Verde profundo */
-  --custom-accent-purple: #a836f4;   /* Púrpura del gradiente */
-  --custom-accent-indigo: #4e8af1;   /* Índigo del gradiente */
   
   /* ========================================================================
    * 2. COLORES SEMÁNTICOS
    * ======================================================================== */
-  
-  /* Estados y notificaciones - Extendiendo VitePress */
-  --vp-c-note: #4e8af1;
-  --vp-c-tip: #26a69a;
-  --vp-c-warning: #ffc107;
-  --vp-c-caution: #a836f4;
-  --vp-c-important: var(--custom-brand-dark);
-  
-  /* Colores de texto accesibles para fondos claros (WCAG AAA) - Ajustados para impresión */
-  --vp-c-note-text: #064e3b;         /* Emerald 900 - >7:1 AAA */
-  --vp-c-tip-text: #064e3b;          /* Emerald 900 - >7:1 AAA */
-  --vp-c-warning-text: #78350f;      /* Amber 900 - >7:1 AAA */
-  --vp-c-caution-text: #4c1d95;      /* Violet 900 - >7:1 AAA */
-  --vp-c-important-text: #7f1d1d;    /* Red 900 - >7:1 AAA */
   
   /* Colores con transparencia para overlays */
   --custom-overlay-light: rgba(255, 255, 255, 0.1);
@@ -101,20 +68,11 @@
   --custom-overlay-dark-heavy: rgba(0, 0, 0, 0.15);
   
   /* Fondos específicos */
-  --custom-bg-terminal: #1a202c;
-  --custom-bg-gradient-subtle: linear-gradient(135deg, #fff, #f8f8f8);
-  
-  /* Colores para texto en gradientes */
-  --custom-text-on-gradient: #ffffff;
-  --custom-text-on-gradient-dark: #222222;
+  --custom-bg-gradient-subtle: linear-gradient(135deg, var(--vp-c-bg), var(--vp-c-bg-soft));
   
   /* ========================================================================
    * 3. TIPOGRAFÍA
    * ======================================================================== */
-  
-  /* Familias de fuentes - Usando variables de VitePress */
-  --vp-font-family-base: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  --vp-font-family-mono: 'Cascadia Code', 'Fira Code', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
   
   /* Tamaños de fuente - Sistema de escala */
   --custom-font-size-xs: 0.75rem;    /* 12px */
@@ -220,8 +178,8 @@
   --custom-text-shadow-gradient: 0 1px 6px rgba(0, 0, 0, 0.25), 0 0 2px rgba(34, 34, 34, 1);
   
   /* Glows y efectos especiales */
-  --custom-glow-brand: 0 0 15px rgba(105, 151, 202, 0.4);
-  --custom-glow-brand-subtle: 0 0 5px rgba(105, 151, 202, 0.2);
+  --custom-glow-brand: 0 0 15px color-mix(in srgb, var(--vp-c-brand-2) 40%, transparent);
+  --custom-glow-brand-subtle: 0 0 5px color-mix(in srgb, var(--vp-c-brand-2) 20%, transparent);
   
   /* ========================================================================
    * 7. TRANSICIONES Y ANIMACIONES
@@ -287,30 +245,30 @@
   /* Gradientes principales */
   --custom-gradient-primary: var(--custom-gradient-brand);
   --custom-gradient-brand: linear-gradient(120deg, var(--vp-c-brand), var(--custom-brand-dark));
-  --custom-gradient-mint: linear-gradient(135deg, #4ebdae 0%, #2ca390 100%); /* Slightly darker */
-  --custom-gradient-blue: linear-gradient(90deg, #3182ce 0%, #2b6cb0 100%); /* Darker blue */
+  --custom-gradient-mint: linear-gradient(135deg, var(--custom-gradient-mint-start) 0%, var(--custom-gradient-mint-end) 100%);
+  --custom-gradient-blue: linear-gradient(90deg, var(--custom-gradient-blue-start) 0%, var(--custom-gradient-blue-end) 100%);
   
   /* Gradientes sólidos para AccentBox (alta saturación y contraste - Ajustados para accesibilidad) */
-  --custom-gradient-success-solid: linear-gradient(135deg, #059669 0%, #047857 100%); /* Verde más oscuro para contraste */
-  --custom-gradient-warning-solid: linear-gradient(135deg, #d97706 0%, #b45309 100%); /* Naranja más oscuro */
-  --custom-gradient-danger-solid: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); /* Rojo más oscuro */
-  --custom-gradient-info-solid: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); /* Azul más oscuro */
-  --custom-gradient-purple: linear-gradient(135deg, #5b72e0 0%, #683ba2 100%); /* Púrpura más oscuro */
-  --custom-gradient-orange: linear-gradient(135deg, #e07ceb 0%, #d64558 100%); /* Naranja/rosa más oscuro */
-  --custom-gradient-teal: linear-gradient(135deg, #3aa0e0 0%, #00b4c5 100%); /* Turquesa más oscuro (menos neón) */
+  --custom-gradient-success-solid: linear-gradient(135deg, var(--custom-gradient-success-start) 0%, var(--custom-gradient-success-end) 100%);
+  --custom-gradient-warning-solid: linear-gradient(135deg, var(--custom-gradient-warning-start) 0%, var(--custom-gradient-warning-end) 100%);
+  --custom-gradient-danger-solid: linear-gradient(135deg, var(--custom-gradient-danger-start) 0%, var(--custom-gradient-danger-end) 100%);
+  --custom-gradient-info-solid: linear-gradient(135deg, var(--custom-gradient-info-start) 0%, var(--custom-gradient-info-end) 100%);
+  --custom-gradient-purple: linear-gradient(135deg, var(--custom-gradient-purple-start) 0%, var(--custom-gradient-purple-end) 100%);
+  --custom-gradient-orange: linear-gradient(135deg, var(--custom-gradient-orange-start) 0%, var(--custom-gradient-orange-end) 100%);
+  --custom-gradient-teal: linear-gradient(135deg, var(--custom-gradient-teal-start) 0%, var(--custom-gradient-teal-end) 100%);
   
   /* Gradientes de fondo suaves */
   --custom-gradient-bg-soft: linear-gradient(135deg, var(--vp-c-bg-soft) 0%, var(--vp-c-bg-alt) 100%);
-  --custom-gradient-bg-white: linear-gradient(135deg, #fff, #f8f8f8);
+  --custom-gradient-bg-white: linear-gradient(135deg, var(--vp-c-bg), var(--vp-c-bg-soft));
   
-  /* Gradientes con transparencia para overlays */
-  --custom-gradient-overlay-note: linear-gradient(135deg, rgba(78, 138, 241, 0.1), rgba(78, 138, 241, 0.05));
-  --custom-gradient-overlay-tip: linear-gradient(135deg, rgba(38, 166, 154, 0.1), rgba(38, 166, 154, 0.05));
-  --custom-gradient-overlay-warning: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 193, 7, 0.05));
-  --custom-gradient-overlay-caution: linear-gradient(135deg, rgba(168, 54, 244, 0.1), rgba(168, 54, 244, 0.05));
-  --custom-gradient-overlay-info: linear-gradient(135deg, rgba(100, 149, 237, 0.1), rgba(100, 149, 237, 0.05));
-  --custom-gradient-overlay-important: linear-gradient(135deg, rgba(237, 55, 40, 0.1), rgba(237, 55, 40, 0.05));
-  --custom-gradient-overlay-details: linear-gradient(135deg, rgba(100, 100, 100, 0.1), rgba(100, 100, 100, 0.05));
+  /* Gradientes con transparencia para overlays — derivados de colores semánticos */
+  --custom-gradient-overlay-note: linear-gradient(135deg, color-mix(in srgb, var(--vp-c-note) 10%, transparent), color-mix(in srgb, var(--vp-c-note) 5%, transparent));
+  --custom-gradient-overlay-tip: linear-gradient(135deg, color-mix(in srgb, var(--vp-c-tip) 10%, transparent), color-mix(in srgb, var(--vp-c-tip) 5%, transparent));
+  --custom-gradient-overlay-warning: linear-gradient(135deg, color-mix(in srgb, var(--vp-c-warning) 10%, transparent), color-mix(in srgb, var(--vp-c-warning) 5%, transparent));
+  --custom-gradient-overlay-caution: linear-gradient(135deg, color-mix(in srgb, var(--vp-c-caution) 10%, transparent), color-mix(in srgb, var(--vp-c-caution) 5%, transparent));
+  --custom-gradient-overlay-info: linear-gradient(135deg, color-mix(in srgb, var(--vp-c-note) 10%, transparent), color-mix(in srgb, var(--vp-c-note) 5%, transparent));
+  --custom-gradient-overlay-important: linear-gradient(135deg, color-mix(in srgb, var(--vp-c-important) 10%, transparent), color-mix(in srgb, var(--vp-c-important) 5%, transparent));
+  --custom-gradient-overlay-details: linear-gradient(135deg, color-mix(in srgb, var(--vp-c-text-3) 10%, transparent), color-mix(in srgb, var(--vp-c-text-3) 5%, transparent));
   
   /* Alias para custom blocks (más semánticos) */
   --custom-gradient-note: var(--custom-gradient-overlay-note);
@@ -375,22 +333,16 @@
   --custom-button-size-lg: 50px;
   
   /* Backgrounds adicionales */
-  --custom-bg-brand-subtle: rgba(105, 151, 202, 0.1);
-  
-  /* Overlays para lightbox y modales */
   --custom-overlay-white-heavy: rgba(255, 255, 255, 0.9);
   --custom-overlay-white-medium: rgba(255, 255, 255, 0.7);
-  
-  /* Colores específicos */
-  --custom-color-dark: #333;
   
   /* Opacidad */
   --custom-opacity-disabled: 0.3;
   
   /* Filtros de sombra */
   --custom-shadow-filter-light: drop-shadow(0 var(--custom-space-1) var(--custom-space-2) rgba(0,0,0,0.1));
-  --custom-shadow-color-light: rgba(105, 151, 202, 0.2);
-  --custom-shadow-color-medium: rgba(105, 151, 202, 0.4);
+  --custom-shadow-color-light: color-mix(in srgb, var(--vp-c-brand-2) 20%, transparent);
+  --custom-shadow-color-medium: color-mix(in srgb, var(--vp-c-brand-2) 40%, transparent);
   
   /* Timing functions adicionales */
   --custom-timing-ease-in-out: ease-in-out;
@@ -402,23 +354,10 @@
  * ============================================================================ */
 
 .dark {
-  /* Ajustar colores de marca para modo oscuro (naranjas EduPress adaptados) */
-  --vp-c-brand: #f48061;             /* Naranja coral brillante (Contrast > 4.5:1 en dark mode) */
-  --vp-c-brand-1: #fc9578;           /* Hover más claro */
-  --vp-c-brand-2: #ffab93;           /* Textos en hover */
-  --vp-c-brand-3: #953d26;           /* Fondos invertidos */
-  --vp-c-brand-soft: rgba(237, 110, 81, 0.16);
-
   /* Hero Theme Modo Oscuro */
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: -webkit-linear-gradient(120deg, var(--vp-c-brand-1) 30%, var(--vp-c-brand-3));
   --vp-home-hero-image-background-image: linear-gradient(-45deg, var(--vp-c-brand-soft) 30%, var(--vp-c-brand));
-
-  /* Ajustar colores custom brand para modo oscuro */
-  --custom-brand-light: #c0482d;     
-  --custom-brand-lighter: #d95a3d;   
-  --custom-brand-dark: #f48061;      
-  --custom-brand-darker: #fca087;    
 
   /* Ajustar colores para modo oscuro */
   --custom-overlay-light: rgba(255, 255, 255, 0.05);
@@ -436,42 +375,21 @@
   --custom-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.6);
   --custom-shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.7);
   
-  /* Terminal background más claro en dark mode */
-  --custom-bg-terminal: #2d3748;
-  
-  /* Gradientes ajustados para dark mode - MÁS CONTRASTE Y VISIBILIDAD */
+  /* Gradientes ajustados para dark mode */
   --custom-gradient-bg-soft: linear-gradient(135deg, var(--vp-c-bg) 0%, var(--vp-c-bg-soft) 100%);
   --custom-gradient-bg-white: linear-gradient(135deg, var(--vp-c-bg), var(--vp-c-bg-soft));
   
-  /* Gradientes con transparencia MEJORADOS para dark mode - Más opacos */
-  --custom-gradient-overlay-note: linear-gradient(135deg, rgba(78, 138, 241, 0.25), rgba(78, 138, 241, 0.15));
-  --custom-gradient-overlay-tip: linear-gradient(135deg, rgba(38, 166, 154, 0.25), rgba(38, 166, 154, 0.15));
-  --custom-gradient-overlay-warning: linear-gradient(135deg, rgba(255, 193, 7, 0.25), rgba(255, 193, 7, 0.15));
-  --custom-gradient-overlay-caution: linear-gradient(135deg, rgba(168, 54, 244, 0.25), rgba(168, 54, 244, 0.15));
-  --custom-gradient-overlay-info: linear-gradient(135deg, rgba(100, 149, 237, 0.25), rgba(100, 149, 237, 0.15));
-  --custom-gradient-overlay-important: linear-gradient(135deg, rgba(237, 55, 40, 0.25), rgba(237, 55, 40, 0.15));
-  --custom-gradient-overlay-details: linear-gradient(135deg, rgba(150, 150, 150, 0.25), rgba(150, 150, 150, 0.15));
-  
-  /* Fondos para componentes en dark mode */
-  --custom-bg-brand-subtle: rgba(237, 110, 81, 0.15);
-  
-  /* Colores para texto en gradientes en dark mode */
-  --custom-text-on-gradient: #ffffff;
-  --custom-text-on-gradient-dark: #1a1a1a;
+  /* Gradientes con transparencia para dark mode — usando color-mix() para portabilidad */
+  --custom-gradient-overlay-note: linear-gradient(135deg, color-mix(in srgb, var(--vp-c-note) 25%, transparent), color-mix(in srgb, var(--vp-c-note) 15%, transparent));
+  --custom-gradient-overlay-tip: linear-gradient(135deg, color-mix(in srgb, var(--vp-c-tip) 25%, transparent), color-mix(in srgb, var(--vp-c-tip) 15%, transparent));
+  --custom-gradient-overlay-warning: linear-gradient(135deg, color-mix(in srgb, var(--vp-c-warning) 25%, transparent), color-mix(in srgb, var(--vp-c-warning) 15%, transparent));
+  --custom-gradient-overlay-caution: linear-gradient(135deg, color-mix(in srgb, var(--vp-c-caution) 25%, transparent), color-mix(in srgb, var(--vp-c-caution) 15%, transparent));
+  --custom-gradient-overlay-info: linear-gradient(135deg, color-mix(in srgb, var(--vp-c-note) 25%, transparent), color-mix(in srgb, var(--vp-c-note) 15%, transparent));
+  --custom-gradient-overlay-important: linear-gradient(135deg, color-mix(in srgb, var(--vp-c-important) 25%, transparent), color-mix(in srgb, var(--vp-c-important) 15%, transparent));
+  --custom-gradient-overlay-details: linear-gradient(135deg, color-mix(in srgb, var(--vp-c-text-3) 25%, transparent), color-mix(in srgb, var(--vp-c-text-3) 15%, transparent));
   
   /* Sombra de texto en gradientes para dark mode */
   --custom-text-shadow-gradient: 0 1px 6px rgba(0, 0, 0, 0.4), 0 0 2px rgba(0, 0, 0, 0.6);
-  
-  /* Color específico para textos en dark mode */
-  --custom-color-dark: #e5e5e5;
-
-  /* Colores de texto accesibles para fondos oscuros (WCAG AA/AAA) */
-  /* En dark mode, los colores brillantes originales tienen buen contraste */
-  --vp-c-note-text: var(--vp-c-note);
-  --vp-c-tip-text: var(--vp-c-tip);
-  --vp-c-warning-text: var(--vp-c-warning);
-  --vp-c-caution-text: var(--vp-c-caution);
-  --vp-c-important-text: var(--vp-c-important);
 
   /* Lightbox controls en dark: más contraste sin hardcoding */
   --lightbox-control-bg: var(--vp-c-bg-elv);

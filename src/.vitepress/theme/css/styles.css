@@ -1,9 +1,6 @@
 /* La fuente se carga desde config/colors.ts (fontImportUrl) vía <head>. */
 
 :root {
-  --vp-font-family-base: 'Roboto', sans-serif;
-  --vp-font-family-mono: 'Cascadia Code', monospace;
-  
   --content-width: 900px;
 }
 
@@ -29,8 +26,8 @@
 }
 
 @keyframes glowAnimation {
-  0%, 100% { filter: drop-shadow(0 0 5px rgba(237, 110, 81, 0.2)); }
-  50% { filter: drop-shadow(0 0 15px rgba(237, 110, 81, 0.4)); }
+  0%, 100% { filter: drop-shadow(0 0 5px color-mix(in srgb, var(--vp-c-brand) 22%, transparent)); }
+  50% { filter: drop-shadow(0 0 15px color-mix(in srgb, var(--vp-c-brand) 40%, transparent)); }
 }
 
 @keyframes fadeSlideIn {
@@ -50,6 +47,8 @@
   text-justify: inter-word;
   margin: 0 auto;
   animation: fadeIn 0.6s ease-out;
+  color: var(--vp-c-text-1);
+  line-height: 1.6;
 }
 
 /* Estilos para los encabezados */
@@ -63,16 +62,16 @@
 
 .vp-doc h1 {
   font-size: 2.5rem;
-  background: linear-gradient(120deg, var(--vp-c-brand), var(--vp-c-brand-3));
+  background: linear-gradient(120deg, var(--vp-c-brand), var(--vp-c-brand-2));
   -webkit-background-clip: text;
   background-clip: text;
-  color: var(--vp-c-brand);
+  color: var(--vp-c-text-1);
   margin-bottom: 2rem;
 }
 
 .vp-doc h2,
 .vp-doc h3 {
-  border-bottom: 2px solid var(--vp-c-brand-lighter);
+  border-bottom: 2px solid var(--vp-c-brand-3);
   padding-bottom: 0.5rem;
   margin: 2.5rem 0 1.5rem;
 }
@@ -96,15 +95,15 @@
   border-radius: 12px;
   padding: 1.5rem;
   margin: 1.5rem 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--custom-shadow-sm);
   animation: scaleIn 0.6s ease-out;
   border-left: 4px solid var(--vp-c-brand);
-  transition: transform var(--transition-standard);
+  transition: transform var(--custom-duration-base) var(--custom-ease-out);
 }
 
 .tip:hover, .info:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--custom-shadow-float);
 }
 
 /* Mejoras en los containers personalizados */
@@ -152,7 +151,7 @@
 
 .custom-block:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  box-shadow: var(--custom-shadow-hover);
 }
 
 
@@ -171,7 +170,7 @@
   margin: 1rem;
   transition: transform 0.3s ease;
   animation: floatAnimation 3s ease-in-out infinite;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+  filter: var(--custom-shadow-filter-light);
 }
 
 .logo-anim:hover {
@@ -179,7 +178,8 @@
 }
 
 /* Lista de contenidos */
-.vp-doc ul, ol {
+.vp-doc ul,
+.vp-doc ol {
   list-style: square;
   margin-left: 1em;
   padding-left: 1rem;
@@ -206,7 +206,7 @@
 }
 
 .vp-doc blockquote {
-  background-color: var(--custom-overlay-heavy);
+  background-color: var(--vp-c-bg-soft);
   color: var(--vp-c-text-1);
   border-left: 3px solid var(--vp-c-brand);
   margin: 1em 0;
@@ -230,7 +230,7 @@
   position: absolute;
   left: 0;
   color: var(--vp-c-brand);
-  transition: transform var(--transition-standard);
+  transition: transform var(--custom-duration-base) var(--custom-ease-out);
 }
 
 /*.vp-doc ul li:hover {
@@ -247,7 +247,7 @@
 .vp-doc ul li a {
   text-decoration: none;
   color: var(--vp-c-text-1);
-  transition: color var(--transition-standard);
+  transition: color var(--custom-duration-base) var(--custom-ease-out);
 }
 /*
 .vp-doc ul li a:hover {
@@ -312,7 +312,7 @@
 
 .vp-doc a:hover {
   background-color: var(--vp-c-brand-soft);
-  color: var(--vp-c-brand-dark);
+  color: var(--vp-c-brand-1);
 }
 
 /* Responsive design */
@@ -351,10 +351,10 @@ html {
 
 @media (prefers-color-scheme: dark) {
   .VPFlyout.active a:hover {
-    color: var(--vp-c-brand-light) !important;
+    color: var(--vp-c-brand-2) !important;
   }
   .active, .VPFlyout.active .text[data-v-7a0eaf2e], .VPSidebarItem.level-1.has-active > .item > .link > .text[data-v-3d5a5d96], .title[data-v-77f00a4c]{
-    color: var(--vp-c-brand-light) !important;
+    color: var(--vp-c-brand-2) !important;
   }
 }
 
@@ -375,7 +375,7 @@ html {
 /* Asegurar legibilidad del diagrama mermaid en dark mode */
 .vp-doc .mermaid-container,
 .vp-doc .mermaid {
-  background-color: #ffffff !important;
+  background-color: var(--vp-c-bg) !important;
   border-radius: var(--custom-radius-md);
   padding: 1rem;
 }

@@ -335,7 +335,7 @@
   justify-content: center;
   margin: var(--custom-space-3) 0;
   padding: var(--custom-space-3);
-  background-color: #ffffff; /* Fuerzo blanco porque mermaid se inicializa con theme='default' */
+  background-color: var(--vp-c-bg); /* Fuerzo fondo claro porque mermaid se inicializa con theme='default' */
   border-radius: var(--custom-radius-md);
   border: var(--custom-border-width-sm) solid var(--vp-c-divider);
   max-height: 50vh;

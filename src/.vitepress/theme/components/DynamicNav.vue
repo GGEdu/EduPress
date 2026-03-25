@@ -57,17 +57,17 @@ const openIndex = ref<number | null>(null)
 .button {
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 0 8px;
+  gap: var(--custom-space-1);
+  padding: 0 var(--custom-space-2);
   height: 100%;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--custom-font-size-sm);
+  font-weight: var(--custom-font-weight-medium);
   color: var(--vp-c-text-1);
   background: transparent;
   border: none;
   cursor: pointer;
   white-space: nowrap;
-  transition: color 0.25s;
+  transition: var(--custom-transition-color);
 }
 
 .button:hover {
@@ -88,16 +88,16 @@ const openIndex = ref<number | null>(null)
   top: calc(100% + 8px);
   right: 0;
   min-width: 210px;
-  padding: 8px;
+  padding: var(--custom-space-2);
   background: var(--vp-c-bg-elv);
   border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
+  border-radius: var(--custom-radius-lg);
   box-shadow: var(--vp-shadow-3);
   opacity: 0;
   pointer-events: none;
   transform: translateY(-4px);
-  transition: opacity 0.2s, transform 0.2s;
-  z-index: 100;
+  transition: var(--custom-transition-fast);
+  z-index: var(--custom-z-dropdown);
 }
 
 .flyout.open {
@@ -109,12 +109,12 @@ const openIndex = ref<number | null>(null)
 .flyout-item {
   display: block;
   padding: 7px 12px;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--custom-font-size-sm);
+  font-weight: var(--custom-font-weight-medium);
   color: var(--vp-c-text-1);
   text-decoration: none;
-  border-radius: 6px;
-  transition: color 0.2s, background 0.2s;
+  border-radius: var(--custom-radius-md);
+  transition: var(--custom-transition-fast);
 }
 
 .flyout-item:hover {

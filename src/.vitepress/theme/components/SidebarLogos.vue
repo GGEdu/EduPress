@@ -41,7 +41,7 @@ const b = theme.value.logoBranding as {
       :height="b.logos.gva.height"
       alt="GVA"
       imgClass="logo-anim"
-      imgStyle="display:block;margin:0 auto;margin-top:12px;"
+      imgStyle="display:block;margin:0 auto;margin-top:var(--custom-space-3);"
     />
     <ThemedImage
       :src="b.logos.centro.src"
@@ -50,15 +50,15 @@ const b = theme.value.logoBranding as {
       :height="b.logos.centro.height"
       alt="Centro"
       imgClass="logo-anim"
-      imgStyle="display:block;margin:0 auto;margin-top:12px;"
+      imgStyle="display:block;margin:0 auto;margin-top:var(--custom-space-3);"
     />
   </div>
 </template>
 
 <style scoped>
 .sidebar-logos {
-  padding: 16px 24px 32px;
+  padding: var(--custom-space-4) var(--custom-space-6) var(--custom-space-8);
   border-top: 1px solid var(--vp-c-divider);
-  margin-top: 8px;
+  margin-top: var(--custom-space-2);
 }
 </style>

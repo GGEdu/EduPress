@@ -13,6 +13,7 @@ import SidebarLogos from './components/SidebarLogos.vue'
 import FooterLogo from './components/FooterLogo.vue'
 import DynamicNav from './components/DynamicNav.vue'
 import DynamicNavScreen from './components/DynamicNavScreen.vue'
+import ThemedImage from './components/ThemedImage.vue'
 
 // Importar los estilos personalizados
 import './css/design-tokens.css'
@@ -83,6 +84,7 @@ export default {
     ctx.app.component('Quote', Quote)
     ctx.app.component('TwoColumns', TwoColumns)
     ctx.app.component('BulletPoints', BulletPoints)
+    ctx.app.component('ThemedImage', ThemedImage)
     components['Badge'] = Badge  // override: Badge extendido (8 variantes, dot, closeable...)
     ctx.app.component('Button', Button)
     ctx.app.component('Card', Card)
@@ -91,24 +93,41 @@ export default {
 
     // 5) Inicializar el controlador del header solo en el cliente
     if (typeof window !== 'undefined') {
-      let diagramCounter = 0; // Contador global para IDs únics
-      
+      let diagramCounter = 0; // Contador global para IDs únicos
+
       const initMermaid = async () => {
+        // Guard: solo inicializar una vez aunque se llame múltiples veces (HMR)
+        if ((window as any).__mermaidInitialized) return;
+        (window as any).__mermaidInitialized = true;
+
         try {
           const mermaid = (await import('mermaid')).default;
-          mermaid.initialize({
-            startOnLoad: false,
-            theme: 'default'
-          });
-          
+
+          const getMermaidTheme = () =>
+            document.documentElement.classList.contains('dark') ? 'dark' : 'default';
+
+          const reinitialize = () => {
+            mermaid.initialize({ startOnLoad: false, theme: getMermaidTheme() });
+          };
+
+          reinitialize();
+
+          // Generación de render: cuando se incrementa, los .then() pendientes
+          // del lote anterior detectan que son obsoletos y se descartan.
+          let renderGeneration = 0;
+          let bodyObserver: MutationObserver;
+
           const renderDiagrams = () => {
+            const generation = renderGeneration;
             document.querySelectorAll('.language-mermaid:not([data-processed])').forEach((el) => {
               const code = el.textContent?.replace(/^mermaid\s*/i, '').trim();
               if (code) {
                 el.setAttribute('data-processed', 'true');
                 const uniqueId = `mermaid-diagram-${Date.now()}-${++diagramCounter}`;
-                
+
                 mermaid.render(uniqueId, code).then(result => {
+                  // Descartar si reRenderAll ya inició un lote más reciente
+                  if (generation !== renderGeneration) return;
                   const div = document.createElement('div');
                   div.innerHTML = result.svg;
                   div.className = 'mermaid-container';
@@ -123,9 +142,27 @@ export default {
               }
             });
           };
-          
+
+          const reRenderAll = () => {
+            renderGeneration++; // Invalida todos los .then() pendientes del lote anterior
+            bodyObserver.disconnect();
+            document.querySelectorAll('.mermaid-container').forEach(el => el.remove());
+            document.querySelectorAll('.language-mermaid[data-processed]').forEach(el => {
+              el.removeAttribute('data-processed');
+              (el as HTMLElement).style.display = '';
+            });
+            reinitialize();
+            renderDiagrams();
+            bodyObserver.observe(document.body, { childList: true, subtree: true });
+          };
+
           renderDiagrams();
-          new MutationObserver(renderDiagrams).observe(document.body, { childList: true, subtree: true });
+          bodyObserver = new MutationObserver(renderDiagrams);
+          bodyObserver.observe(document.body, { childList: true, subtree: true });
+
+          // Re-renderizar cuando VitePress cambia el tema claro/oscuro
+          new MutationObserver(() => reRenderAll())
+            .observe(document.documentElement, { attributeFilter: ['class'] });
         } catch (error) {
           console.error('Mermaid error:', error);
         }

@@ -27,29 +27,29 @@ const navGroups = useUnitNav()
 
 <style scoped>
 .screen-nav {
-  padding: 12px 0;
+  padding: var(--custom-space-3) 0;
   border-bottom: 1px solid var(--vp-c-divider);
-  margin-bottom: 4px;
+  margin-bottom: var(--custom-space-1);
 }
 
 .screen-nav-title {
-  padding: 4px 12px 8px;
-  font-size: 12px;
-  font-weight: 600;
+  padding: var(--custom-space-1) var(--custom-space-3) var(--custom-space-2);
+  font-size: var(--custom-font-size-xs);
+  font-weight: var(--custom-font-weight-semibold);
   color: var(--vp-c-text-2);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--custom-letter-spacing-wide);
 }
 
 .screen-nav-item {
   display: block;
-  padding: 10px 12px;
-  font-size: 15px;
-  font-weight: 500;
+  padding: var(--custom-space-2) var(--custom-space-3);
+  font-size: var(--custom-font-size-base);
+  font-weight: var(--custom-font-weight-medium);
   color: var(--vp-c-text-1);
   text-decoration: none;
-  border-radius: 8px;
-  transition: color 0.2s, background 0.2s;
+  border-radius: var(--custom-radius-lg);
+  transition: var(--custom-transition-fast);
 }
 
 .screen-nav-item:hover {

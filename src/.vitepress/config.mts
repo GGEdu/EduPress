@@ -48,6 +48,14 @@ function buildCssVars(): string {
   --vp-c-brand-2:         ${l.brand2};
   --vp-c-brand-3:         ${l.brand3};
   --vp-c-brand-soft:      ${l.brandSoft};
+  --vp-c-bg:              ${l.bg};
+  --vp-c-bg-soft:         ${l.bgSoft};
+  --vp-c-bg-alt:          ${l.bgAlt};
+  --vp-c-bg-mute:         ${l.codeBg};
+  --vp-c-text-1:          ${l.text1};
+  --vp-c-text-2:          ${l.text2};
+  --vp-c-text-3:          ${l.text3};
+  --vp-c-divider:         ${l.divider};
   --custom-brand-light:   ${l.brandLight};
   --custom-brand-lighter: ${l.brandLighter};
   --custom-brand-dark:    ${l.brandDark};
@@ -62,6 +70,35 @@ function buildCssVars(): string {
   --vp-c-caution:         ${l.semanticCaution};
   --vp-font-family-base:  ${t.fontBase};
   --vp-font-family-mono:  ${t.fontMono};
+  --vp-c-important:       ${l.brandDark};
+  --vp-c-note-text:       ${l.noteText};
+  --vp-c-tip-text:        ${l.tipText};
+  --vp-c-warning-text:    ${l.warningText};
+  --vp-c-caution-text:    ${l.cautionText};
+  --vp-c-important-text:  ${l.importantText};
+  --custom-gradient-mint-start:    ${l.gradMintStart};
+  --custom-gradient-mint-end:      ${l.gradMintEnd};
+  --custom-gradient-blue-start:    ${l.gradBlueStart};
+  --custom-gradient-blue-end:      ${l.gradBlueEnd};
+  --custom-gradient-success-start: ${l.gradSuccessStart};
+  --custom-gradient-success-end:   ${l.gradSuccessEnd};
+  --custom-gradient-warning-start: ${l.gradWarningStart};
+  --custom-gradient-warning-end:   ${l.gradWarningEnd};
+  --custom-gradient-danger-start:  ${l.gradDangerStart};
+  --custom-gradient-danger-end:    ${l.gradDangerEnd};
+  --custom-gradient-info-start:    ${l.gradInfoStart};
+  --custom-gradient-info-end:      ${l.gradInfoEnd};
+  --custom-gradient-purple-start:  ${l.gradPurpleStart};
+  --custom-gradient-purple-end:    ${l.gradPurpleEnd};
+  --custom-gradient-orange-start:  ${l.gradOrangeStart};
+  --custom-gradient-orange-end:    ${l.gradOrangeEnd};
+  --custom-gradient-teal-start:    ${l.gradTealStart};
+  --custom-gradient-teal-end:      ${l.gradTealEnd};
+  --custom-bg-terminal:            ${l.bgTerminal};
+  --custom-color-dark:             ${l.colorDark};
+  --custom-text-on-gradient:       ${l.textOnGradient};
+  --custom-text-on-gradient-dark:  ${l.textOnGradientDark};
+  --custom-bg-brand-subtle:        ${l.bgBrandSubtle};
 }
 .dark {
   --vp-c-brand:           ${d.brand};
@@ -69,10 +106,29 @@ function buildCssVars(): string {
   --vp-c-brand-2:         ${d.brand2};
   --vp-c-brand-3:         ${d.brand3};
   --vp-c-brand-soft:      ${d.brandSoft};
+  --vp-c-bg:              ${d.bg};
+  --vp-c-bg-soft:         ${d.bgSoft};
+  --vp-c-bg-alt:          ${d.bgAlt};
+  --vp-c-bg-mute:         ${d.codeBg};
+  --vp-c-text-1:          ${d.text1};
+  --vp-c-text-2:          ${d.text2};
+  --vp-c-text-3:          ${d.text3};
+  --vp-c-divider:         ${d.divider};
   --custom-brand-light:   ${d.brandLight};
   --custom-brand-lighter: ${d.brandLighter};
   --custom-brand-dark:    ${d.brandDark};
   --custom-brand-darker:  ${d.brandDarker};
+  --vp-c-important:       ${d.brandDark};
+  --vp-c-note-text:       ${d.noteText};
+  --vp-c-tip-text:        ${d.tipText};
+  --vp-c-warning-text:    ${d.warningText};
+  --vp-c-caution-text:    ${d.cautionText};
+  --vp-c-important-text:  ${d.importantText};
+  --custom-bg-terminal:   ${d.bgTerminal};
+  --custom-color-dark:    ${d.colorDark};
+  --custom-text-on-gradient:      ${d.textOnGradient};
+  --custom-text-on-gradient-dark: ${d.textOnGradientDark};
+  --custom-bg-brand-subtle:       ${d.bgBrandSubtle};
 }`
 }
 
@@ -160,12 +216,40 @@ const warningBoxContainer = createContainer('warning-box', 'InfoBox', 'warning')
 const dangerBoxContainer  = createContainer('danger-box',  'InfoBox', 'danger')
 const tipBoxContainer     = createContainer('tip-box',     'InfoBox', 'tip')
 const noteBoxContainer    = createContainer('note-box',    'NoteBox')
-const accentBoxContainer  = createContainer('accent-box',  'AccentBox')
+
+// accent-box: parsea el gradiente del primer token (primary|success|warning|danger|info|purple|orange|teal)
+const accentBoxContainer: [typeof container, string, { render(tokens: Token[], idx: number): string }] = [container, 'accent-box', {
+  render(tokens: Token[], idx: number) {
+    const token = tokens[idx]
+    if (token.nesting === 1) {
+      const validGradients = ['primary', 'success', 'warning', 'danger', 'info', 'purple', 'orange', 'teal']
+      const info = token.info.trim().slice('accent-box'.length).trim()
+      const firstWord = info.split(/\s/)[0]
+      let gradient = 'primary'
+      let title = info
+      if (validGradients.includes(firstWord)) {
+        gradient = firstWord
+        title = info.slice(firstWord.length).trim()
+      }
+      const titleAttr = title ? ` title="${title}"` : ''
+      return `<AccentBox gradient="${gradient}"${titleAttr}>\n`
+    } else {
+      return `</AccentBox>\n`
+    }
+  }
+}]
 
 // ── Exportar configuración VitePress ───────────────────────────────────────
 export default defineConfig({
   base:   basePath,
   outDir: PROJECT.outDir,
+  vite: {
+    build: {
+      // El proyecto incluye bundles grandes (Mermaid/slides); elevamos el umbral
+      // para evitar ruido en CI sin alterar el resultado de compilación.
+      chunkSizeWarningLimit: 2000,
+    },
+  },
   markdown: {
     config(md) {
       md.use(tabsMarkdownPlugin)
