@@ -249,7 +249,7 @@ export default defineConfig({
       // para evitar ruido en CI sin alterar el resultado de compilación.
       chunkSizeWarningLimit: 2000,
       rollupOptions: {
-        external: ['html2canvas'],
+        external: ['html2canvas', 'canvg', 'dompurify'],
       },
     },
   },
