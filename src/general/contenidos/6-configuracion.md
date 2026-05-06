@@ -43,6 +43,22 @@ Si el repositorio se llama `mi-curso` en GitHub, `basePath` debe ser `/mi-curso/
 
 ## 2. `colors.ts` — Paleta cromática
 
+### 🎨 Seleccionar un Tema Predeterminado
+
+EduPress incluye varias paletas de colores profesionales listas para usar. El archivo `src/.vitepress/config/colors.ts` funciona como un **puente** para elegir cuál de estas paletas cargar.
+
+Para cambiar el tema, simplemente edita el archivo `colors.ts` y descomenta la línea de la paleta que desees (asegurándote de comentar las demás).
+
+Ejemplo para usar la paleta "Azul y Coral":
+```typescript
+// import { COLORS } from './colors-3-pizarra-teal'
+import { COLORS } from './colors-5-azul-coral'
+
+export { COLORS }
+```
+
+Si prefieres personalizar colores individualmente, puedes duplicar uno de estos archivos (por ejemplo, creando `colors-6-mi-tema.ts`), configurarlo a tu gusto y luego importarlo de la misma forma.
+
 ### La regla 60/30/10
 
 Un principio clásico de diseño que EduPress aplica en su sistema de tokens:

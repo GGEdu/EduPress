@@ -242,20 +242,20 @@
    * 10. GRADIENTES (SLIDES Y COMPONENTES)
    * ======================================================================== */
   
-  /* Gradientes principales */
+  /* Gradientes principales — patrón simétrico: claro → oscuro (centro) → claro */
   --custom-gradient-primary: var(--custom-gradient-brand);
-  --custom-gradient-brand: linear-gradient(120deg, var(--vp-c-brand), var(--custom-brand-dark));
-  --custom-gradient-mint: linear-gradient(135deg, var(--custom-gradient-mint-start) 0%, var(--custom-gradient-mint-end) 100%);
-  --custom-gradient-blue: linear-gradient(90deg, var(--custom-gradient-blue-start) 0%, var(--custom-gradient-blue-end) 100%);
+  --custom-gradient-brand: linear-gradient(90deg, var(--vp-c-brand) 0%, var(--custom-brand-dark) 50%, var(--vp-c-brand) 100%);
+  --custom-gradient-mint: linear-gradient(90deg, var(--custom-gradient-mint-start) 0%, var(--custom-gradient-mint-end) 50%, var(--custom-gradient-mint-start) 100%);
+  --custom-gradient-blue: linear-gradient(90deg, var(--custom-gradient-blue-start) 0%, var(--custom-gradient-blue-end) 50%, var(--custom-gradient-blue-start) 100%);
   
-  /* Gradientes sólidos para AccentBox (alta saturación y contraste - Ajustados para accesibilidad) */
-  --custom-gradient-success-solid: linear-gradient(135deg, var(--custom-gradient-success-start) 0%, var(--custom-gradient-success-end) 100%);
-  --custom-gradient-warning-solid: linear-gradient(135deg, var(--custom-gradient-warning-start) 0%, var(--custom-gradient-warning-end) 100%);
-  --custom-gradient-danger-solid: linear-gradient(135deg, var(--custom-gradient-danger-start) 0%, var(--custom-gradient-danger-end) 100%);
-  --custom-gradient-info-solid: linear-gradient(135deg, var(--custom-gradient-info-start) 0%, var(--custom-gradient-info-end) 100%);
-  --custom-gradient-purple: linear-gradient(135deg, var(--custom-gradient-purple-start) 0%, var(--custom-gradient-purple-end) 100%);
-  --custom-gradient-orange: linear-gradient(135deg, var(--custom-gradient-orange-start) 0%, var(--custom-gradient-orange-end) 100%);
-  --custom-gradient-teal: linear-gradient(135deg, var(--custom-gradient-teal-start) 0%, var(--custom-gradient-teal-end) 100%);
+  /* Gradientes sólidos para AccentBox — patrón simétrico: claro → oscuro (centro) → claro */
+  --custom-gradient-success-solid: linear-gradient(90deg, var(--custom-gradient-success-start) 0%, var(--custom-gradient-success-end) 50%, var(--custom-gradient-success-start) 100%);
+  --custom-gradient-warning-solid: linear-gradient(90deg, var(--custom-gradient-warning-start) 0%, var(--custom-gradient-warning-end) 50%, var(--custom-gradient-warning-start) 100%);
+  --custom-gradient-danger-solid: linear-gradient(90deg, var(--custom-gradient-danger-start) 0%, var(--custom-gradient-danger-end) 50%, var(--custom-gradient-danger-start) 100%);
+  --custom-gradient-info-solid: linear-gradient(90deg, var(--custom-gradient-info-start) 0%, var(--custom-gradient-info-end) 50%, var(--custom-gradient-info-start) 100%);
+  --custom-gradient-purple: linear-gradient(90deg, var(--custom-gradient-purple-start) 0%, var(--custom-gradient-purple-end) 50%, var(--custom-gradient-purple-start) 100%);
+  --custom-gradient-orange: linear-gradient(90deg, var(--custom-gradient-orange-start) 0%, var(--custom-gradient-orange-end) 50%, var(--custom-gradient-orange-start) 100%);
+  --custom-gradient-teal: linear-gradient(90deg, var(--custom-gradient-teal-start) 0%, var(--custom-gradient-teal-end) 50%, var(--custom-gradient-teal-start) 100%);
   
   /* Gradientes de fondo suaves */
   --custom-gradient-bg-soft: linear-gradient(135deg, var(--vp-c-bg-soft) 0%, var(--vp-c-bg-alt) 100%);

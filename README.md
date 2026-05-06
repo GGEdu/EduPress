@@ -69,7 +69,7 @@ Todos los ajustes se hacen en los 4 archivos de `src/.vitepress/config/`:
 | Archivo | Qué configura |
 |---------|---------------|
 | `config/project.ts` | URL base, idioma, redes sociales, copyright |
-| `config/colors.ts` | Colores corporativos (light + dark) y tipografía |
+| `config/colors.ts` | Selección de tema, colores corporativos y tipografía |
 | `config/logos.ts` | Rutas de logos, alturas y modo claro/oscuro |
 | `config/units.ts` | Módulos/unidades activas, navbar y sidebar |
 
