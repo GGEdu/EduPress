@@ -55,4 +55,11 @@ export const PROJECT = {
   // Relativo a la carpeta src/. No suele necesitar cambios.
   outDir: '../docs',
 
+  // --------------------------------------------------------------------------
+  // MODO DE EXPORTACIÓN A PDF
+  // --------------------------------------------------------------------------
+  // 'image': El PDF se genera client-side rasterizando la página (visualización exacta, texto no seleccionable).
+  // 'text': Se abre el diálogo de impresión del navegador para exportar con texto seleccionable.
+  pdfExportMode: 'image' as 'image' | 'text',
+
 }

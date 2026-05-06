@@ -40,7 +40,7 @@ import Button from './components/ui/Button.vue'
 import Card from './components/ui/Card.vue'
 import Input from './components/ui/Input.vue'
 import Toast from './components/ui/Toast.vue'
-
+import ExportPDF from './components/ExportPDF.vue'
 
 export default {
   ...DefaultTheme,
@@ -90,6 +90,7 @@ export default {
     ctx.app.component('Card', Card)
     ctx.app.component('Input', Input)
     ctx.app.component('Toast', Toast)
+    ctx.app.component('ExportPDF', ExportPDF)
 
     // 5) Inicializar el controlador del header solo en el cliente
     if (typeof window !== 'undefined') {

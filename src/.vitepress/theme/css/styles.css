@@ -379,3 +379,56 @@ html {
   border-radius: var(--custom-radius-md);
   padding: 1rem;
 }
+
+/* ============================================================================
+ * Estilos para Impresión / Exportación a PDF (Modo Texto)
+ * ============================================================================ */
+@media print {
+  /* Ocultar elementos de navegación y UI que no son contenido */
+  .VPNav,
+  .VPLocalNav,
+  .VPSidebar,
+  .VPFooter,
+  .aside,
+  .VPDocAside,
+  .export-pdf-wrapper,
+  button,
+  .edit-link,
+  .last-updated,
+  .pager {
+    display: none !important;
+  }
+
+  /* Ajustar el contenedor principal para que ocupe todo el ancho sin márgenes de sidebar */
+  .VPContent,
+  .VPDoc {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* Asegurar que el fondo sea blanco y el texto negro para mejor legibilidad */
+  body {
+    background-color: white !important;
+    color: black !important;
+  }
+
+  .vp-doc {
+    color: black !important;
+  }
+
+  .vp-doc h1,
+  .vp-doc h2,
+  .vp-doc h3,
+  .vp-doc h4,
+  .vp-doc h5 {
+    color: black !important;
+    page-break-after: avoid;
+  }
+
+  /* Evitar saltos de página dentro de bloques y tablas */
+  pre, blockquote, .custom-block, table, img, figure {
+    page-break-inside: avoid;
+  }
+}

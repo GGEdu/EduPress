@@ -173,17 +173,16 @@ const handleClick = (event) => {
 
 <template>
 
-  <component
-    :is="tag"
+  <button
+    v-if="tag === 'button'"
     class="btn"
     :class="buttonClasses"
-    :type="nativeType"
+    :type="nativeType as any"
     :disabled="disabled || loading"
     :aria-busy="loading"
     :aria-disabled="disabled"
     :aria-label="ariaLabel || undefined"
     :aria-describedby="ariaDescribedby || undefined"
-    :role="tag === 'a' ? 'button' : undefined"
     @click="handleClick">
     <!-- Icono izquierdo -->
     <span 
@@ -215,7 +214,49 @@ const handleClick = (event) => {
       aria-hidden="true">
       {{ iconRight }}
     </span>
-  </component>
+  </button>
+
+  <a
+    v-else
+    class="btn"
+    :class="buttonClasses"
+    :aria-busy="loading"
+    :aria-disabled="disabled"
+    :aria-label="ariaLabel || undefined"
+    :aria-describedby="ariaDescribedby || undefined"
+    role="button"
+    @click="handleClick">
+    <!-- Icono izquierdo -->
+    <span 
+      v-if="iconLeft && !loading" 
+      class="btn-icon btn-icon-left"
+      aria-hidden="true">
+      {{ iconLeft }}
+    </span>
+    
+    <!-- Loading spinner -->
+    <span 
+      v-if="loading" 
+      class="btn-loading"
+      role="status"
+      aria-label="Cargando">
+      <span class="spinner" aria-hidden="true"></span>
+      <span class="sr-only">Cargando...</span>
+    </span>
+    
+    <!-- Contenido -->
+    <span class="btn-content">
+      <slot></slot>
+    </span>
+    
+    <!-- Icono derecho -->
+    <span 
+      v-if="iconRight && !loading" 
+      class="btn-icon btn-icon-right"
+      aria-hidden="true">
+      {{ iconRight }}
+    </span>
+  </a>
 
 </template>
 

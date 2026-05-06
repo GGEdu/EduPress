@@ -1,5 +1,7 @@
 # 📚 EduPress - Plantilla Educativa
 
+<ExportPDF />
+
 ::: tip 📋 Información del Curso
 **Profesor:** [Nombre del Profesor/a]  
 **Año Académico:** [20XY-20XZ]  
