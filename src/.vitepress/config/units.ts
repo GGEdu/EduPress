@@ -38,7 +38,7 @@ const baseNavbar: DefaultTheme.NavItem[] = [
   {
     text: '📚 Unidades',
     items: [
-      { text: 'General',              link: '/index' },
+      { text: 'General', link: '/index' },
     ]
   },
 ]
@@ -46,34 +46,65 @@ const baseNavbar: DefaultTheme.NavItem[] = [
 // --- Sidebar de la unidad principal ---
 const baseSidebar: DefaultTheme.SidebarItem[] = [
   {
-    text: '📚 Contenidos',
+    text: '📚 Primeros pasos',
+    collapsed: false,
+    items: [
+      { text: 'Introducción', link: '/contenidos/1-introduccion' },
+      { text: 'Instalación y Arranque', link: '/contenidos/2-instalacion' },
+      { text: 'Estructura del Proyecto', link: '/contenidos/3-estructura' },
+    ]
+  },
+  {
+    text: '🛠️ Configura tu curso',
+    collapsed: false,
+    items: [
+      { text: 'Curso único', link: '/contenidos/4-curso-unico' },
+      { text: 'Curso modular', link: '/contenidos/5-curso-modular' },
+      { text: 'Configuración e Identidad', link: '/contenidos/6-configuracion' },
+    ]
+  },
+  {
+    text: '✍️ Crea contenidos',
+    collapsed: false,
+    items: [
+      { text: 'Crear Contenidos', link: '/contenidos/7-crear-contenidos' },
+      { text: 'Catálogo de Componentes', link: '/contenidos/8-componentes' },
+    ]
+  },
+  {
+    text: '🎞️ Diapositivas e Imágenes',
     collapsed: true,
     items: [
-      { text: 'Introducción',              link: '/contenidos/1-introduccion' },
-      { text: 'Instalación y Arranque',    link: '/contenidos/2-instalacion' },
-      { text: 'Estructura del Proyecto',   link: '/contenidos/3-estructura' },
-      { text: 'Módulos y Unidades',        link: '/contenidos/4-modulos' },
-      { text: 'Configuración e Identidad', link: '/contenidos/5-configuracion' },
-      { text: 'Crear Contenidos',          link: '/contenidos/6-crear-contenidos' },
-      { text: 'Crear Diapositivas',        link: '/contenidos/7-diapositivas' },
-      { text: 'Catálogo de Patrones',      link: '/contenidos/8-diapositivas-demo' },
-      { text: 'Diapositivas con Imágenes', link: '/contenidos/8-diapositivas-img' },
-      { text: 'Imágenes para Contenido',   link: '/contenidos/9-imagenes' },
-      { text: 'Despliegue',                link: '/contenidos/10-despliegue' },
-      { text: 'Tutorial', link: '/contenidos/11-tutorial-nuevo-curso' },
+      { text: 'Crear Diapositivas', link: '/contenidos/9-diapositivas' },
+      { text: 'Catálogo de Patrones', link: '/contenidos/10-diapositivas-demo' },
+      { text: 'Imágenes para Contenido', link: '/contenidos/11-imagenes' },
+    ]
+  },
+  {
+    text: '🌐 Publicación',
+    collapsed: true,
+    items: [
+      { text: 'Despliegue', link: '/contenidos/12-despliegue' },
+    ]
+  },
+  {
+    text: '📖Ejemplos',
+    collapsed: true,
+    items: [
+      { text: 'Guia del curso', link: '/contenidos/13-ejemplo-guia' },
     ]
   },
   {
     text: '🗂️ Ejercicios',
     collapsed: true,
     items: [
-      { text: 'Introducción',            link: '/ejercicios/' },
-      { text: 'Imágenes en Ejercicios',  link: '/ejercicios/imagenes-ejercicios' },
+      { text: 'Introducción', link: '/ejercicios/' },
+      { text: 'Imágenes en Ejercicios', link: '/ejercicios/imagenes-ejercicios' },
       {
         text: 'Ejemplos',
         items: [
           { text: 'Historia gamificada (parallax)', link: '/ejercicios/ejercicio' },
-          { text: 'Enunciado directo (Markdown)',   link: '/ejercicios/enunciado' },
+          { text: 'Enunciado directo (Markdown)', link: '/ejercicios/enunciado' },
         ]
       }
     ]

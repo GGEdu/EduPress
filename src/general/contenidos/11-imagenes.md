@@ -50,4 +50,4 @@ src/public/img/
 |----------|-------|----------|
 | Imagen no carga | Ruta relativa usada | Usar ruta absoluta: `/img/...` |
 
-**Siguiente paso:** [Despliegue y Troubleshooting](./10-despliegue)
+**Siguiente paso:** [Despliegue y Troubleshooting](./12-despliegue)

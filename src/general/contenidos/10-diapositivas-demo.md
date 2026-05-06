@@ -8,17 +8,17 @@ description: Guía de referencia con todos los patrones de diseño disponibles e
 
 ## A · Portada o Título Principal
 
-::: accent-box Patrón de Portada
+::: accent-box 🎓 Patrón de Portada
 **Ideal para el inicio de una presentación o una nueva sección.**
 
-Este patrón utiliza un contenedor destacado (`accent-box`) para centrar la atención del espectador en el título principal y subtítulo de la presentación.
+Este patrón utiliza el color de marca (brand) para centrar la atención del espectador en el título principal y subtítulo de la presentación.
 :::
 
 ---
 
 ## B · Diapositiva de Objetivos
 
-::: accent-box Objetivos de esta sección
+::: accent-box purple 🎯 Objetivos de esta sección
 Utiliza este formato para listar los resultados de aprendizaje o las metas al comienzo de un tema.
 :::
 
@@ -57,7 +57,7 @@ Este esquema de dos columnas es perfecto para introducir una idea. Muestra una i
 >
 > — *Técnica Pedagógica*
 
-::: accent-box Mensaje Clave
+::: accent-box 💡 Mensaje Clave
 Remata la diapositiva con la conclusión principal que el alumno debe retener sobre esta imagen y analogía.
 :::
 
@@ -73,7 +73,7 @@ Cuando necesites explicar las "reglas del juego", principios fundamentales o una
 >
 > — *Autoridad en la materia*
 
-::: accent-box Implicación Práctica
+::: accent-box success ✨ Implicación Práctica
 Explica en esta caja cómo esa filosofía afecta directamente al trabajo o tareas del espectador en su día a día.
 :::
 
@@ -120,7 +120,7 @@ Este patrón de doble caja (Info + Tip) con imagen es excelente para separar lo 
 >
 > — *Justificación del tema*
 
-::: accent-box Dato Cuantitativo o Éxito
+::: accent-box success ✨ Dato Cuantitativo o Éxito
 Destaca aquí una métrica, porcentaje o beneficio final. Por ejemplo: "El uso de esta técnica mejora la retención un 40%".
 :::
 
@@ -159,7 +159,7 @@ Paso 3: Generación del resultado esperado
 
 > Cuando el texto es denso y requiere máxima concentración, omite las imágenes. Usa una cita central para el postulado teórico principal que fundamenta toda la lección.
 
-::: accent-box Ley o Regla de Oro
+::: accent-box teal 💡 Ley o Regla de Oro
 Establece aquí los límites o la regla absoluta que gobierna la teoría expuesta arriba.
 :::
 
@@ -179,8 +179,8 @@ Este patrón minimalista es ideal para hacer una pausa, invitar a la reflexión 
 >
 > — *Reflexión Docente*
 
-::: accent-box El Contraste
-Refuerza en esta caja la respuesta a esa reflexión, creando un momento "Aha!" o de revelación.
+::: accent-box ✦ El Contraste
+Refuerza en esta caja la respuesta a esa reflexión, creando un momento "Aha!" o de revelación con el color de marca.
 :::
 
 ---
@@ -197,7 +197,7 @@ Describe aquí cómo se hacían las cosas antes o cuál era el problema original
 >
 > — *Hito de cambio*
 
-::: accent-box El Presente / Futuro
+::: accent-box success ✨ El Presente / Futuro
 Enumera las ventajas actuales o los nuevos comandos/herramientas disponibles tras esa evolución.
 :::
 
@@ -310,7 +310,7 @@ Ejemplo práctico del Tipo C
 
 Patrón sin imagen, compuesto por bloques de colores de menor a mayor severidad. Útil para protocolos de prevención de errores.
 
-::: accent-box Contexto del Problema
+::: accent-box info 📋 Contexto del Problema
 Presenta la situación donde el alumno debe tener especial cuidado.
 :::
 
@@ -389,7 +389,7 @@ El estándar que debemos seguir
 >
 > — *Manual de Estándares*
 
-::: accent-box El Blindaje
+::: accent-box danger ⛔ El Blindaje
 Explica las medidas proactivas que debe tomar el alumno para cumplir la norma superior.
 :::
 
@@ -410,7 +410,7 @@ Enunciado del Ejercicio:
 3. Valida que cumple con la regla X y la restricción Y.
 ```
 
-::: accent-box Pistas y Orientación
+::: accent-box teal 💡 Pistas y Orientación
 Ofrece un punto de apoyo metodológico: "Recuerda separar cada paso antes de intentar resolver todo de golpe."
 :::
 
@@ -422,7 +422,7 @@ Explica cómo sabrá el alumno si ha superado el ejercicio correctamente (ej. "S
 
 ## V · Resumen de la Sesión
 
-::: accent-box Recapitulando lo aprendido (Cierre)
+::: accent-box purple 📝 Recapitulando lo aprendido (Cierre)
 Esta es la diapositiva de síntesis obligatoria al final de un capítulo. Reúne todo en un esquema mental ágil.
 :::
 
@@ -438,7 +438,7 @@ Esta es la diapositiva de síntesis obligatoria al final de un capítulo. Reúne
 
 ## W · Despedida, Cierre y Pasos Siguientes
 
-::: accent-box Fin del Módulo / Sesión
+::: accent-box 🎓 Fin del Módulo / Sesión
 **¿Qué hacer a partir de ahora?**
 
 Próximos pasos recomendados · Repasar el glosario main

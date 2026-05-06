@@ -1,14 +1,20 @@
-# 📚 EduPress — Plantilla Educativa Modular
+# 📚 EduPress — Plantilla Educativa para VitePress
 
-**Plantilla VitePress para crear cursos y temarios online con estructura modular por unidades.**  
-Diseñada para docentes que necesitan una presentación clara y mantenible sin complejidad técnica.
+**Crea cursos y temarios online en Markdown, con diapositivas, ejercicios y colores corporativos.**  
+Diseñada para docentes: sin frameworks complejos, sin base de datos, desplegable en GitHub Pages.
 
 ---
 
 ## [Demo](https://ggedu.github.io/EduPress/)
 
-> *Navega a [Unidades -> General](https://ggedu.github.io/EduPress/general/) para ver toda la documentación*
 ---
+
+## 🔄 Elige tu camino
+
+| ¿Qué necesitas? | Guía |
+|---|---|
+| Un solo módulo o asignatura | → [Crear un curso único](https://ggedu.github.io/EduPress/general/contenidos/4-curso-unico) |
+| Varios módulos o unidades didácticas | → [Crear un curso modular](https://ggedu.github.io/EduPress/general/contenidos/5-curso-modular) |
 
 ## ¿Qué incluye?
 

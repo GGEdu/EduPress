@@ -1,28 +1,57 @@
 ---
 layout: doc
-title: EduPress — Módulo de demostración
-description: Módulo general de EduPress. Explora los contenidos, ejercicios y el catálogo de diapositivas.
+title: Documentación EduPress
+description: Guías completas para crear tu curso con EduPress — instalación, configuración, contenidos y despliegue.
 sidebar: true
 outline: [2, 3]
 aside: true
 ---
 
-# 📘 EduPress
+# 📘 Documentación EduPress
 
-**EduPress** es una plantilla educativa construida sobre VitePress para que los docentes puedan crear cursos, temarios y materiales didácticos online.
+Todo lo que necesitas para crear y publicar tu curso. Elige el punto de entrada según lo que necesitas hacer:
 
-El módulo que estás viendo ahora mismo (`general`) **es la plantilla en sí**: los contenidos son la documentación del sistema, los ejercicios demuestran los dos modelos disponibles y el catálogo de diapositivas muestra todos los patrones de diseño.
+## 🚀 Primeros pasos
 
-Al crear tu propio curso, sustituirás estos contenidos por los de tu materia.
+| Guía | Descripción |
+|------|-------------|
+| [1. Introducción](./contenidos/1-introduccion) | Qué es EduPress y qué ofrece |
+| [2. Instalación](./contenidos/2-instalacion) | Requisitos, clonado y arranque |
+| [3. Estructura del proyecto](./contenidos/3-estructura) | Árbol de directorios y archivos clave |
 
-## 📚 Contenidos
+## 🛠️ Configura tu curso
 
-Las guías del sistema: de la instalación al despliegue.
+| Guía | Descripción |
+|------|-------------|
+| [4. Curso único](./contenidos/4-curso-unico) | Una sola asignatura o módulo — guía rápida (≈15 min) |
+| [5. Curso modular](./contenidos/5-curso-modular) | Varias unidades con menú desplegable (≈25 min) |
+| [6. Configuración e identidad](./contenidos/6-configuracion) | Colores, tipografía, logos y paleta 60/30/10 |
 
-[Empezar por la Introducción →](./contenidos/1-introduccion)
+## ✍️ Crea contenidos
 
-## 🗂️ Ejercicios
+| Guía | Descripción |
+|------|-------------|
+| [7. Crear contenidos](./contenidos/7-crear-contenidos) | Páginas Markdown, frontmatter y bloques |
+| [8. Catálogo de componentes](./contenidos/8-componentes) | Todos los bloques disponibles con sintaxis Markdown |
 
-Ejemplos de los dos modelos de ejercicio disponibles.
+## 🎞️ Diapositivas e imágenes
+
+| Guía | Descripción |
+|------|-------------|
+| [9. Crear diapositivas](./contenidos/9-diapositivas) | Componente SlidesViewer — guía completa |
+| [10. Catálogo de patrones](./contenidos/10-diapositivas-demo) | Demo visual de todos los layouts de diapositiva |
+| [11. Imágenes para contenido](./contenidos/11-imagenes) | Rutas, formatos y optimización |
+
+## 🌐 Publicación
+
+| Guía | Descripción |
+|------|-------------|
+| [12. Despliegue](./contenidos/12-despliegue) | GitHub Pages, GitHub Actions y troubleshooting |
+
+---
+
+## 🗂️ Ejercicios de ejemplo
+
+El módulo incluye dos modelos de ejercicio listos para usar como referencia:
 
 [Ver los ejercicios →](./ejercicios/)

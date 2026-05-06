@@ -38,11 +38,40 @@ Dentro de tus diapositivas puedes utilizar las mismas herramientas, estilos y co
 
 ### Bloques de información y pestañas
 
-Todos los bloques disponibles en contenidos (`:::info-box`, `:::warning-box`, `:::tip-box`, pestañas, citas...) funcionan también dentro de `<SlidesViewer>` y se adaptan automáticamente al tamaño de la diapositiva. Consulta la lista completa en [Crear Contenidos](./6-crear-contenidos).
+Todos los bloques disponibles en contenidos (`:::info-box`, `:::warning-box`, `:::tip-box`, pestañas, citas...) funcionan también dentro de `<SlidesViewer>` y se adaptan automáticamente al tamaño de la diapositiva. Consulta la lista completa en [Catálogo de Componentes](./8-componentes).
+
+### Convención de colores para `accent-box`
+
+Usa la variante de color que mejor represente la función del contenido:
+
+| Variante | Color | Cuándo usarla |
+|----------|-------|---------------|
+| *(sin variante)* | Coral (brand) | Portadas, títulos de sección, cierres de módulo |
+| `purple` | Púrpura | Objetivos de aprendizaje, síntesis, resúmenes |
+| `info` | Azul | Contexto informativo, datos, explicaciones |
+| `success` | Verde | Ventajas, resultados positivos, métricas |
+| `teal` | Verde azulado | Reglas de oro, tips avanzados, consejos expertos |
+| `warning` | Naranja | Advertencias, errores comunes |
+| `danger` | Rojo | Errores fatales, medidas de seguridad críticas |
+
+```md
+::: accent-box 🎓 Título de Sección
+Texto de portada... (usa el color brand por defecto)
+:::
+
+::: accent-box purple 🎯 Objetivos
+- Comprender la estructura básica de un proyecto.
+- Aplicar buenas prácticas desde el primer día.
+:::
+
+::: accent-box success ✨ Ventaja Principal
+PHP procesa el HTML en el servidor...
+:::
+```
 
 ### Imágenes y Zoom
 
-Para centrar imágenes dentro de una diapositiva usa el sufijo `#center` en el `alt`. → Ver [Imágenes para Contenido](./9-imagenes).
+Para centrar imágenes dentro de una diapositiva usa el sufijo `#center` en el `alt`. → Ver [Imágenes para Contenido](./11-imagenes).
 
 **Sistema de Zoom y Ampliación (Lightbox):**
 Hacer clic en las imágenes dentro y fuera de la presentación en modo pantalla completa (**Lightbox**) permite usar el visualizador avanzado.
@@ -100,4 +129,4 @@ En el modo `slides-img-page` la imagen también ocupa el 100% al ampliar en ligh
 
 *Disfruta desarrollando documentaciones impresionantes y presentaciones combinadas con EduPress.*
 
-**Siguiente paso:** [Catálogo de Patrones de Diapositivas](./8-diapositivas-demo)
+**Siguiente paso:** [Catálogo de Patrones de Diapositivas](./10-diapositivas-demo)

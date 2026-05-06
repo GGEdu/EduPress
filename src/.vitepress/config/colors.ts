@@ -18,47 +18,43 @@ function hex2rgba(hex: string, alpha: number): string {
 const brand = '#ed6e51'
 
 // Variaciones — del más claro al más oscuro, para hovers y gradientes
-const brandLight   = '#ff7f5f'  // Un poco más claro
-const brandLighter = '#ff9173'  // Aún más claro
-const brandDark    = '#ed3728'  // Más oscuro (hovers intensos, degradados)
-const brandDarker  = '#d62d1f'  // El más oscuro
+const brandLight   = '#f07d62'  // Un poco más claro
+const brandLighter = '#f59173'  // Aún más claro
+const brandDark    = '#d4522e'  // Más oscuro (hovers intensos, degradados)
+const brandDarker  = '#b33d1f'  // El más oscuro
 
-// Acento — gradientes y elementos decorativos de slides
-const accentMint   = '#63d1c1'  // Verde menta / celeste
-const accentTeal   = '#41b8a5'  // Verde azulado profundo
-const accentPurple = '#a836f4'  // Púrpura
-const accentIndigo = '#4e8af1'  // Índigo / azul
+// Callouts — :::note-box (azul), :::tip-box (verde), :::warning-box (ámbar), :::danger-box (rojo)
+// REGLA: Solo para notificaciones de estado, nunca como fondo decorativo de diapositiva.
+const semanticNote    = '#3b82f6'  // Azul   → información / notas
+const semanticTip     = '#22c55e'  // Verde  → éxito / consejos
+const semanticWarning = '#f59e0b'  // Ámbar  → advertencia
+const semanticCaution = '#ef4444'  // Rojo   → error crítico / peligro
 
-// Callouts — :::note-box (azul), :::tip-box (verde), :::warning-box (amarillo), :::danger-box (púrpura)
-const semanticNote    = '#4e8af1'  // Azul    → :::note-box  (notas)
-const semanticTip     = '#26a69a'  // Verde   → :::tip-box   (consejos)
-const semanticWarning = '#ffc107'  // Amarillo → :::warning-box (avisos)
-const semanticCaution = '#a836f4'  // Púrpura  → :::danger-box (peligros)
-
-// Superficies y texto (modo claro): evitar blanco/negro puros para reducir fatiga.
-const bg      = '#FFFFFF'
-const bgSoft  = '#F6F6F7'
-const bgAlt   = '#EEEEEF'
-const text1   = '#213547'
-const text2   = '#476582'
-const text3   = '#90A4B7'
-const divider = '#E2E2E3'
-const codeBg  = '#F1F1F1'
+// Superficies y texto (modo claro) — Guía: Regla del 60%, fondo gris claro.
+// #F5F5F5 previene fatiga ocular en sesiones largas al evitar blanco puro.
+const bg      = '#F5F5F5'   // Guía: Gris Claro (#F5F5F5)
+const bgSoft  = '#EDEDEE'   // Superficies secundarias (sidebar, cards)
+const bgAlt   = '#E5E5E6'   // Fondos alternos
+const text1   = '#222222'   // Guía: Carbón Oscuro — máxima legibilidad (>14:1 sobre bg)
+const text2   = '#6F8197'   // Guía: Azul Acero — subtítulos, iconos inactivos
+const text3   = '#7890A5'   // Terciario — metadata, timestamps (≥3:1 sobre bg)
+const divider = '#D8D8DA'   // Separadores (visible sobre fondo gris)
+const codeBg  = '#E9E9EA'   // Bloques de código
 
 // ── Texto semántico accesible (modo claro) ────────────────────────────────────
 // Colores oscuros para contraste AAA sobre fondos claros de callout.
-const noteText      = '#064e3b'  // Emerald 900 - >7:1 AAA
-const tipText       = '#064e3b'  // Emerald 900 - >7:1 AAA
-const warningText   = '#78350f'  // Amber 900   - >7:1 AAA
-const cautionText   = '#4c1d95'  // Violet 900  - >7:1 AAA
-const importantText = '#7f1d1d'  // Red 900     - >7:1 AAA
+const noteText      = '#1e3a5f'  // Azul 900   - >7:1 AAA sobre callout azul
+const tipText       = '#14532d'  // Green 900  - >7:1 AAA sobre callout verde
+const warningText   = '#78350f'  // Amber 900  - >7:1 AAA
+const cautionText   = '#7f1d1d'  // Red 900    - >7:1 AAA
+const importantText = '#7f1d1d'  // Red 900    - >7:1 AAA
 
 // ── Colores modo oscuro — versión más clara/cálida para fondo oscuro ─────────
 
 const darkBrand        = '#f48061'  // Brand principal en dark mode
-const darkBrand1       = '#fc9578'  // Hover más claro
-const darkBrand2       = '#ffab93'  // Texto en hover
-const darkBrand3       = '#953d26'  // Fondos invertidos
+const darkBrand1       = '#f48061'
+const darkBrand2       = '#ffab93'
+const darkBrand3       = '#953d26'
 const darkBrandLight   = '#c0482d'
 const darkBrandLighter = '#d95a3d'
 const darkBrandDark    = '#f48061'
@@ -74,47 +70,49 @@ const darkText3   = '#757575'
 const darkDivider = '#3c3c44'
 const darkCodeBg  = '#161618'
 
-// Texto semántico dark: los propios semánticos dan buen contraste sobre fondos oscuros.
-const darkNoteText      = semanticNote
-const darkTipText       = semanticTip
-const darkWarningText   = semanticWarning
-const darkCautionText   = semanticCaution
-const darkImportantText = semanticCaution
+// Texto semántico dark: versiones más claras para contraste AAA sobre fondos oscuros.
+const darkNoteText      = '#60a5fa'  // Azul claro
+const darkTipText       = '#4ade80'  // Verde claro
+const darkWarningText   = '#fbbf24'  // Ámbar claro
+const darkCautionText   = '#f87171'  // Rojo claro
+const darkImportantText = '#f87171'
 
-// ── Degradados — endpoints de AccentBox y slides ─────────────────────────────
-const gradMintStart    = '#4EBDAE';  const gradMintEnd    = '#2CA390'
-const gradBlueStart    = '#3182CE';  const gradBlueEnd    = '#2B6CB0'
-const gradSuccessStart = '#059669';  const gradSuccessEnd = '#047857'
-const gradWarningStart = '#D97706';  const gradWarningEnd = '#B45309'
-const gradDangerStart  = '#DC2626';  const gradDangerEnd  = '#B91C1C'
-const gradInfoStart    = '#2563EB';  const gradInfoEnd    = '#1D4ED8'
-const gradPurpleStart  = '#5B72E0';  const gradPurpleEnd  = '#683BA2'
-const gradOrangeStart  = '#E07CEB';  const gradOrangeEnd  = '#D64558'
-const gradTealStart    = '#3AA0E0';  const gradTealEnd    = '#00B4C5'
+// ── Degradados — dos únicos estilos visuales ─────────────────────────────────
+// REGLA: Solo usar gradBrand (coral) y gradSlate (azul pizarra) para fondos de
+//        diapositivas. Dos estilos aportan profundidad sin fragmentar el ritmo visual.
+const gradBrandStart   = '#ed6e51';  const gradBrandEnd   = '#d4522e'  // Coral marca
+const gradSlateStart   = '#6A5ACD';  const gradSlateEnd   = '#5B4FB5'  // Slate Blue estructural
+// Degradados semánticos — solo para estados de UI (éxito, error, alerta, info)
+const gradSuccessStart = '#22c55e';  const gradSuccessEnd = '#16a34a'
+const gradWarningStart = '#f59e0b';  const gradWarningEnd = '#d97706'
+const gradDangerStart  = '#ef4444';  const gradDangerEnd  = '#dc2626'
+const gradInfoStart    = '#3b82f6';  const gradInfoEnd    = '#2563eb'
 
 // ── Superficies auxiliares ───────────────────────────────────────────────────
-const bgTerminal         = '#1A202C'
-const colorDark          = '#333333'
-const textOnGradient     = '#FFFFFF'
-const textOnGradientDark = '#222222'
+// Slate Blue (#6A5ACD) en lugar de grises oscuros: combina la confianza del
+// azul con un matiz violeta, aportando luz y energía con rigor profesional.
+const bgTerminal         = '#6A5ACD'   // Slate Blue — cajas de código/terminal
+const colorDark          = '#6A5ACD'   // Slate Blue — fondos oscuros de énfasis
+const textOnGradient     = '#FFFFFF'   // Texto claro sobre degradados oscuros
+const textOnGradientDark = '#222222'   // Carbón Oscuro sobre degradados claros/coral
 
-const darkBgTerminal         = '#2D3748'
-const darkColorDark          = '#E5E5E5'
+const darkBgTerminal         = '#2a2452'   // Slate Blue muy oscuro (garantiza contraste con texto claro)
+const darkColorDark          = '#352d66'   // Slate Blue oscuro para énfasis en dark mode
 const darkTextOnGradient     = '#FFFFFF'
 const darkTextOnGradientDark = '#1A1A1A'
 
-// ── Tipografía ───────────────────────────────────────────────────────────────
+// ── Tipografía — Guía: sans-serif (Noto Sans, Lato, Montserrat) ─────────────
+// Fuentes sin remates: mayor velocidad de lectura y retención en aprendizaje.
 const fontBase = [
-  "'Roboto'",
+  "'Noto Sans'",
   "-apple-system",
   "BlinkMacSystemFont",
   "'Segoe UI'",
-  "Roboto",
+  "Lato",
+  "Montserrat",
   "Oxygen",
   "Ubuntu",
   "Cantarell",
-  "'Fira Sans'",
-  "'Droid Sans'",
   "'Helvetica Neue'",
   "sans-serif",
 ].join(', ')
@@ -131,7 +129,7 @@ const fontMono = [
 ].join(', ')
 
 // URL Google Fonts. Generador: https://fonts.google.com — Escribe '' para desactivar.
-const fontImportUrl = 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap'
+const fontImportUrl = 'https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;700&display=swap'
 
 // ── Objeto exportado — no modificar la estructura ────────────────────────────
 export const COLORS = {
@@ -145,10 +143,11 @@ export const COLORS = {
     brandLighter,
     brandDark,
     brandDarker,
-    accentMint,
-    accentTeal,
-    accentPurple,
-    accentIndigo,
+    // Acentos unificados: coral de marca como acento principal, Slate Blue como complementario
+    accentMint:   brand,
+    accentTeal:   brandDark,
+    accentPurple: gradSlateStart,
+    accentIndigo: gradSlateStart,
     semanticNote,
     semanticTip,
     semanticWarning,
@@ -166,15 +165,16 @@ export const COLORS = {
     warningText,
     cautionText,
     importantText,
-    gradMintStart, gradMintEnd,
-    gradBlueStart, gradBlueEnd,
+    // Degradados decorativos unificados en coral y Slate Blue
+    gradMintStart: gradBrandStart, gradMintEnd: gradBrandEnd,
+    gradBlueStart: gradSlateStart, gradBlueEnd: gradSlateEnd,
     gradSuccessStart, gradSuccessEnd,
     gradWarningStart, gradWarningEnd,
     gradDangerStart, gradDangerEnd,
     gradInfoStart, gradInfoEnd,
-    gradPurpleStart, gradPurpleEnd,
-    gradOrangeStart, gradOrangeEnd,
-    gradTealStart, gradTealEnd,
+    gradPurpleStart: gradSlateStart, gradPurpleEnd: gradSlateEnd,
+    gradOrangeStart: gradBrandStart, gradOrangeEnd: gradBrandEnd,
+    gradTealStart: gradBrandStart, gradTealEnd: gradBrandEnd,
     bgTerminal,
     colorDark,
     textOnGradient,

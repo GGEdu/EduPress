@@ -1,3 +1,11 @@
+---
+layout: doc
+title: Instalación y Arranque
+sidebar: true
+outline: [2, 3]
+aside: true
+---
+
 # 🚀 Instalación y Arranque
 
 ## Requisitos
@@ -23,7 +31,7 @@ git --version      # cualquier versión reciente
 
 ```bash
 # 1. Clonar el repositorio
-git clone URL_DEL_REPOSITORIO
+git clone https://github.com/GGEdu/EduPress
 cd EduPress
 
 # 2. Instalar dependencias (~500MB, 2-5 minutos)

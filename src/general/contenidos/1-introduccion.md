@@ -34,11 +34,11 @@ Usa el menú lateral para seguir el orden recomendado:
 
 1. **Instalación y Arranque** — Requisitos y puesta en marcha.
 2. **Estructura del Proyecto** — Cómo está organizado el código.
-3. **Módulos y Unidades** — Cómo escalar el curso.
-4. **Configuración e Identidad** — Logos y colores.
-5. **Crear Contenidos** — Páginas, bloques y componentes.
-6. **Crear Diapositivas** + **Catálogo de Patrones** — El sistema de presentaciones.
-7. **Imágenes para Contenido** — Rutas y formatos.
+3. **Curso único o modular** — Elige el tipo de estructura y configura tu primer módulo.
+4. **Configuración e Identidad** — Logos, colores y paleta cromática.
+5. **Crear Contenidos** — Páginas, bloques y catálogo completo de componentes.
+6. **Diapositivas** — SlidesViewer y catálogo de patrones.
+7. **Imágenes** — Rutas y formatos.
 8. **Despliegue** — GitHub Pages y troubleshooting.
 
 **Siguiente paso:** [Instalación y Arranque](./2-instalacion)

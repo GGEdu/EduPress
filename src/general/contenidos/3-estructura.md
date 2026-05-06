@@ -1,3 +1,11 @@
+---
+layout: doc
+title: Estructura del Proyecto
+sidebar: true
+outline: [2, 3]
+aside: true
+---
+
 # 🗂️ Estructura del Proyecto
 
 ## Árbol de directorios
@@ -5,20 +13,22 @@
 ```
 EduPress/
 ├── src/
-│   ├── index.md                    # Página de inicio del sitio
+│   ├── index.md                    # Página de inicio del sitio (landing)
 │   ├── general/                    # Módulo principal (estructura modelo)
-│   │   ├── index.md                # Portada del módulo
+│   │   ├── index.md                # Hub de documentación
 │   │   ├── contenidos/
 │   │   │   ├── 1-introduccion.md
 │   │   │   ├── 2-instalacion.md
 │   │   │   ├── 3-estructura.md
-│   │   │   ├── 4-modulos.md
-│   │   │   ├── 5-configuracion.md
-│   │   │   ├── 6-crear-contenidos.md
-│   │   │   ├── 7-diapositivas.md
-│   │   │   ├── 8-diapositivas-demo.md
-│   │   │   ├── 9-imagenes.md
-│   │   │   └── 10-despliegue.md
+│   │   │   ├── 4-curso-unico.md    # ⭐ Guía rápida modo único
+│   │   │   ├── 5-curso-modular.md  # ⭐ Guía modo modular
+│   │   │   ├── 6-configuracion.md  # ⭐ Colores, logos, tipografía
+│   │   │   ├── 7-crear-contenidos.md
+│   │   │   ├── 8-componentes.md    # Catálogo completo de bloques
+│   │   │   ├── 9-diapositivas.md
+│   │   │   ├── 10-diapositivas-demo.md
+│   │   │   ├── 11-imagenes.md
+│   │   │   └── 12-despliegue.md
 │   │   └── ejercicios/
 │   │       ├── index.md            # Introducción y guía de modelos
 │   │       ├── ejercicio.md        # Ejercicio gamificado (Modelo A)
@@ -87,4 +97,4 @@ Ejemplo con unidad `general`:
 
 La ruta de cada unidad corresponde al valor de `code` en `src/.vitepress/config/units.ts`.
 
-**Siguiente paso:** [Módulos y Unidades](./4-modulos)
+**Siguiente paso:** [Configurar curso único](./4-curso-unico)
