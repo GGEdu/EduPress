@@ -32,6 +32,11 @@ export const PROJECT = {
   description: 'Módulo Profesional de Programación Web — IES Ejemplo',
 
   copyright: 'Copyright © 2025 · IES Ejemplo',
+
+  // Modo de exportación a PDF ('image' | 'text'). Por defecto es 'text'.
+  // - 'image': Rasteriza el DOM tal cual se ve, aplicando mejoras de paginación y ahorro de tinta.
+  // - 'text': Imprime usando el diálogo nativo del navegador, manteniendo el texto seleccionable.
+  pdfExportMode: 'image',
 }
 ```
 

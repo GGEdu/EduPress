@@ -291,4 +291,23 @@ Mensaje destacado en esta diapositiva.
 
 ---
 
+## ExportPDF — Exportación a PDF
+
+El componente `<ExportPDF />` inserta un botón que permite a los estudiantes descargar la página actual en formato PDF. Incluye un algoritmo inteligente que evita cortar bloques importantes (tablas, código, avisos) entre páginas y aplica un modo de ahorro de tinta temporal durante la generación.
+
+**Sintaxis:**
+
+```md
+<ExportPDF />
+
+# Título de mi tema
+Contenido de los apuntes...
+```
+
+::: tip Configuración del Exportador
+El comportamiento del PDF se configura en `src/.vitepress/config/project.ts` con la variable `pdfExportMode`. Puedes elegir entre `'image'` (alta fidelidad visual con el sistema inteligente) o `'text'` (diálogo nativo de impresión del navegador).
+:::
+
+---
+
 **Siguiente paso:** [Crear Diapositivas →](./9-diapositivas)
