@@ -180,9 +180,24 @@
 /* Lista de contenidos */
 .vp-doc ul,
 .vp-doc ol {
-  list-style: square;
   margin-left: 1em;
   padding-left: 1rem;
+}
+
+.vp-doc ul {
+  list-style:disc;
+}
+
+.vp-doc ul>li>ul {
+  list-style:circle;
+}
+
+.vp-doc ul>li>ul>li>ul {
+  list-style:square;
+}
+
+.vp-doc ol {
+  list-style: decimal;
 }
 
 .mermaid {

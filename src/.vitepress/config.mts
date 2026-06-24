@@ -13,6 +13,17 @@ import { LOGOS, getDarkLogoPath } from './config/logos'
 import { UNITS, getAllUnitsArray, unitNavbars } from './config/units'
 import { getNavbarForUnit, getSidebarForUnit } from './unitHelpers'
 
+
+// ── Helper: alineación del contenido en contenedores ───────────────────────
+const ALIGN_TOKENS: Record<string, 'left' | 'center' | 'right'> = {
+  left: 'left', start: 'left',
+  center: 'center', centre: 'center', middle: 'center', centrado: 'center',
+  right: 'right', end: 'right', derecha: 'right',
+}
+function parseAlignToken(word: string): 'left' | 'center' | 'right' | null {
+  return ALIGN_TOKENS[word.toLowerCase()] ?? null
+}
+
 // ── Helper: contenedores Markdown → componentes Vue ────────────────────────
 function createContainer(
   name: string,
@@ -23,10 +34,23 @@ function createContainer(
     render(tokens: Token[], idx: number) {
       const token = tokens[idx]
       if (token.nesting === 1) {
-        const title = token.info.trim().slice(name.length).trim()
+        let raw = token.info.trim().slice(name.length).trim()
+        // Token de alineación opcional al inicio (left|center|right + alias).
+        // Se traslada al prop `align` del componente; el resto es el título.
+        let align: 'left' | 'center' | 'right' | null = null
+        const first = raw.match(/^(\S+)/)
+        if (first) {
+          const parsed = parseAlignToken(first[1])
+          if (parsed) {
+            align = parsed
+            raw = raw.slice(first[1].length).trim()
+          }
+        }
+        const title = raw
         const titleAttr = title ? ` title="${title}"` : ''
         const variantAttr = variant ? ` variant="${variant}"` : ''
-        return `<${componentType}${variantAttr}${titleAttr}>\n`
+        const alignAttr = align ? ` align="${align}"` : ''
+        return `<${componentType}${variantAttr}${alignAttr}${titleAttr}>\n`
       } else {
         return `</${componentType}>\n`
       }
@@ -217,22 +241,46 @@ const dangerBoxContainer  = createContainer('danger-box',  'InfoBox', 'danger')
 const tipBoxContainer     = createContainer('tip-box',     'InfoBox', 'tip')
 const noteBoxContainer    = createContainer('note-box',    'NoteBox')
 
-// accent-box: parsea el gradiente del primer token (primary|success|warning|danger|info|purple|orange|teal)
+// accent-box: parsea tokens de configuración al inicio (en cualquier orden) y deja el resto como título.
+//   - gradiente: primary|success|warning|danger|info|purple|orange|teal
+//   - alineación del contenido: left|center|right (+ alias) → prop `align`
+// El título de accent-box siempre va centrado (flexbox del header); `align` solo afecta al contenido.
+// Por defecto el contenido va centrado; con `left`/`right` cambia su alineación.
+// Ejemplos:  ::: accent-box teal Mi título            → contenido centrado (por defecto)
+//            ::: accent-box teal left Mi título       → título centrado + contenido a la izquierda
+//            ::: accent-box teal right Mi título      → título centrado + contenido a la derecha
 const accentBoxContainer: [typeof container, string, { render(tokens: Token[], idx: number): string }] = [container, 'accent-box', {
   render(tokens: Token[], idx: number) {
     const token = tokens[idx]
     if (token.nesting === 1) {
       const validGradients = ['primary', 'success', 'warning', 'danger', 'info', 'purple', 'orange', 'teal']
-      const info = token.info.trim().slice('accent-box'.length).trim()
-      const firstWord = info.split(/\s/)[0]
+      let raw = token.info.trim().slice('accent-box'.length).trim()
       let gradient = 'primary'
-      let title = info
-      if (validGradients.includes(firstWord)) {
-        gradient = firstWord
-        title = info.slice(firstWord.length).trim()
+      let align: 'left' | 'center' | 'right' | null = null
+      // Consumir tokens de configuración del principio (gradiente y/o alineación) en cualquier orden.
+      let changed = true
+      while (changed) {
+        changed = false
+        const match = raw.match(/^(\S+)/)
+        if (!match) break
+        const word = match[1]
+        if (validGradients.includes(word)) {
+          gradient = word
+          raw = raw.slice(word.length).trim()
+          changed = true
+        } else {
+          const parsed = parseAlignToken(word)
+          if (parsed) {
+            align = parsed
+            raw = raw.slice(word.length).trim()
+            changed = true
+          }
+        }
       }
+      const title = raw
       const titleAttr = title ? ` title="${title}"` : ''
-      return `<AccentBox gradient="${gradient}"${titleAttr}>\n`
+      const alignAttr = align ? ` align="${align}"` : ''
+      return `<AccentBox gradient="${gradient}"${alignAttr}${titleAttr}>\n`
     } else {
       return `</AccentBox>\n`
     }

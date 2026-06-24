@@ -202,6 +202,16 @@ const toggleCollapse = () => {
   animation: fadeIn var(--custom-duration-fast) var(--custom-timing-ease-out);
 }
 
+/* Alineación del contenido (prop `align`: left | center | right).
+ * left es el valor por defecto, por lo que no necesita regla. */
+.info-box.box-align-center .info-content {
+  text-align: center;
+}
+
+.info-box.box-align-right .info-content {
+  text-align: right;
+}
+
 .info-content :deep(p),
 .info-content :deep(li) {
   margin: var(--custom-space-2) 0;

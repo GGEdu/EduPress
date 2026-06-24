@@ -66,11 +66,23 @@ const props = defineProps({
   },
   
   /**
-   * Centrar contenido
+   * Centrar contenido (obsoleto: usar `align`). Se mantiene por compatibilidad.
+   * Solo se aplica si `align` no se ha indicado.
    */
   centered: {
     type: Boolean,
     default: true
+  },
+
+  /**
+   * Alineación horizontal del contenido: 'left' | 'center' | 'right'.
+   * El título siempre va centrado (flexbox del header); esto solo afecta al contenido.
+   * Si se deja vacío, se deriva de `centered` (compatibilidad).
+   */
+  align: {
+    type: String,
+    default: '',
+    validator: (value) => ['', 'left', 'center', 'right'].includes(value)
   },
   
   /**
@@ -128,13 +140,20 @@ const hasContent = computed(() => {
   return !!slots.default
 })
 
+// Alineación efectiva del contenido: `align` tiene prioridad; si está vacío se
+// deriva de `centered` (compatibilidad con el uso anterior).
+const resolvedAlign = computed(() => {
+  if (props.align) return props.align
+  return props.centered ? 'center' : 'left'
+})
+
 // Clases computadas
 const accentClasses = computed(() => {
   return [
     `accent-${props.gradient}`,
     `accent-${props.size}`,
+    `accent-align-${resolvedAlign.value}`,
     {
-      'accent-centered': props.centered,
       'accent-shine': props.shine
     }
   ]
@@ -297,8 +316,18 @@ const accentStyle = computed(() => {
   padding-top: var(--custom-space-2);
 }
 
-.accent-centered {
+/* Alineación del contenido. El título permanece centrado (flexbox del header);
+ * estas reglas solo afectan al cuerpo del accent-box. */
+.accent-align-left {
+  text-align: left;
+}
+
+.accent-align-center {
   text-align: center;
+}
+
+.accent-align-right {
+  text-align: right;
 }
 
 .accent-content :deep(p) {

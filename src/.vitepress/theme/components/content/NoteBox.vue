@@ -95,6 +95,16 @@ const {
  * Contenido
  * ============================================================================ */
 
+/* Alineación del contenido (prop `align`: left | center | right).
+ * left es el valor por defecto, por lo que no necesita regla. */
+.note-box.box-align-center .note-content {
+  text-align: center;
+}
+
+.note-box.box-align-right .note-content {
+  text-align: right;
+}
+
 .note-content :deep(p) {
   margin: var(--custom-space-2) 0;
   line-height: var(--custom-line-height-relaxed);

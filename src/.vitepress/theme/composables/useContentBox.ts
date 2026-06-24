@@ -29,6 +29,11 @@ export type ContentBoxVariant =
 export type ContentBoxSize = 'sm' | 'md' | 'lg'
 
 /**
+ * Alineación horizontal del contenido de un content box
+ */
+export type ContentBoxAlign = 'left' | 'center' | 'right'
+
+/**
  * Variantes de estilo para Quote
  */
 export type QuoteVariant = 'default' | 'fancy' | 'minimal' | 'card'
@@ -115,6 +120,13 @@ export const contentBoxProps = {
   defaultCollapsed: {
     type: Boolean,
     default: false
+  },
+
+  /** Alineación horizontal del contenido del box */
+  align: {
+    type: String as PropType<ContentBoxAlign>,
+    default: 'left' as ContentBoxAlign,
+    validator: (value: string): boolean => ['left', 'center', 'right'].includes(value)
   }
 } as const
 
@@ -130,6 +142,7 @@ export interface ContentBoxProps {
   shadow?: boolean
   collapsible?: boolean
   defaultCollapsed?: boolean
+  align?: ContentBoxAlign
 }
 
 /**
@@ -264,6 +277,7 @@ export function useContentBox(props: ContentBoxProps): UseContentBoxReturn {
   const containerClasses = computed<Record<string, boolean>>(() => ({
     [`box-variant-${props.variant || 'default'}`]: true,
     [`box-size-${props.size || 'md'}`]: true,
+    [`box-align-${props.align || 'left'}`]: true,
     'box-bordered': props.bordered || false,
     'box-shadow': props.shadow || false,
     'box-collapsible': props.collapsible || false
