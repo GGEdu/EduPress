@@ -36,7 +36,32 @@ export const PROJECT = {
   // --------------------------------------------------------------------------
   // COPYRIGHT (pie de página)
   // --------------------------------------------------------------------------
-  copyright: 'Copyright © 2025',
+  copyright: 'Copyright © 2026',
+  
+  // --------------------------------------------------------------------------
+  // LICENCIA (pie de página)
+  // --------------------------------------------------------------------------
+  // Texto y enlace de la licencia mostrada en el footer junto al copyright.
+  //   - text:  etiqueta visible (p. ej. 'CC BY-NC-SA 4.0' o 'Todos los derechos reservados')
+  //   - url:   enlace a la licencia (deja '' para no enlazar, p. ej. en "todos los derechos")
+  //   - icon:  ruta a un icono opcional en src/public (deja '' para no mostrar icono)
+  license: {
+    text: 'CC BY-NC-SA 4.0',
+    url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es',
+    icon: '/img/logo-cc.png',
+  },
+
+  // --------------------------------------------------------------------------
+  // MARCA DE AGUA DE IMPRESIÓN
+  // --------------------------------------------------------------------------
+  // Logo que se estampa como marca de agua SOLO al imprimir / "Guardar como PDF"
+  // (invisible en el navegador). Por defecto, el logo del sitio.
+  //   - logo:    ruta del logo en src/public
+  //   - opacity: opacidad de la marca (0–1)
+  printWatermark: {
+    logo: '/img/logo.png',
+    opacity: 0.10,
+  },
 
   // --------------------------------------------------------------------------
   // ENLACES SOCIALES

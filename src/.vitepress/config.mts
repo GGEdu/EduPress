@@ -334,7 +334,9 @@ export default defineConfig({
     logoBranding,
     unitNavbars,
     sidebar: sidebar,
-    footer: { copyright: PROJECT.copyright }
+    footer: { copyright: PROJECT.copyright },
+    license: PROJECT.license,
+    printWatermark: PROJECT.printWatermark
   } as any
 })
 

@@ -1,9 +1,51 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { withBase } from 'vitepress'
 import { PROJECT } from '../../config/project'
 
 const isGenerating = ref(false)
 const wrapperRef = ref<HTMLElement | null>(null)
+
+
+// Carga una imagen y resuelve cuando está lista (para estampar la marca de agua).
+const loadImage = (src: string): Promise<HTMLImageElement> =>
+  new Promise((resolve, reject) => {
+    const img = new Image()
+    img.crossOrigin = 'anonymous'
+    img.onload = () => resolve(img)
+    img.onerror = reject
+    img.src = src
+  })
+
+/**
+ * Estampa el logo como marca de agua centrada en todas las páginas del PDF.
+ * Sin rotación (el logo se mantiene en su orientación original) y con la
+ * opacidad configurada en PROJECT.printWatermark. Si el logo no carga, no
+ * interrumpe la generación del PDF.
+ */
+const stampWatermark = async (pdf: any, pdfWidth: number, pageHeight: number) => {
+  try {
+    const cfg = PROJECT.printWatermark
+    if (!cfg?.logo) return
+    const logo = await loadImage(withBase(cfg.logo))
+    const opacity = cfg.opacity ?? 0.1
+    const ratio = logo.naturalHeight / logo.naturalWidth || 1
+    const wmWidth = pdfWidth * 0.6
+    const wmHeight = wmWidth * ratio
+    const wmX = (pdfWidth - wmWidth) / 2
+    const wmY = (pageHeight - wmHeight) / 2
+    const total = pdf.getNumberOfPages()
+    for (let i = 1; i <= total; i++) {
+      pdf.setPage(i)
+      pdf.saveGraphicsState()
+      pdf.setGState(new pdf.GState({ opacity }))
+      pdf.addImage(logo, 'PNG', wmX, wmY, wmWidth, wmHeight)
+      pdf.restoreGraphicsState()
+    }
+  } catch (error) {
+    console.warn('No se pudo estampar la marca de agua en el PDF:', error)
+  }
+}
 
 const handleDownload = async () => {
   if (PROJECT.pdfExportMode === 'text') {
@@ -202,6 +244,9 @@ const handleDownload = async () => {
       heightLeft -= pageHeight
     }
 
+    // Estampar la marca de agua (logo, sin rotar) en todas las páginas
+    await stampWatermark(pdf, pdfWidth, pageHeight)
+    
     pdf.save(`${title}.pdf`)
   } catch (error) {
     console.error('Error generando PDF:', error)

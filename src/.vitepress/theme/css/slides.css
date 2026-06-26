@@ -1,12 +1,3 @@
-/**
- * slides.css - Estilos para sistema de slides refactorizado
- * 
- * REFACTORIZACIÓN FASE 5:
- * - Todos los valores hardcodeados reemplazados por design tokens
- * - Organizado en secciones temáticas
- * - Mejor mantenibilidad y consistencia
- */
-
 /* ============================================================================
  * TABS (PESTAÑAS) DENTRO DE SLIDES
  * ============================================================================ */
@@ -329,7 +320,8 @@
  * DIAGRAMAS MERMAID EN SLIDES
  * ============================================================================ */
 
-.slide .mermaid-container {
+.slide .mermaid-container,
+.slide .mermaid {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -341,7 +333,8 @@
   max-height: 50vh;
 }
 
-.slide .mermaid-container svg {
+.slide .mermaid-container svg,
+.slide .mermaid svg {
   max-width: 100%;
   height: auto;
 }
@@ -490,7 +483,8 @@
   }
   
   /* Diagramas Mermaid más compactos */
-  .slide .mermaid-container {
+  .slide .mermaid-container,
+  .slide .mermaid {
     margin: var(--custom-space-4) 0;
     padding: var(--custom-space-2);
     max-height: 40vh;
@@ -616,4 +610,107 @@
 /* En el lightbox, el .slide tiene padding propio — también anularlo */
 .slides-img-page .slide-lightbox-content .slide {
   padding: 0 !important;
+}
+
+/* ============================================================================
+ * IMPRESIÓN — una diapositiva por página (SOLO en las diapositivas)
+ * ============================================================================
+ * Scopeado a `.slides-container` (solo presente en páginas con <SlidesViewer>),
+ * así no afecta a las páginas normales.
+ */
+@media print {
+  /* Página con nombre en horizontal. Solo la usan los elementos que declaran
+   * `page: slide-landscape`, así que NO afecta a las páginas normales (que
+   * siguen con la @page por defecto, vertical).
+   * Margen de 8mm → área útil ≈ 281×194mm (A4 apaisado 297×210mm menos márgenes). */
+  @page slide-landscape {
+    size: A4 landscape;
+    margin: 8mm;
+  }
+
+  /* El contenedor flex con gap interfiere con la paginación: lo neutralizamos */
+  .slides-container {
+    display: block;
+    gap: 0;
+    padding: 0;
+  }
+
+  /* Cada diapositiva ocupa UNA página apaisada. Usamos `min-height` (no `height`)
+   * para CENTRAR los slides cortos sin RECORTAR los largos: con overflow:visible
+   * nunca se pierde contenido (un slide muy alto, como mucho, crece). */
+  .slides-container .slide {
+    page: slide-landscape;
+    break-before: page;        /* cada slide empieza en página nueva */
+    break-after: auto;
+    break-inside: avoid;
+    page-break-inside: avoid;
+
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 192mm;         /* alto útil de A4 apaisado */
+    margin: 0;
+    overflow: visible;         /* NO recortar: nunca perder contenido */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* CENTRADO VERTICAL del contenido */
+    align-items: flex-start;
+    box-shadow: none;
+    transform: none !important;
+  }
+
+  /* La primera no fuerza salto previo (evita una página en blanco al inicio) */
+  .slides-container .slide:first-child {
+    break-before: auto;
+  }
+
+  /* Mantener el grid en 2 columnas también al imprimir: si colapsa a 1 columna,
+   * texto e imagen se apilan, el slide se vuelve muy alto y se desborda/recorta. */
+  .slides-container .slide-grid {
+    width: 100%;
+    align-items: center;
+  }
+  .slides-container .slide-grid.image-right { grid-template-columns: 1.5fr 1fr !important; }
+  .slides-container .slide-grid.image-left  { grid-template-columns: 1fr 1.5fr !important; }
+
+  /* Imágenes: contenidas y de tamaño moderado para que el slide quepa en la página. */
+  .slides-container .slide img,
+  .slides-container .slide .media-image {
+    width: auto !important;
+    height: auto !important;
+    max-width: 100% !important;
+    max-height: 120mm !important;
+    object-fit: contain !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* --- Marca de agua centrada por diapositiva ---
+   * La marca de agua global es `position:fixed` y, al mezclar orientaciones
+   * (páginas apaisadas con nombre), su bloque contenedor conserva el tamaño de la
+   * página vertical por defecto → aparece descentrada en las diapositivas.
+   * Solución: ocultar la global en páginas de diapositivas y pintar una marca por
+   * cada `.slide` (que ya es una página), centrada con un pseudo-elemento.
+   * Nota: requiere "Gráficos de fondo" activado al imprimir; la ruta usa la base
+   * del sitio ('/'). Si cambias PROJECT.basePath, ajústala. */
+  body:has(.slides-container) .print-watermark {
+    display: none !important;
+  }
+  .slides-container .slide::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url(/img/logo.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: min(45%, 130mm);
+    opacity: 0.10;
+    pointer-events: none;
+    z-index: 0;
+  }
+  /* El contenido se dibuja por encima de la marca de agua */
+  .slides-container .slide > * {
+    position: relative;
+    z-index: 1;
+  }
 }

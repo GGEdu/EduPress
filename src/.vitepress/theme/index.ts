@@ -11,6 +11,7 @@ import SlidesViewer from './components/SlidesViewer.vue'
 import SlidesLayout from './components/SlidesLayout.vue'
 import SidebarLogos from './components/SidebarLogos.vue'
 import FooterLogo from './components/FooterLogo.vue'
+import PrintWatermark from './components/PrintWatermark.vue'
 import DynamicNav from './components/DynamicNav.vue'
 import DynamicNavScreen from './components/DynamicNavScreen.vue'
 import ThemedImage from './components/ThemedImage.vue'
@@ -50,16 +51,22 @@ export default {
     setup() {
       const { frontmatter } = useData()
       return () => {
+        // Marca de agua de impresión (oculta en pantalla, visible solo al imprimir).
+        // Se añade en ambos layouts para que cubra también la vista de diapositivas.
+        const watermark = h(PrintWatermark)
         if (frontmatter.value.layout === 'slides') {
-          return h(SlidesLayout)
+          return [watermark, h(SlidesLayout)]
         }
         // Inyectar logos institucionales en el sidebar y footer via slots
-        return h(DefaultTheme.Layout, null, {
-          'sidebar-nav-after':         () => h(SidebarLogos),
-          'layout-bottom':             () => h(FooterLogo),
-          'nav-bar-content-after':     () => h(DynamicNav),
-          'nav-screen-content-before': () => h(DynamicNavScreen),
-        })
+        return [
+          watermark,
+          h(DefaultTheme.Layout, null, {
+            'sidebar-nav-after':         () => h(SidebarLogos),
+            'layout-bottom':             () => h(FooterLogo),
+            'nav-bar-content-after':     () => h(DynamicNav),
+            'nav-screen-content-before': () => h(DynamicNavScreen),
+          })
+        ]
       }
     }
   },
