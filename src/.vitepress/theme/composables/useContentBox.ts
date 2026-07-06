@@ -285,16 +285,26 @@ export function useContentBox(props: ContentBoxProps): UseContentBoxReturn {
 
   // Emoji/icono por defecto según variante
   const defaultIcon = computed<string>(() => {
+    if (props.icon) {
+      return props.icon
+    }
+
+    // Si el título ya comienza con un emoji o icono personalizado, evitamos duplicarlo
+    // Comprobamos si el primer carácter NO es una letra (con tildes castellanas), dígito, espacio, o puntuación común.
+    if (props.title && /^[^\w\s\d,.:;?¿!¡'"()\-\[\]áéíóúñÁÉÍÓÚÑ]/u.test(props.title)) {
+      return ''
+    }
+
     const icons: Partial<Record<ContentBoxVariant, string>> = {
-      success: '✓',
-      warning: '⚠',
-      danger: '✕',
-      info: 'ℹ',
+      success: '✅',
+      warning: '⚠️',
+      danger: '❌',
+      info: 'ℹ️',
       note: '📝',
       tip: '💡',
       important: '❗'
     }
-    return props.icon || icons[props.variant as ContentBoxVariant] || ''
+    return icons[props.variant as ContentBoxVariant] || ''
   })
 
   return {
