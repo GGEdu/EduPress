@@ -1,0 +1,12 @@
+Aquí tienes la tabla estructural actualizada y optimizada para tu marca:
+
+| Elemento | Especificaciones | Función | Dónde aplicarlo |
+| --- | --- | --- | --- |
+| Fondo Principal (Regla del 60%) | Gris Claro (#F5F5F5) o blancos apastelados | Previene la fatiga ocular en sesiones largas al evitar la alta luminosidad del blanco puro. | Fondo general de la plataforma, lienzos del reproductor y áreas extensas de lectura. |
+| Texto de Lectura | Carbón Oscuro (#222222) | Garantiza alta legibilidad. Combinado con el color de tu marca, cumple los máximos estándares de accesibilidad. | Cuerpo de texto general, transcripciones y etiquetas dentro de los botones naranjas. |
+| Color Estructural Primario (Regla del 30%) | Azul Marino Profundo (#1C375B) | Transmite rigor académico. Como color opuesto al naranja, crea un diseño complementario de alto impacto visual sin abrumar. | Barras de navegación superiores, menús laterales, pies de página y fondos destacados. |
+| Color Estructural Secundario | Azul Acero (#6F8197) | Sirve como apoyo visual frío para estructurar jerarquías sin competir con el color de tu marca. | Subtítulos, iconos de interfaz inactivos, tarjetas de cursos y bordes de separación. |
+| Color de Acento de Marca (Regla del 10%) | Naranja Coral (#ED6E51) | Atrae la mirada inmediatamente hacia acciones clave, aportando el dinamismo y la identidad corporativa. | Estrictamente en botones principales de conversión (CTAs), barras de progreso y alertas. |
+| Tipografía Principal | Sans-serif (Noto Sans, Lato, Montserrat) | Las fuentes sin remates aumentan la velocidad de lectura y mejoran drásticamente la retención en el aprendizaje. | Todo el cuerpo del curso, descripciones, botones y menús de navegación. |
+| Tipografía Secundaria (Opcional) | Serif clásica (Garamond o Georgia) | Aporta un toque clásico de prestigio y seriedad institucional. | Uso muy limitado y decorativo: diplomas, logotipos institucionales o títulos de gran formato. |
+| Regla de Accesibilidad (Contraste) | Texto oscuro sobre fondo naranja | Al evitar el texto blanco sobre elementos naranjas y usar Carbón Oscuro, garantizas que todos los estudiantes puedan interactuar. | Validar obligatoriamente en todos los botones de llamada a la acción y elementos interactivos clave. |

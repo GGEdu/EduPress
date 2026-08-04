@@ -85,6 +85,7 @@ const baseSidebar: DefaultTheme.SidebarItem[] = [
     collapsed: true,
     items: [
       { text: 'Despliegue', link: '/contenidos/12-despliegue' },
+      { text: 'Privacidad y Acceso', link: '/contenidos/14-privacidad-acceso' },
     ]
   },
   {
