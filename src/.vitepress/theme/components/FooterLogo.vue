@@ -1,3 +1,4 @@
+<script setup lang="ts">
 /**
  * FooterLogo.vue
  *
