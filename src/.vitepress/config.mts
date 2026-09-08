@@ -297,7 +297,12 @@ export default defineConfig({
       // para evitar ruido en CI sin alterar el resultado de compilación.
       chunkSizeWarningLimit: 2000,
       rollupOptions: {
-        external: ['html2canvas', 'canvg', 'dompurify'],
+        // 'dompurify' NO puede ir aquí: Mermaid lo importa en tiempo de ejecución.
+        // Al externalizarlo, el chunk de Mermaid conserva un `import "dompurify"`
+        // que el navegador no sabe resolver; el import() dinámico de Mermaid falla,
+        // el catch de theme/index.ts lo silencia y los diagramas se quedan como
+        // bloques de código. html2canvas y canvg sí son opcionales de jspdf.
+        external: ['html2canvas', 'canvg'],
       },
     },
   },
