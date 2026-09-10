@@ -17,13 +17,15 @@ import { useData, withBase } from 'vitepress'
 import ThemedImage from './ThemedImage.vue'
 
 const { theme } = useData()
-const b = theme.value.logoBranding as {
+const branding = computed(() => theme.value.logoBranding as {
   mode: 'same' | 'invert' | 'separate'
   darkSuffix: string
-  logos: {
-    footer: { src: string; height: string }
-  }
-}
+  logos: Partial<Record<string, Logo>>
+} | undefined)
+
+const footerLogo = computed(() => branding.value?.logos?.footer)
+const mode = computed(() => branding.value?.mode ?? 'same')
+const darkSuffix = computed(() => branding.value?.darkSuffix ?? '-dark')
 
 const copyright = computed(() => (theme.value.footer as { copyright?: string })?.copyright ?? '')
 const license = computed(() => theme.value.license as { text?: string; url?: string; icon?: string } | undefined)
@@ -33,11 +35,12 @@ const licenseIcon = computed(() => (license.value?.icon ? withBase(license.value
 <template>
   <div class="footer-logo-wrap">
     <ThemedImage
-      :src="b.logos.footer.src"
-      :mode="b.mode"
-      :darkSuffix="b.darkSuffix"
-      :height="b.logos.footer.height"
-      alt="Autor"
+      v-if="footerLogo?.src"
+      :src="footerLogo.src"
+      :mode="mode"
+      :darkSuffix="darkSuffix"
+      :height="footerLogo.height"
+      alt=""
       imgStyle="display:block;margin:0 auto;"
     />
     
