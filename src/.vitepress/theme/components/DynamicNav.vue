@@ -94,16 +94,35 @@ const openIndex = ref<number | null>(null)
   border-radius: var(--custom-radius-lg);
   box-shadow: var(--vp-shadow-3);
   opacity: 0;
+  /* `visibility: hidden` es lo que de verdad desactiva el flyout cerrado.
+     `pointer-events: none` NO basta: VitePress declara
+        .VPNavBar .container * { pointer-events: auto }
+     y ese `*` alcanza a los .flyout-item, devolviéndoles el puntero aunque el
+     contenedor lo tenga desactivado. Sin `visibility`, el flyout invisible deja
+     un rectángulo de enlaces activos sobre el navbar y el contenido: al bajar
+     hacia el menú de idiomas el ratón entraba en él, disparaba el mouseenter
+     del grupo y abría Unidades cerrando Idiomas. */
+  visibility: hidden;
   pointer-events: none;
   transform: translateY(-4px);
-  transition: var(--custom-transition-fast);
+  /* La visibilidad conmuta de golpe, no se interpola: inmediata al abrir y
+     retrasada al cerrar, para no cortar el fundido de salida. */
+  transition:
+    opacity    var(--custom-duration-fast) var(--custom-ease-out),
+    transform  var(--custom-duration-fast) var(--custom-ease-out),
+    visibility 0s linear var(--custom-duration-fast);
   z-index: var(--custom-z-dropdown);
 }
 
 .flyout.open {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
   transform: translateY(0);
+  transition:
+    opacity    var(--custom-duration-fast) var(--custom-ease-out),
+    transform  var(--custom-duration-fast) var(--custom-ease-out),
+    visibility 0s;
 }
 
 .flyout-item {
