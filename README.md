@@ -71,7 +71,7 @@ Todos los ajustes se hacen en los 4 archivos de `src/.vitepress/config/`:
 | `config/project.ts` | URL base, idioma, redes sociales, copyright |
 | `config/colors.ts` | Selección de tema, colores corporativos y tipografía |
 | `config/logos.ts` | Rutas de logos, alturas y modo claro/oscuro |
-| `config/units.ts` | Módulos/unidades activas, navbar y sidebar |
+| `config/units.json` | Módulos/unidades activas, navbar y sidebar (dato puro; `units.ts` lo lee) |
 
 ---
 

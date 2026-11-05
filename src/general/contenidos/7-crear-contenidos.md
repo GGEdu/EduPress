@@ -50,20 +50,19 @@ aside: true
 
 ## Registrar una página en el sidebar
 
-Una vez creado el archivo `.md`, añade una entrada en `units.ts`:
+Una vez creado el archivo `.md`, añade una entrada a su sección en `src/.vitepress/config/units.json`:
 
-```ts
-const baseSidebar: DefaultTheme.SidebarItem[] = [
-  {
-    text: '📚 Contenidos',
-    collapsed: false,
-    items: [
-      { text: 'Introducción',    link: '/contenidos/1-introduccion' },
-      { text: 'Variables',       link: '/contenidos/2-variables' },    // ← nueva página
-      { text: 'Funciones',       link: '/contenidos/3-funciones' },
-    ]
-  },
-]
+```json
+{
+  "text": "📚 Contenidos",
+  "folder": "contenidos",
+  "collapsed": false,
+  "items": [
+    { "text": "Introducción", "link": "/contenidos/1-introduccion" },
+    { "text": "Variables", "link": "/contenidos/2-variables" },
+    { "text": "Funciones", "link": "/contenidos/3-funciones" }
+  ]
+}
 ```
 
 ::: warning Los archivos no registrados no aparecen en el sidebar

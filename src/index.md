@@ -25,7 +25,7 @@ features:
     details: Historia visual con scroll parallax que conduce al enunciado. Íconos de criterios WCAG.
   - icon: ⚙️
     title: 4 archivos, todo configurado
-    details: project.ts, colors.ts, logos.ts, units.ts. Sin tocar CSS ni componentes Vue.
+    details: project.ts, colors.ts, logos.ts, units.json. Sin tocar CSS ni componentes Vue.
   - icon: 🌙
     title: Modo oscuro automático
     details: Colores, diagramas Mermaid y diapositivas se adaptan al tema del sistema operativo.

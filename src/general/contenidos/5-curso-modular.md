@@ -15,75 +15,68 @@ Un curso modular tiene **varias unidades** (UD1, UD2, sesiones, temas...) y gene
 - Quieres que el alumno sepa en qué unidad está con un menú desplegable.
 - Necesitas sidebars independientes por unidad.
 
-Si empiezas con un módulo único y luego necesitas añadir más, puedes escalar sin reescribir nada: solo añadir entradas en `units.ts` y crear las carpetas correspondientes.
+Si empiezas con un módulo único y luego necesitas añadir más, puedes escalar sin reescribir nada: solo añadir entradas en `units.json` y crear las carpetas correspondientes.
 :::
 
 ## Pasos 1–4: igual que el curso único
 
 Sigue los **pasos 1 a 4** de la guía [Curso Único](./4-curso-unico): clonar, instalar, configurar `project.ts`, ajustar colores. Vuelve aquí cuando tengas el primer módulo funcionando.
 
-## Paso 5 — Añade más unidades en `units.ts`
+## Paso 5 — Añade más unidades en `units.json`
 
-Edita `src/.vitepress/config/units.ts` y define un sidebar por unidad:
+Edita `src/.vitepress/config/units.json` y añade una entrada por unidad, cada una con sus secciones:
 
-```ts
-// --- Sidebar de la Unidad 1 ---
-const sidebarUD1: DefaultTheme.SidebarItem[] = [
-  {
-    text: '📚 UD1 — Introducción',
-    collapsed: false,
-    items: [
-      { text: 'Presentación',    link: '/contenidos/1-presentacion' },
-      { text: 'Conceptos clave', link: '/contenidos/2-conceptos' },
-      { text: 'Ejercicio 1',     link: '/contenidos/3-ejercicio' },
-    ]
+```json
+{
+  "formatVersion": 1,
+  "units": {
+    "root": { "...": "no tocar" },
+    "UD1": {
+      "id": "UD1",
+      "code": "mi-curso",
+      "title": "UD1 — Introducción",
+      "fullTitle": "Unidad 1 — Introducción a la Programación",
+      "siteTitle": "UD1</br>Introducción",
+      "icon": "📘",
+      "navbar": [{ "text": "🏠 Inicio", "link": "/" }],
+      "sidebar": [
+        {
+          "text": "📚 UD1 — Introducción",
+          "folder": "contenidos",
+          "collapsed": false,
+          "items": [
+            { "text": "Presentación", "link": "/contenidos/1-presentacion" },
+            { "text": "Conceptos clave", "link": "/contenidos/2-conceptos" }
+          ]
+        }
+      ]
+    },
+    "UD2": {
+      "id": "UD2",
+      "code": "mi-modulo-2",
+      "title": "UD2 — Desarrollo",
+      "fullTitle": "Unidad 2 — Desarrollo de Aplicaciones",
+      "siteTitle": "UD2</br>Desarrollo",
+      "icon": "⚙️",
+      "navbar": [{ "text": "🏠 Inicio", "link": "/" }],
+      "sidebar": [
+        {
+          "text": "📚 UD2 — Desarrollo",
+          "folder": "contenidos",
+          "collapsed": false,
+          "items": [
+            { "text": "Introducción", "link": "/contenidos/1-intro" }
+          ]
+        }
+      ]
+    }
   },
-]
-
-// --- Sidebar de la Unidad 2 ---
-const sidebarUD2: DefaultTheme.SidebarItem[] = [
-  {
-    text: '📚 UD2 — Desarrollo',
-    collapsed: false,
-    items: [
-      { text: 'Introducción',    link: '/contenidos/1-intro' },
-      { text: 'Práctica guiada', link: '/contenidos/2-practica' },
-    ]
-  },
-]
-
-// --- Registro de unidades ---
-export const UNITS = {
-  root: { /* no tocar */ },
-
-  UD1: {
-    id: 'UD1',
-    code: 'mi-curso',           // → archivos en src/mi-curso/
-    title: 'UD1 — Introducción',
-    fullTitle: 'Unidad 1 — Introducción a la Programación',
-    siteTitle: 'UD1</br>Introducción',
-    icon: '📘',
-    navbar: baseNavbar,
-    sidebar: sidebarUD1
-  },
-
-  UD2: {
-    id: 'UD2',
-    code: 'mi-modulo-2',        // → archivos en src/mi-modulo-2/
-    title: 'UD2 — Desarrollo',
-    fullTitle: 'Unidad 2 — Desarrollo de Aplicaciones',
-    siteTitle: 'UD2</br>Desarrollo',
-    icon: '⚙️',
-    navbar: baseNavbar,
-    sidebar: sidebarUD2
-  },
-
-  // Añade más unidades aquí siguiendo el mismo patrón...
+  "unitNavbars": {}
 }
 ```
 
 ::: tip El sistema detecta el modo automáticamente
-- **1 unidad** en `UNITS` (sin contar `root`) → navbar plano, sin dropdown.
+- **1 unidad** en `units` (sin contar `root`) → navbar plano, sin dropdown.
 - **2+ unidades** → navbar con menú desplegable por unidad.
 
 No hay que cambiar ningún otro archivo: el navbar y el sidebar se construyen solos.
@@ -137,18 +130,18 @@ Descripción de la unidad.
 
 ## Paso 7 — Actualiza el navbar
 
-La constante `baseNavbar` en `units.ts` controla qué aparece en el menú superior. Para un curso modular, añade un dropdown con las unidades:
+La lista `navbar` de cada unidad en `units.json` controla qué aparece en el menú superior. Para un curso modular, añade un dropdown con las unidades:
 
-```ts
-const baseNavbar: DefaultTheme.NavItem[] = [
-  { text: '🏠 Inicio', link: '/' },
+```json
+"navbar": [
+  { "text": "🏠 Inicio", "link": "/" },
   {
-    text: '📚 Unidades',
-    items: [
-      { text: 'UD1 — Introducción', link: '/mi-curso/' },
-      { text: 'UD2 — Desarrollo',   link: '/mi-modulo-2/' },
+    "text": "📚 Unidades",
+    "items": [
+      { "text": "UD1 — Introducción", "link": "/mi-curso/" },
+      { "text": "UD2 — Desarrollo", "link": "/mi-modulo-2/" }
     ]
-  },
+  }
 ]
 ```
 
