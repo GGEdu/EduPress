@@ -15,7 +15,7 @@ EduPress se personaliza completamente a través de **4 archivos de configuració
 | `src/.vitepress/config/project.ts` | URL base, idioma, copyright, redes sociales |
 | `src/.vitepress/config/colors.ts` | Paleta de colores y tipografía |
 | `src/.vitepress/config/logos.ts` | Logos y modo claro/oscuro |
-| `src/.vitepress/config/units.ts` | Módulos, navbar y sidebar |
+| `src/.vitepress/config/units.json` | Módulos, navbar y sidebar |
 
 ---
 
@@ -166,7 +166,7 @@ export const LOGOS = {
 
 ---
 
-## 4. `units.ts` — Estructura de navegación
+## 4. `units.json` — Estructura de navegación
 
 La configuración de módulos y sidebars se documenta en detalle en:
 
@@ -179,7 +179,7 @@ La configuración de módulos y sidebars se documenta en detalle en:
 
 | Archivo | Razón |
 |---------|-------|
-| `src/.vitepress/config.mts` | Lee `project.ts`, `colors.ts`, `logos.ts` y `units.ts`. Solo escala lo que tú configuras. |
+| `src/.vitepress/config.mts` | Lee `project.ts`, `colors.ts`, `logos.ts` y `units.json`. Solo escala lo que tú configuras. |
 | `src/.vitepress/theme/css/design-tokens.css` | Generado dinámicamente desde `colors.ts` en el build. Los cambios manuales se sobreescriben. |
 | `src/.vitepress/theme/index.ts` | Bootstrap del tema Vue. No requiere cambios. |
 | `src/.vitepress/theme/components/` | Componentes Vue del sistema. No modificar. |

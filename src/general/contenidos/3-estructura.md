@@ -41,7 +41,8 @@ EduPress/
 │   │   │   ├── project.ts          # ⭐ URL base, idioma, redes sociales, copyright
 │   │   │   ├── colors.ts           # ⭐ Colores corporativos y tipografía
 │   │   │   ├── logos.ts            # ⭐ Logos y modo claro/oscuro
-│   │   │   └── units.ts            # ⭐ Módulos, navbar y sidebar
+│   │   │   ├── units.json          # ⭐ Módulos, navbar y sidebar
+│   │   │   └── units.ts            # Lee units.json (no se edita)
 │   │   ├── unitHelpers.ts          # Transformadores de rutas (no tocar)
 │   │   └── theme/
 │   │       ├── index.ts            # Bootstrap del tema Vue
@@ -74,7 +75,7 @@ EduPress/
 | `src/.vitepress/config/project.ts` | ⭐ URL base, idioma, redes sociales, copyright |
 | `src/.vitepress/config/colors.ts` | ⭐ Colores corporativos y tipografía |
 | `src/.vitepress/config/logos.ts` | ⭐ Logos y modo claro/oscuro |
-| `src/.vitepress/config/units.ts` | ⭐ Módulos: navbar y sidebar |
+| `src/.vitepress/config/units.json` | ⭐ Módulos: navbar y sidebar |
 | `src/.vitepress/config.mts` | Motor VitePress — lee de `config/` (no tocar) |
 | `src/.vitepress/theme/css/design-tokens.css` | Sistema de tokens CSS completo (no tocar) |
 | `src/general/` | Módulo de contenido principal (sirve como plantilla de módulo) |
@@ -95,6 +96,6 @@ Ejemplo con unidad `general`:
 /EduPress/general/ejercicios/ejercicio
 ```
 
-La ruta de cada unidad corresponde al valor de `code` en `src/.vitepress/config/units.ts`.
+La ruta de cada unidad corresponde al valor de `code` en `src/.vitepress/config/units.json`.
 
 **Siguiente paso:** [Configurar curso único](./4-curso-unico)

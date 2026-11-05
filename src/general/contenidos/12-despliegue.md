@@ -34,7 +34,7 @@ https://tu-usuario.github.io/mi-curso/
 - [ ] `npm install` ejecutado sin errores
 - [ ] `./start-project.sh` arranca y la URL es accesible
 - [ ] Logos copiados a `src/public/img/`
-- [ ] `siteTitle` actualizado en `units.ts`
+- [ ] `siteTitle` actualizado en `units.json`
 - [ ] `copyright` actualizado en `config.mts`
 - [ ] `basePath` en `config/project.ts` apunta al nombre correcto del repositorio
 - [ ] Al menos un contenido redactado en `contenidos/`
@@ -48,7 +48,7 @@ https://tu-usuario.github.io/mi-curso/
 | Puerto 5173 en uso | `./stop-project.sh` y vuelve a `./start-project.sh` |
 | Imágenes no cargan | Verifica que la ruta empiece con `/img/...` (absoluta, desde `public/`) |
 | Cambios no aparecen | Recarga limpia: `Ctrl+Shift+R` (borra caché del navegador) |
-| Build fallido con dead links | Revisa rutas en `units.ts`: deben existir los archivos `.md` correspondientes |
+| Build fallido con dead links | Revisa rutas en `units.json`: deben existir los archivos `.md` correspondientes |
 | `#center` no funciona en imagen | El sufijo va en el `alt`, no en el `src`: `![descripción #center](/img/...)` |
 | Navbar no actualiza tras cambios | Reinicia el servidor: `./stop-project.sh` + `./start-project.sh` |
 | Parallax no aparece | Verifica que la clase esté declarada en `ejer_imgs.css` con `background-image` |

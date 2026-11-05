@@ -56,41 +56,44 @@ export const PROJECT = {
 Si tu repositorio se llama `mi-curso`, la URL final será `https://tuusuario.github.io/mi-curso/`. Si `basePath` no coincide, los recursos CSS/JS no cargarán.
 :::
 
-## Paso 3 — Define tu módulo en `units.ts`
+## Paso 3 — Define tu módulo en `units.json`
 
-Edita `src/.vitepress/config/units.ts`. Localiza la constante `baseSidebar` y el bloque `MODULO`, y personalízalos:
+Edita `src/.vitepress/config/units.json`. Localiza la unidad `MODULO` y personalízala. Es JSON puro: `units.ts` lo lee y no hay que tocarlo.
 
-```ts
-// --- Sidebar de tu módulo ---
-const baseSidebar: DefaultTheme.SidebarItem[] = [
-  {
-    text: '📚 Contenidos',
-    collapsed: false,
-    items: [
-      { text: 'Introducción',          link: '/contenidos/1-introduccion' },
-      { text: 'Tema 1: Variables',     link: '/contenidos/2-variables' },
-      { text: 'Tema 2: Funciones',     link: '/contenidos/3-funciones' },
-      // Añade más páginas aquí
-    ]
+```json
+{
+  "formatVersion": 1,
+  "units": {
+    "root": { "...": "no tocar" },
+    "MODULO": {
+      "id": "MODULO",
+      "code": "mi-curso",
+      "title": "Programación Web",
+      "fullTitle": "Módulo Profesional de Programación Web",
+      "siteTitle": "Programación</br>Web",
+      "icon": "💻",
+      "navbar": [
+        { "text": "🏠 Inicio", "link": "/" }
+      ],
+      "sidebar": [
+        {
+          "text": "📚 Contenidos",
+          "folder": "contenidos",
+          "collapsed": false,
+          "items": [
+            { "text": "Introducción", "link": "/contenidos/1-introduccion" },
+            { "text": "Tema 1: Variables", "link": "/contenidos/2-variables" },
+            { "text": "Tema 2: Funciones", "link": "/contenidos/3-funciones" }
+          ]
+        }
+      ]
+    }
   },
-]
-
-// --- Registro del módulo ---
-export const UNITS = {
-  root: { /* no tocar */ },
-
-  MODULO: {
-    id: 'MODULO',
-    code: 'mi-curso',           // ← Nombre de la carpeta en src/
-    title: 'Programación Web',
-    fullTitle: 'Módulo Profesional de Programación Web',
-    siteTitle: 'Programación</br>Web',
-    icon: '💻',
-    navbar: baseNavbar,
-    sidebar: baseSidebar
-  },
+  "unitNavbars": {}
 }
 ```
+
+Cada sección es una carpeta más su entrada de menú: `folder` es la carpeta dentro de `src/<code>/` e `items` son sus páginas.
 
 ::: warning Importante: `code` debe coincidir con el nombre de la carpeta
 Si pones `code: 'mi-curso'`, VitePress buscará los archivos en `src/mi-curso/contenidos/`.
