@@ -24,7 +24,14 @@ Un framework es como la cocina de un restaurante: los fogones **ya están**.
 
 :::: caja x=6 y=78 w=40 h=12 fondo=marca color=fondo radio=50 tam=24 decorativa
 ::::
+
+:::: forma flecha x=48 y=80 w=14 h=8 relleno=marca decorativa
+::::
 :::::
+
+::: notas
+v1:cHJ1ZWJhLWl2:Tm90YXMgZGUgZWplbXBsbywgY2lmcmFkYXM
+:::
 
 ---
 
