@@ -32,7 +32,7 @@ $$
 \int_{0}^{1} x^{2}\,dx = \frac{1}{3}
 $$
 
-Un bloque también puede ir pegado al final de una frase, como `Texto pegado:$$`, y el `$$` de cierre en su propia línea. Para leerlo mejor, déjale una línea en blanco antes y después, como a cualquier párrafo.
+Pon cada `$$` **solo en su línea**. Si el de apertura va pegado al final de una frase (`Texto pegado:$$`), la fórmula no se cierra bien y el resto de la página desaparece. Para leerlo mejor, déjale además una línea en blanco antes y después, como a cualquier párrafo.
 
 ## Fórmulas con subíndices, fracciones y sumas
 
