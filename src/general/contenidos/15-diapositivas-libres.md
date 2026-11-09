@@ -69,6 +69,18 @@ Las que comparten paso salen a la vez. Con ← se oculta el último paso.
 ::::
 :::::
 
+---
+
+::::: lienzo fondo=#F5EFE9
+:::: caja x=6 y=8 w=88 h=auto tam=36
+## Un vídeo de YouTube
+::::
+
+:::: video x=12 y=26 w=76 titulo="Me at the zoo, el primer vídeo de YouTube"
+https://www.youtube.com/watch?v=jNQXAC9IVRw
+::::
+:::::
+
 </SlidesViewer>
 
 ## Cómo se escriben
@@ -87,3 +99,14 @@ Con `prefers-reduced-motion` no se mueve nada.
 - `anim` en una caja: `aparecer`, `desvanecer`, `deslizar-arriba`, `deslizar-izquierda` o `zoom`.
 - `paso=N` en esa caja: el orden de aparición (1 si no se pone). Las del mismo paso salen a la vez.
 - `transicion=fundido` en el `lienzo`, o `transicion: fundido` en la cabecera de la página para toda la presentación. `ninguna` la quita en un lienzo concreto.
+
+### Vídeos de YouTube
+
+Un vídeo es un bloque `video` con el enlace dentro y, si quieres, `titulo="…"`. Para
+una comilla doble dentro del título, escríbela como `\"`; las comillas simples no sirven
+para delimitarlo. Hasta que alguien pulsa la portada, YouTube no recibe nada. Solo se
+aceptan enlaces de `youtube.com`, `youtu.be` o `youtube-nocookie.com` (`watch`, `embed`,
+`shorts` o `live`).
+
+Los controles y los subtítulos son los del reproductor de YouTube: el botón CC muestra
+los subtítulos, y si el vídeo tiene en español, son los que se eligen primero.
