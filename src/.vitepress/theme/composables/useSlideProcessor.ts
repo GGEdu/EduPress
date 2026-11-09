@@ -125,6 +125,14 @@ export function useSlideProcessor(
   const buildSmartSlide = (elements: HTMLElement[], slideIndex: number): HTMLElement => {
     const slideWrapper = document.createElement('div')
     slideWrapper.className = slideClass
+
+    // Diapositiva libre (::::: lienzo): ya viene maquetada al compilar. No se le saca
+    // ni el título ni la imagen; se envuelve tal cual (las notas ocultas incluidas).
+    if (elements.some(el => el.classList?.contains('ep-lienzo'))) {
+      slideWrapper.classList.add('slide--lienzo')
+      elements.forEach(el => slideWrapper.appendChild(el))
+      return slideWrapper
+    }
     
     // 1. Extraer título (h1, h2, h3)
     const titleIndex = elements.findIndex(el => el.tagName === 'H1' || el.tagName === 'H2' || el.tagName === 'H3')
