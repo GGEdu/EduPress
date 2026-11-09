@@ -1,0 +1,225 @@
+// ── Diapositivas libres: contenedores `lienzo` y `caja` ─────────────────────
+//
+//   ::::: lienzo fondo=#F5EFE9
+//   :::: caja x=6 y=8 w=56 h=auto tam=32
+//   ## ¿Qué es un framework?
+//   ::::
+//   :::::
+//
+// Se pintan al compilar, con HTML y CSS (theme/css/lienzo.css): las cajas van en
+// posición absoluta, en % del lienzo, y la letra en unidades del ancho del lienzo
+// (cqw). Por debajo de 560 px de ancho se apilan en el orden del fichero.
+//
+// Los valores pasan por lista blanca (la misma que valida EduPress Studio en
+// freeSlide.ts) y todo lo que se escribe en el HTML va escapado. Un atributo
+// desconocido o un valor fuera de la lista se ignora: no rompe la página.
+import type Token from 'markdown-it/lib/token.mjs'
+import container from 'markdown-it-container'
+
+type ContainerPlugin = [typeof container, string, { render(tokens: Token[], idx: number): string }]
+
+interface Attr {
+  key: string
+  /** `true` para las banderas sueltas (`fija`, `decorativa`). */
+  value: string | true
+}
+
+/** Colores con nombre: variables CSS de lienzo.css, que siguen la paleta del curso. */
+export const PALETTE_COLORS = ['marca', 'texto', 'fondo', 'exito', 'aviso', 'peligro', 'info', 'purpura', 'naranja', 'verdeazulado'] as const
+
+const HEX = /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/
+const IMG_PATH = /^\/img\/[\w\-./]+$/
+const FONT_NAME = /^[A-Za-z0-9][A-Za-z0-9 -]{0,59}$/
+const NUMBER = /^-?\d+(?:\.\d+)?$/
+const ATTR_TOKEN = /([A-Za-z][\w-]*)=("(?:[^"\\]|\\.)*"|\S+)|(\S+)/g
+
+const SHADOWS: Record<string, string> = {
+  suave: '0 0.4cqw 1.2cqw rgb(0 0 0 / 0.15)',
+  fuerte: '0 0.8cqw 2.4cqw rgb(0 0 0 / 0.3)',
+}
+const ANIMATIONS = ['aparecer', 'desvanecer', 'deslizar-arriba', 'deslizar-izquierda', 'zoom']
+const TRANSITIONS = ['fundido', 'deslizar', 'zoom', 'ninguna']
+
+/** Escapa para un atributo HTML entre comillas dobles. */
+export function escapeAttr(text: string): string {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+}
+
+/** Lo que va tras el nombre del bloque: `clave=valor`, `clave="con espacios"` o banderas. */
+export function parseAttrs(rest: string): Attr[] {
+  const attrs: Attr[] = []
+  for (const [, key, raw, bare] of rest.matchAll(ATTR_TOKEN)) {
+    if (key !== undefined) {
+      const quoted = raw.length >= 2 && raw.startsWith('"') && raw.endsWith('"')
+      attrs.push({ key, value: quoted ? raw.slice(1, -1).replace(/\\(.)/g, '$1') : raw })
+    } else {
+      attrs.push({ key: bare, value: true })
+    }
+  }
+  return attrs
+}
+
+/** El primer valor de cada clave. Uno repetido se ignora: así no se salta la lista blanca. */
+function attrMap(attrs: Attr[]): Map<string, string | true> {
+  const map = new Map<string, string | true>()
+  for (const { key, value } of attrs) if (!map.has(key)) map.set(key, value)
+  return map
+}
+
+function num(value: string | true | undefined, min: number, max: number, integer = false): number | null {
+  if (typeof value !== 'string' || !NUMBER.test(value)) return null
+  const n = Number(value)
+  return n >= min && n <= max && (!integer || Number.isInteger(n)) ? n : null
+}
+
+const isImage = (v: string): boolean => IMG_PATH.test(v) && !v.split('/').includes('..')
+
+function cssColor(value: string | true | undefined): string | null {
+  if (typeof value !== 'string') return null
+  if (HEX.test(value)) return value
+  return (PALETTE_COLORS as readonly string[]).includes(value) ? `var(--ep-${value})` : null
+}
+
+/** `/img/…` con la base del sitio delante: en un `style` VitePress no la añade. */
+function imageUrl(base: string, path: string): string {
+  const prefix = base.endsWith('/') ? base.slice(0, -1) : base
+  return `url('${prefix}${path}')`
+}
+
+/** `fondo`: color, imagen `/img/…` o, en el lienzo, `degradado:color,color`. */
+function background(value: string | true | undefined, base: string, allowGradient: boolean, fit = 'cover'): string[] {
+  if (typeof value !== 'string') return []
+  const color = cssColor(value)
+  if (color) return [`background:${color}`]
+  if (isImage(value)) return [`background:${imageUrl(base, value)} center / ${fit} no-repeat`]
+  const gradient = value.match(/^degradado:([^,\s]+),([^,\s]+)$/)
+  if (allowGradient && gradient) {
+    const [from, to] = [cssColor(gradient[1]), cssColor(gradient[2])]
+    if (from && to) return [`background:linear-gradient(135deg, ${from}, ${to})`]
+  }
+  return []
+}
+
+/** Tamaños pensados sobre un lienzo de 1280 px de ancho, pasados a unidades del lienzo. */
+const scaled = (px: number): string => `calc(${px} / 1280 * 100cqw)`
+
+export function lienzoOpening(info: string, base: string): string {
+  const attrs = attrMap(parseAttrs(info.trim().replace(/^lienzo\b/, '')))
+  const style = background(attrs.get('fondo'), base, true)
+  const transition = attrs.get('transicion')
+  const data = typeof transition === 'string' && TRANSITIONS.includes(transition) ? ` data-transicion="${transition}"` : ''
+  const styleAttr = style.length > 0 ? ` style="${escapeAttr(style.join(';'))}"` : ''
+  // Dos capas: el lienzo es el contenedor (cqw y @container) y el área lleva el 16:9.
+  // Un elemento no puede cambiar su propio aspecto con una consulta a sí mismo.
+  return `<div class="ep-lienzo"${data}><div class="ep-lienzo__area"${styleAttr}>\n`
+}
+
+export interface BoxContext {
+  base: string
+  /** Solo hay una imagen dentro (se decide al compilar, mirando los tokens). */
+  onlyImage: boolean
+}
+
+export function cajaOpening(info: string, ctx: BoxContext): string {
+  const attrs = attrMap(parseAttrs(info.trim().replace(/^caja\b/, '')))
+  const style: string[] = []
+  const classes = ['ep-caja']
+  const data: string[] = []
+
+  const x = num(attrs.get('x'), 0, 100)
+  const y = num(attrs.get('y'), 0, 100)
+  const w = num(attrs.get('w'), 0, 100)
+  const hRaw = attrs.get('h')
+  const h = hRaw === 'auto' ? null : num(hRaw, 0, 100)
+  style.push(`left:${x ?? 0}%`, `top:${y ?? 0}%`, `width:${w ?? 50}%`)
+  if (h !== null) style.push(`height:${h}%`)
+
+  const tam = num(attrs.get('tam'), 4, 400)
+  if (tam !== null) style.push(`--tam:${tam}`)
+
+  const transforms: string[] = []
+  const r = num(attrs.get('r'), -360, 360)
+  if (r) transforms.push(`rotate(${r}deg)`)
+  const flip = attrs.get('voltear')
+  if (flip === 'h' || flip === 'hv') transforms.push('scaleX(-1)')
+  if (flip === 'v' || flip === 'hv') transforms.push('scaleY(-1)')
+  if (transforms.length > 0) style.push(`transform:${transforms.join(' ')}`)
+
+  const z = num(attrs.get('z'), 0, 999, true)
+  if (z !== null) style.push(`z-index:${z}`)
+
+  const font = attrs.get('fuente')
+  if (typeof font === 'string' && FONT_NAME.test(font)) style.push(`font-family:'${font}', var(--vp-font-family-base)`)
+  const color = cssColor(attrs.get('color'))
+  if (color) style.push(`color:${color}`)
+  const fit = attrs.get('ajuste') === 'contener' ? 'contain' : 'cover'
+  style.push(...background(attrs.get('fondo'), ctx.base, false, fit))
+  if (attrs.get('ajuste') === 'contener') style.push('--ajuste:contain')
+
+  const border = attrs.get('borde')
+  if (typeof border === 'string') {
+    const [width, borderColor] = border.split(':')
+    const px = num(width, 0, 20)
+    const bc = borderColor === undefined ? 'currentColor' : cssColor(borderColor)
+    if (px !== null && bc && border.split(':').length <= 2) style.push(`border:${scaled(px)} solid ${bc}`)
+  }
+  const radius = num(attrs.get('radio'), 0, 100)
+  if (radius !== null) style.push(`border-radius:${radius}%`)
+  const shadow = attrs.get('sombra')
+  if (shadow === true || shadow === 'suave' || shadow === 'fuerte') style.push(`box-shadow:${SHADOWS[shadow === true ? 'suave' : shadow]}`)
+  const opacity = num(attrs.get('opacidad'), 0, 100)
+  if (opacity !== null) style.push(`opacity:${opacity / 100}`)
+
+  const anim = attrs.get('anim')
+  if (typeof anim === 'string' && ANIMATIONS.includes(anim)) data.push(`data-anim="${anim}"`)
+  const step = num(attrs.get('paso'), 1, 99, true)
+  if (step !== null) data.push(`data-paso="${step}"`)
+  const group = num(attrs.get('g'), 1, 999, true)
+  if (group !== null) data.push(`data-g="${group}"`)
+
+  if (attrs.get('decorativa') === true) {
+    classes.push('decorativa')
+    data.push('aria-hidden="true"')
+  }
+  if (ctx.onlyImage) {
+    classes.push('ep-caja--imagen')
+    // Una imagen que cubre casi todo el lienzo: al apilar pasa a ser su fondo.
+    if (w !== null && h !== null && w * h >= 8100) classes.push('es-fondo')
+  }
+
+  const dataAttrs = data.length > 0 ? ` ${data.join(' ')}` : ''
+  return `<div class="${classes.join(' ')}" style="${escapeAttr(style.join(';'))}"${dataAttrs}>\n`
+}
+
+/** ¿Lo que hay entre la apertura `idx` y su cierre es solo una imagen? */
+function containsOnlyImage(tokens: Token[], idx: number): boolean {
+  const inner: Token[] = []
+  let depth = 0
+  for (let i = idx + 1; i < tokens.length; i++) {
+    const t = tokens[i]
+    depth += t.nesting
+    if (depth < 0) break
+    inner.push(t)
+  }
+  if (inner.length !== 3) return false
+  const [open, inline, close] = inner
+  const children = (inline.children ?? []).filter((c) => !(c.type === 'text' && c.content.trim() === '') && c.type !== 'softbreak')
+  return open.type === 'paragraph_open' && close.type === 'paragraph_close' && children.length === 1 && children[0].type === 'image'
+}
+
+/** Los contenedores para `md.use(...)`. `base` es la base del sitio (`PROJECT.basePath`). */
+export function lienzoContainers(base: string): ContainerPlugin[] {
+  return [
+    [container, 'lienzo', {
+      render(tokens: Token[], idx: number) {
+        return tokens[idx].nesting === 1 ? lienzoOpening(tokens[idx].info, base) : '</div></div>\n'
+      },
+    }],
+    [container, 'caja', {
+      render(tokens: Token[], idx: number) {
+        if (tokens[idx].nesting !== 1) return '</div>\n'
+        return cajaOpening(tokens[idx].info, { base, onlyImage: containsOnlyImage(tokens, idx) })
+      },
+    }],
+  ]
+}

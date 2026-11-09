@@ -23,6 +23,7 @@ import './css/utilities.css'
 import './css/styles.css'
 import './css/ejercicios.css'
 import './css/slides.css'
+import './css/lienzo.css'
 import './css/ejer_imgs.css'
 import './css/lightbox.css'
 

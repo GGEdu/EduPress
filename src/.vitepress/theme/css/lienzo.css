@@ -1,0 +1,129 @@
+/* ── Diapositivas libres: lienzo y cajas (config: .vitepress/lienzo.ts) ──────
+ *
+ * El lienzo es 16:9. Las cajas van en posición absoluta, en % del lienzo, y la
+ * letra en unidades de su ancho (cqw): «tam» es el tamaño sobre 1280 px, así que
+ * la proporción es la misma en cualquier pantalla.
+ *
+ * Por debajo de 560 px de ancho del lienzo (un móvil, o un zoom del 200 %) las
+ * cajas se apilan en el orden del fichero, con su alto natural y la letra de
+ * lectura normal (WCAG 1.4.4 y 1.4.10).
+ */
+
+/* Colores con nombre de las cajas: siguen la paleta del curso. */
+:root {
+  --ep-marca: var(--vp-c-brand-1);
+  --ep-texto: var(--vp-c-text-1);
+  --ep-fondo: var(--vp-c-bg);
+  --ep-exito: var(--vp-c-tip);
+  --ep-aviso: var(--vp-c-warning);
+  --ep-peligro: var(--vp-c-danger-1);
+  --ep-info: var(--vp-c-note);
+  --ep-purpura: var(--custom-accent-purple);
+  --ep-naranja: var(--custom-gradient-orange-start);
+  --ep-verdeazulado: var(--custom-accent-teal);
+}
+
+.ep-lienzo {
+  container-type: inline-size;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.ep-lienzo__area {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--vp-c-bg-soft);
+  border-radius: 8px;
+}
+
+.ep-caja {
+  position: absolute;
+  box-sizing: border-box;
+  color: var(--vp-c-text-1);
+  font-size: calc(var(--tam, 24) / 1280 * 100cqw);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  transform-origin: center;
+}
+
+/* Los márgenes del Markdown de dentro no empujan la caja. */
+.ep-caja > :first-child { margin-top: 0; }
+.ep-caja > :last-child { margin-bottom: 0; }
+
+/* Los títulos de dentro escalan con la caja, no con la página. */
+.ep-caja h1, .ep-caja h2, .ep-caja h3, .ep-caja h4 {
+  margin: 0 0 0.3em;
+  padding: 0;
+  border: 0;
+  line-height: 1.15;
+  font-size: 1.6em;
+}
+.ep-caja h3, .ep-caja h4 { font-size: 1.25em; }
+.ep-caja p, .ep-caja li { font-size: 1em; line-height: inherit; }
+
+/* El color de la caja («color=») manda sobre el que el tema da a títulos y párrafos. */
+.ep-caja :is(h1, h2, h3, h4, h5, h6, p, li, blockquote) { color: inherit; }
+
+.ep-caja ul, .ep-caja ol { margin: 0.3em 0; padding-left: 1.25em; }
+.ep-caja ul { list-style: disc; }
+.ep-caja ol { list-style: decimal; }
+
+/* En un lienzo las animaciones las decide «anim»: fuera la entrada y el
+   desplazamiento al pasar el ratón que el tema da a las listas de las diapositivas. */
+.ep-caja li {
+  margin: 0.15em 0;
+  line-height: inherit;
+  animation: none;
+  transform: none;
+}
+
+.ep-caja img { max-width: 100%; }
+
+/* Una caja que solo lleva una imagen: la imagen la llena. */
+.ep-caja--imagen > p { margin: 0; height: 100%; }
+.ep-caja--imagen img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: var(--ajuste, cover);
+}
+
+/* Dentro de <SlidesViewer>: el lienzo es la diapositiva entera, sin margen. */
+.slide.slide--lienzo { padding: 0; min-height: 0; display: block; }
+.slide.slide--lienzo > .ep-lienzo { margin: 0; }
+
+@container (max-width: 560px) {
+  .ep-lienzo__area {
+    aspect-ratio: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  /* Los estilos de posición van en línea: hacen falta !important para anularlos. */
+  .ep-caja {
+    position: relative !important;
+    inset: auto !important;
+    width: auto !important;
+    height: auto !important;
+    transform: none !important;
+    z-index: 1 !important;
+    font-size: 1rem;
+  }
+
+  .ep-caja.decorativa { display: none; }
+
+  /* La imagen que cubría casi todo el lienzo pasa a ser su fondo. */
+  .ep-caja.es-fondo {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 0 !important;
+    border-radius: 0;
+  }
+
+  .ep-caja--imagen:not(.es-fondo) img { height: auto; }
+}
