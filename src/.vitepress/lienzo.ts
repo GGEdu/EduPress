@@ -40,9 +40,19 @@ const SHADOWS: Record<string, string> = {
 const ANIMATIONS = ['aparecer', 'desvanecer', 'deslizar-arriba', 'deslizar-izquierda', 'zoom']
 const TRANSITIONS = ['fundido', 'deslizar', 'zoom', 'ninguna']
 
-/** Escapa para un atributo HTML entre comillas dobles. */
+/** Escapa para un atributo HTML entre comillas dobles (valores que genera EduPress). */
 export function escapeAttr(text: string): string {
   return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;')
+}
+
+/**
+ * El título de una caja de color, que escribe el autor, a un atributo. Solo se
+ * escapa lo que lo rompe: unas comillas hacían fallar la compilación de Vue. Un `&`
+ * se deja, para que las entidades que ya llevan los títulos (`&lt;`, `&#123;`) se
+ * sigan viendo igual.
+ */
+export function escapeTitle(text: string): string {
+  return text.replace(/"/g, '&quot;').replace(/</g, '&lt;')
 }
 
 /** Lo que va tras el nombre del bloque: `clave=valor`, `clave="con espacios"` o banderas. */
@@ -100,18 +110,40 @@ function background(value: string | true | undefined, base: string, allowGradien
   return []
 }
 
+/**
+ * Un color de letra que se lea sobre un fondo `#hex` fijo. Con el tema oscuro, el
+ * texto del tema (casi blanco) no se leería sobre un fondo claro que no cambia.
+ */
+function textFor(value: string | true | undefined): string | null {
+  if (typeof value !== 'string' || !HEX.test(value)) return null
+  const hex = value.length === 4 ? value.slice(1).split('').map((c) => c + c).join('') : value.slice(1)
+  const [r, g, b] = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
+  const lin = (c: number) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
+  const luminance = 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
+  return luminance > 0.4 ? '#1F2937' : '#FFFFFF'
+}
+
 /** Tamaños pensados sobre un lienzo de 1280 px de ancho, pasados a unidades del lienzo. */
 const scaled = (px: number): string => `calc(${px} / 1280 * 100cqw)`
 
 export function lienzoOpening(info: string, base: string): string {
   const attrs = attrMap(parseAttrs(info.trim().replace(/^lienzo\b/, '')))
   const style = background(attrs.get('fondo'), base, true)
+  const text = textFor(attrs.get('fondo'))
+  if (text) style.push(`color:${text}`)
   const transition = attrs.get('transicion')
   const data = typeof transition === 'string' && TRANSITIONS.includes(transition) ? ` data-transicion="${transition}"` : ''
   const styleAttr = style.length > 0 ? ` style="${escapeAttr(style.join(';'))}"` : ''
   // Dos capas: el lienzo es el contenedor (cqw y @container) y el área lleva el 16:9.
   // Un elemento no puede cambiar su propio aspecto con una consulta a sí mismo.
   return `<div class="ep-lienzo"${data}><div class="ep-lienzo__area"${styleAttr}>\n`
+}
+
+/** Parte del lienzo (en %) que cubre una caja que puede salirse por los bordes. */
+const COVER_MIN = 90
+function coveredArea(x: number, y: number, w: number, h: number): number {
+  const overlap = (start: number, size: number) => Math.max(0, Math.min(start + size, 100) - Math.max(start, 0))
+  return (overlap(x, w) * overlap(y, h)) / 100
 }
 
 export interface BoxContext {
@@ -150,7 +182,7 @@ export function cajaOpening(info: string, ctx: BoxContext): string {
 
   const font = attrs.get('fuente')
   if (typeof font === 'string' && FONT_NAME.test(font)) style.push(`font-family:'${font}', var(--vp-font-family-base)`)
-  const color = cssColor(attrs.get('color'))
+  const color = cssColor(attrs.get('color')) ?? textFor(attrs.get('fondo'))
   if (color) style.push(`color:${color}`)
   const fit = attrs.get('ajuste') === 'contener' ? 'contain' : 'cover'
   style.push(...background(attrs.get('fondo'), ctx.base, false, fit))
@@ -184,7 +216,7 @@ export function cajaOpening(info: string, ctx: BoxContext): string {
   if (ctx.onlyImage) {
     classes.push('ep-caja--imagen')
     // Una imagen que cubre casi todo el lienzo: al apilar pasa a ser su fondo.
-    if (w !== null && h !== null && w * h >= 8100) classes.push('es-fondo')
+    if (w !== null && h !== null && coveredArea(x ?? 0, y ?? 0, w, h) >= COVER_MIN) classes.push('es-fondo')
   }
 
   const dataAttrs = data.length > 0 ? ` ${data.join(' ')}` : ''

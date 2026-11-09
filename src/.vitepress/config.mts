@@ -3,7 +3,7 @@ import type { HeadConfig } from 'vitepress'
 import type Token from 'markdown-it/lib/token.mjs'
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 import container from 'markdown-it-container'
-import { escapeAttr, lienzoContainers } from './lienzo'
+import { escapeTitle, lienzoContainers } from './lienzo'
 
 // ── Importar desde config/ ─────────────────────────────────────────────────
 // 👤 Edita los archivos de config/ para personalizar el sitio.
@@ -49,7 +49,7 @@ function createContainer(
         }
         const title = raw
         // El título va a un atributo: sin escapar, unas comillas lo romperían.
-        const titleAttr = title ? ` title="${escapeAttr(title)}"` : ''
+        const titleAttr = title ? ` title="${escapeTitle(title)}"` : ''
         const variantAttr = variant ? ` variant="${variant}"` : ''
         const alignAttr = align ? ` align="${align}"` : ''
         return `<${componentType}${variantAttr}${alignAttr}${titleAttr}>\n`
@@ -280,7 +280,7 @@ const accentBoxContainer: [typeof container, string, { render(tokens: Token[], i
         }
       }
       const title = raw
-      const titleAttr = title ? ` title="${escapeAttr(title)}"` : ''
+      const titleAttr = title ? ` title="${escapeTitle(title)}"` : ''
       const alignAttr = align ? ` align="${align}"` : ''
       return `<AccentBox gradient="${gradient}"${alignAttr}${titleAttr}>\n`
     } else {

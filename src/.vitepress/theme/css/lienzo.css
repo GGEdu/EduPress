@@ -31,6 +31,7 @@
 
 .ep-lienzo__area {
   position: relative;
+  color: var(--vp-c-text-1);
   aspect-ratio: 16 / 9;
   overflow: hidden;
   background: var(--vp-c-bg-soft);
@@ -40,7 +41,7 @@
 .ep-caja {
   position: absolute;
   box-sizing: border-box;
-  color: var(--vp-c-text-1);
+  color: inherit;
   font-size: calc(var(--tam, 24) / 1280 * 100cqw);
   line-height: 1.25;
   overflow-wrap: anywhere;
@@ -61,9 +62,11 @@
 }
 .ep-caja h3, .ep-caja h4 { font-size: 1.25em; }
 .ep-caja p, .ep-caja li { font-size: 1em; line-height: inherit; }
+/* Márgenes en em: escalan con «tam», como la letra. */
+.ep-caja p { margin: 0.4em 0; }
 
-/* El color de la caja («color=») manda sobre el que el tema da a títulos y párrafos. */
-.ep-caja :is(h1, h2, h3, h4, h5, h6, p, li, blockquote) { color: inherit; }
+/* El color de la caja («color=») manda sobre el que el tema da a títulos, párrafos y negritas. */
+.ep-caja :is(h1, h2, h3, h4, h5, h6, p, li, blockquote, strong, em) { color: inherit; }
 
 .ep-caja ul, .ep-caja ol { margin: 0.3em 0; padding-left: 1.25em; }
 .ep-caja ul { list-style: disc; }
@@ -71,7 +74,8 @@
 
 /* En un lienzo las animaciones las decide «anim»: fuera la entrada y el
    desplazamiento al pasar el ratón que el tema da a las listas de las diapositivas. */
-.ep-caja li {
+.ep-lienzo .ep-caja li,
+.ep-lienzo .ep-caja li:hover {
   margin: 0.15em 0;
   line-height: inherit;
   animation: none;
@@ -91,6 +95,8 @@
 
 /* Dentro de <SlidesViewer>: el lienzo es la diapositiva entera, sin margen. */
 .slide.slide--lienzo { padding: 0; min-height: 0; display: block; }
+/* El lienzo no se mueve al pasar el ratón, como las demás diapositivas. */
+.slide.slide--lienzo:hover { transform: none; }
 .slide.slide--lienzo > .ep-lienzo { margin: 0; }
 
 @container (max-width: 560px) {
@@ -126,4 +132,15 @@
   }
 
   .ep-caja--imagen:not(.es-fondo) img { height: auto; }
+}
+
+/* Al imprimir, slides.css encoge las imágenes de las diapositivas: en un lienzo
+   cada imagen tiene que seguir llenando su caja. */
+@media print {
+  .slides-container .slide.slide--lienzo .ep-caja--imagen img {
+    width: 100% !important;
+    height: 100% !important;
+    max-height: none !important;
+    object-fit: var(--ajuste, cover) !important;
+  }
 }
