@@ -56,3 +56,5 @@ Coloca cada caja donde quieras. En un móvil se apilan en el orden del fichero, 
 Cada diapositiva libre es un bloque `lienzo` con cajas dentro. Cada caja lleva su
 posición y su tamaño en porcentajes del lienzo (`x`, `y`, `w`, `h`), y dentro,
 Markdown normal. EduPress Studio las escribe por ti al arrastrar las cajas.
+
+La alineación del texto de una caja va en `alinea=izquierda`, `centro`, `derecha` o `justificar`.
