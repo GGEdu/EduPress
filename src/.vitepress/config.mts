@@ -7,6 +7,7 @@ import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 import container from 'markdown-it-container'
 import { escapeTitle, lienzoContainers, notasPlugin } from './lienzo'
 import { avisoDobleDolarPlugin } from './matematicas'
+import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages.js'
 
 // ── Importar desde config/ ─────────────────────────────────────────────────
 // 👤 Edita los archivos de config/ para personalizar el sitio.
@@ -317,7 +318,8 @@ export default defineConfig({
   },
   markdown: {
     // Ecuaciones con $…$ y $$…$$ (MathJax, con markdown-it-mathjax3 en devDependencies).
-    math: true,
+    // Sin los paquetes html y action: \href{javascript:…}, \class, \style y \cssId.
+    math: { tex: { packages: AllPackages.filter((p: string) => p !== 'html' && p !== 'action') } },
     config(md) {
       md.use(tabsMarkdownPlugin)
       md.use(...infoBoxContainer)
