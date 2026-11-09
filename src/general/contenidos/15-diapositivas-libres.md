@@ -49,6 +49,26 @@ Coloca cada caja donde quieras. En un móvil se apilan en el orden del fichero, 
 ::::
 :::::
 
+---
+
+::::: lienzo fondo=#F5EFE9 transicion=fundido
+:::: caja x=6 y=8 w=56 h=auto tam=40 color=marca
+## Animaciones por pasos
+::::
+
+:::: caja x=6 y=30 w=56 h=auto tam=26 anim=desvanecer
+Esta línea aparece con el primer paso (Espacio o →).
+::::
+
+:::: caja x=6 y=46 w=56 h=auto tam=26 anim=deslizar-arriba paso=2
+Esta, con el segundo.
+::::
+
+:::: caja x=6 y=62 w=56 h=auto tam=26 anim=zoom paso=2
+Las que comparten paso salen a la vez. Con ← se oculta el último paso.
+::::
+:::::
+
 </SlidesViewer>
 
 ## Cómo se escriben
@@ -58,3 +78,12 @@ posición y su tamaño en porcentajes del lienzo (`x`, `y`, `w`, `h`), y dentro,
 Markdown normal. EduPress Studio las escribe por ti al arrastrar las cajas.
 
 La alineación del texto de una caja va en `alinea=izquierda`, `centro`, `derecha` o `justificar`.
+
+## Animaciones y transiciones
+
+Solo se ven en la pantalla completa: en la página, todo está visible desde el principio.
+Con `prefers-reduced-motion` no se mueve nada.
+
+- `anim` en una caja: `aparecer`, `desvanecer`, `deslizar-arriba`, `deslizar-izquierda` o `zoom`.
+- `paso=N` en esa caja: el orden de aparición (1 si no se pone). Las del mismo paso salen a la vez.
+- `transicion=fundido` en el `lienzo`, o `transicion: fundido` en la cabecera de la página para toda la presentación. `ninguna` la quita en un lienzo concreto.

@@ -119,6 +119,10 @@
     width: auto !important;
     height: auto !important;
     transform: none !important;
+    /* Móvil: en una columna «deslizar» y «zoom» solo desvanecen. Desplazar o escalar
+       una caja apilada no lleva a ningún sitio, y así la columna no se mueve. */
+    translate: none !important;
+    scale: none !important;
     z-index: 1 !important;
     font-size: 1rem;
   }
@@ -146,6 +150,57 @@
   }
 
   .ep-caja--imagen:not(.es-fondo) img { height: auto; }
+}
+
+/* ── Animaciones de las cajas (`anim`, `paso`): solo en pantalla completa ──────
+ * SlideLightbox pone la clase `is-presentando` en la diapositiva, y `is-visible`
+ * en las cajas que ya han salido. En la página no hay clase: todo se ve. */
+.slide.is-presentando .ep-caja[data-anim] {
+  transition: opacity 400ms ease, translate 400ms ease, scale 400ms ease;
+}
+
+.slide.is-presentando .ep-caja[data-anim="aparecer"] {
+  transition: none;
+}
+
+.slide.is-presentando .ep-caja[data-anim]:not(.is-visible) {
+  visibility: hidden;
+}
+
+.slide.is-presentando .ep-caja[data-anim="desvanecer"]:not(.is-visible),
+.slide.is-presentando .ep-caja[data-anim="deslizar-arriba"]:not(.is-visible),
+.slide.is-presentando .ep-caja[data-anim="deslizar-izquierda"]:not(.is-visible),
+.slide.is-presentando .ep-caja[data-anim="zoom"]:not(.is-visible) {
+  opacity: 0;
+}
+
+.slide.is-presentando .ep-caja[data-anim="deslizar-arriba"]:not(.is-visible) {
+  translate: 0 4cqw;
+}
+
+.slide.is-presentando .ep-caja[data-anim="deslizar-izquierda"]:not(.is-visible) {
+  translate: 4cqw 0;
+}
+
+.slide.is-presentando .ep-caja[data-anim="zoom"]:not(.is-visible) {
+  scale: 0.8;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide.is-presentando .ep-caja[data-anim] {
+    transition: none;
+  }
+}
+
+/* Al imprimir se ven todas las cajas, también las que la presentación no había mostrado. */
+@media print {
+  .slide.is-presentando .ep-caja[data-anim] {
+    visibility: visible !important;
+    opacity: 1 !important;
+    translate: none !important;
+    scale: none !important;
+    transition: none !important;
+  }
 }
 
 /* Al imprimir, slides.css encoge las imágenes de las diapositivas: en un lienzo
