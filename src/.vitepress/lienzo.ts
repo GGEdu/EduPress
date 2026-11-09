@@ -33,6 +33,14 @@ const FONT_NAME = /^[A-Za-z0-9][A-Za-z0-9 -]{0,59}$/
 const NUMBER = /^-?\d+(?:\.\d+)?$/
 const ATTR_TOKEN = /([A-Za-z][\w-]*)=("(?:[^"\\]|\\.)*"|\S+)|(\S+)/g
 
+/** `alinea` de la caja: solo estos cuatro valores; cualquier otro se ignora. */
+const TEXT_ALIGN = new Map([
+  ['izquierda', 'left'],
+  ['centro', 'center'],
+  ['derecha', 'right'],
+  ['justificar', 'justify'],
+])
+
 const SHADOWS: Record<string, string> = {
   suave: '0 0.4cqw 1.2cqw rgb(0 0 0 / 0.15)',
   fuerte: '0 0.8cqw 2.4cqw rgb(0 0 0 / 0.3)',
@@ -205,6 +213,9 @@ function boxParts(attrs: Map<string, string | true>, ctx: BoxContext): BoxParts 
   if (typeof font === 'string' && FONT_NAME.test(font)) style.push(`font-family:'${font}', var(--vp-font-family-base)`)
   const color = cssColor(attrs.get('color')) ?? textFor(attrs.get('fondo'))
   if (color) style.push(`color:${color}`)
+  const align = attrs.get('alinea')
+  const textAlign = typeof align === 'string' ? TEXT_ALIGN.get(align) : undefined
+  if (textAlign) style.push(`text-align:${textAlign}`)
   const fit = attrs.get('ajuste') === 'contener' ? 'contain' : 'cover'
   style.push(...background(attrs.get('fondo'), ctx.base, false, fit))
   if (attrs.get('ajuste') === 'contener') style.push('--ajuste:contain')
