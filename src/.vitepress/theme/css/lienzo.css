@@ -131,6 +131,7 @@
     width: min(100%, 12rem) !important;
     height: auto !important;
     aspect-ratio: var(--proporcion, 6 / 1);
+    min-height: 0.375rem;
     transform: var(--volteo, none) !important;
   }
 

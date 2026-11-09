@@ -16,7 +16,7 @@
 import type Token from 'markdown-it/lib/token.mjs'
 import container from 'markdown-it-container'
 
-type ContainerPlugin = [typeof container, string, { render(tokens: Token[], idx: number): string }]
+type ContainerPlugin = [typeof container, string, { render(tokens: Token[], idx: number, options?: unknown, env?: { relativePath?: string }): string }]
 
 interface Attr {
   key: string
@@ -258,10 +258,6 @@ type FormaVariant = (typeof FORMA_VARIANTS)[number]
 
 const round = (n: number): number => Math.round(n * 100) / 100
 
-/**
- * El SVG de una flecha o una línea, en unidades del propio hueco: un lienzo de 16:9
- * hace que `w` valga 16 unidades por punto y `h`, 9. Así la punta no se deforma.
- */
 /** Lo que se lee de una forma que no es decorativa. `texto=` lo cambia. */
 const FORMA_LABELS: Record<FormaVariant, string> = { flecha: 'Flecha', linea: 'Línea', 'flecha-doble': 'Flecha doble' }
 
@@ -271,6 +267,10 @@ export function formaSize(w: number, h: number | null): { width: number; height:
   return { width, height: Math.max(1, h === null ? width * 0.12 : h * 9) }
 }
 
+/**
+ * El SVG de una flecha o una línea, en unidades del propio hueco: un lienzo de 16:9
+ * hace que `w` valga 16 unidades por punto y `h`, 9. Así la punta no se deforma.
+ */
 export function formaSvg(variant: FormaVariant, w: number, h: number | null, label: string | null = null): string {
   const { width, height } = formaSize(w, h)
   const mid = height / 2
@@ -374,11 +374,12 @@ export function lienzoContainers(base: string): ContainerPlugin[] {
     }],
     // Notas del orador cifradas: ocultas, con el texto cifrado en un atributo (lo lee ?notas).
     [container, 'notas', {
-      render(tokens: Token[], idx: number) {
+      render(tokens: Token[], idx: number, _options?: unknown, env?: { relativePath?: string }) {
         if (tokens[idx].nesting !== 1) return ''
         const text = String(tokens[idx].meta?.notas ?? '')
         if (text !== '' && !NOTAS_FORMAT.test(text)) {
-          console.warn('[EduPress] Unas notas del orador no están cifradas: no se publican. Escríbelas desde EduPress Studio.')
+          const where = env?.relativePath ? ` (${env.relativePath})` : ''
+          console.warn(`[EduPress] Unas notas del orador no están cifradas: no se publican${where}. Escríbelas desde EduPress Studio.`)
           return '<div class="ep-notas" hidden data-notas=""></div>\n'
         }
         return `<div class="ep-notas" hidden data-notas="${escapeAttr(text)}"></div>\n`
