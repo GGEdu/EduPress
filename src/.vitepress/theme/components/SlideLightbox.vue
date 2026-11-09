@@ -3,7 +3,8 @@
 import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import { useData } from 'vitepress'
 import { attachLightboxListeners, createLightbox } from '../utils/lightboxManager'
-import { stepSlide } from '../utils/slideSteps'
+import { stepSlide, type SlideStepDirection } from '../utils/slideSteps'
+import { prepareSlide, releaseSlide, prefersReducedMotion } from '../utils/slideAnimations'
 
 /**
  * Pantalla completa de las diapositivas.
@@ -12,6 +13,10 @@ import { stepSlide } from '../utils/slideSteps'
  * en su sitio, queda un hueco del mismo alto. Así conserva sus componentes Vue, sus
  * listeners (pestañas, imágenes) y su estado, sin copiar HTML. Al cambiar de
  * diapositiva o cerrar, vuelve a su sitio.
+ *
+ * Espacio, → y ← muestran primero los pasos de la diapositiva (slideAnimations.ts)
+ * y solo después cambian de diapositiva. La transición «fundido» (`transicion`, en el
+ * lienzo o en la cabecera de la página) deja la anterior encima mientras entra la nueva.
  */
 
 const { frontmatter } = useData()
@@ -33,34 +38,73 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'slideChange'])
 
+const FADE_MS = 300
+
 // Referencias
 const dialogRef = ref<HTMLElement | null>(null)
 const stageRef = ref<HTMLElement | null>(null)
 const currentIndex = ref(props.initialIndex)
+// Sube cuando cambia un paso, para que los botones se actualicen.
+const stepVersion = ref(0)
 
 // Diapositiva que está ahora en el escenario, con el hueco que dejó en la página
-interface Mounted {
+interface Placed {
   slide: HTMLElement
   hole: HTMLElement
+  timer?: ReturnType<typeof setTimeout>
 }
-let mounted: Mounted | null = null
+let mounted: Placed | null = null
+// La diapositiva que sale con fundido: sigue en el escenario hasta que acaba el fundido
+let leaving: Placed | null = null
+let lastDirection: SlideStepDirection = 'forward'
 let returnFocus: HTMLElement | null = null
 
 // Computed
 const totalSlides = computed(() => props.slides.length)
-const canGoPrevious = computed(() => currentIndex.value > 0)
-const canGoNext = computed(() => currentIndex.value < totalSlides.value - 1)
 const currentSlide = computed<HTMLElement | null>(() => (props.slides[currentIndex.value] as HTMLElement | undefined) ?? null)
+const canGoPrevious = computed(() => {
+  void stepVersion.value
+  return currentIndex.value > 0 || stepSlide('back', currentSlide.value, true)
+})
+const canGoNext = computed(() => {
+  void stepVersion.value
+  return currentIndex.value < totalSlides.value - 1 || stepSlide('forward', currentSlide.value, true)
+})
+
+// Transición: la de la diapositiva que entra (su lienzo, o la de la página)
+function transitionFor(slide: HTMLElement): 'fundido' | 'ninguna' {
+  const own = slide.querySelector(':scope > .ep-lienzo')?.getAttribute('data-transicion')
+  if (own === 'fundido' || own === 'ninguna') return own
+  return frontmatter.value.transicion === 'fundido' ? 'fundido' : 'ninguna'
+}
 
 // Mover diapositivas al escenario y devolverlas
-function restoreSlide(): void {
+function settleLeaving(): void {
+  if (!leaving) return
+  const { slide, hole, timer } = leaving
+  if (timer) clearTimeout(timer)
+  leaving = null
+  hole.parentNode?.replaceChild(slide, hole)
+  slide.classList.remove('is-saliendo')
+  releaseSlide(slide)
+}
+
+function restoreSlide(fade = false): void {
+  settleLeaving()
   if (!mounted) return
   const { slide, hole } = mounted
   mounted = null
+  slide.classList.remove('is-entrando')
+  if (fade) {
+    slide.classList.add('is-saliendo')
+    leaving = { slide, hole, timer: setTimeout(settleLeaving, FADE_MS) }
+    return
+  }
   hole.parentNode?.replaceChild(slide, hole)
+  releaseSlide(slide)
 }
 
-function mountSlide(slide: HTMLElement): void {
+function mountSlide(slide: HTMLElement, fade: boolean): void {
   const stage = stageRef.value
   if (!stage || !slide.parentNode) return
   const hole = document.createElement('div')
@@ -69,6 +113,8 @@ function mountSlide(slide: HTMLElement): void {
   slide.parentNode.replaceChild(hole, slide)
   stage.appendChild(slide)
   mounted = { slide, hole }
+  if (fade) slide.classList.add('is-entrando')
+  prepareSlide(slide, lastDirection)
   // Las imágenes de la diapositiva pasan a ampliables (como antes, con el lightbox de imágenes).
   setTimeout(attachLightboxListeners, 100)
 }
@@ -77,11 +123,13 @@ function mountSlide(slide: HTMLElement): void {
 function syncSlide(): void {
   const target = props.isOpen ? currentSlide.value : null
   if (mounted?.slide === target) return
-  restoreSlide()
-  if (target) mountSlide(target)
+  const fade = !!target && !!mounted && transitionFor(target) === 'fundido' && !prefersReducedMotion()
+  restoreSlide(fade)
+  if (target) mountSlide(target, fade)
+  stepVersion.value++
 }
 
-// Métodos de navegación
+// Navegación: primero los pasos de la diapositiva, luego cambiar de diapositiva
 const handleNext = () => {
   if (canGoNext.value) {
     currentIndex.value++
@@ -96,7 +144,18 @@ const handlePrevious = () => {
   }
 }
 
+const advance = (direction: SlideStepDirection) => {
+  lastDirection = direction
+  if (stepSlide(direction, currentSlide.value)) {
+    stepVersion.value++
+    return
+  }
+  if (direction === 'forward') handleNext()
+  else handlePrevious()
+}
+
 const goTo = (index: number) => {
+  lastDirection = 'forward'
   currentIndex.value = index
   emit('slideChange', currentIndex.value)
 }
@@ -147,13 +206,13 @@ const handleKeyDown = (e: KeyboardEvent) => {
       break
     case 'ArrowLeft':
     case 'ArrowUp':
-      if (!stepSlide('back', currentSlide.value)) handlePrevious()
+      advance('back')
       break
     case 'ArrowRight':
     case 'ArrowDown':
     case ' ':
       e.preventDefault()
-      if (!stepSlide('forward', currentSlide.value)) handleNext()
+      advance('forward')
       break
     case 'Home':
       goTo(0)
@@ -191,6 +250,7 @@ watch(() => props.isOpen, (open) => {
   if (open) {
     returnFocus = document.activeElement as HTMLElement | null
     document.body.style.overflow = 'hidden'
+    lastDirection = 'forward'
     nextTick(() => {
       syncSlide()
       dialogRef.value?.focus()
@@ -262,7 +322,7 @@ onBeforeUnmount(() => {
       <template v-if="totalSlides > 1">
         <button
           class="slide-lightbox-prev"
-          @click.stop="handlePrevious"
+          @click.stop="advance('back')"
           :disabled="!canGoPrevious"
           aria-label="Anterior"
           :style="{ transition: 'var(--custom-transition-medium)' }"
@@ -272,7 +332,7 @@ onBeforeUnmount(() => {
 
         <button
           class="slide-lightbox-next"
-          @click.stop="handleNext"
+          @click.stop="advance('forward')"
           :disabled="!canGoNext"
           aria-label="Siguiente"
           :style="{ transition: 'var(--custom-transition-medium)' }"
@@ -318,6 +378,7 @@ onBeforeUnmount(() => {
 /* El escenario: 90 % de la ventana. Las diapositivas libres (lienzo) se encajan en
    16:9 dentro, y las bandas que sobran son del fondo. */
 .slide-lightbox-content {
+  position: relative;
   width: 90vw;
   height: 90vh;
   background: var(--vp-c-bg);
@@ -384,6 +445,20 @@ onBeforeUnmount(() => {
 
 .slide-lightbox-content :deep(.slide--lienzo::before) {
   display: none;
+}
+
+/* Transición «fundido»: la que entra aparece y la que sale se desvanece encima de ella. */
+.slide-lightbox-content :deep(.slide.is-entrando) {
+  animation: ep-fundido-entrar 300ms ease both;
+}
+
+.slide-lightbox-content :deep(.slide.is-saliendo) {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  pointer-events: none;
+  animation: ep-fundido-salir 300ms ease both;
 }
 
 /* ============================================================================
@@ -524,9 +599,24 @@ onBeforeUnmount(() => {
   }
 }
 
+@keyframes ep-fundido-entrar {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes ep-fundido-salir {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .slide-lightbox-overlay,
   .slide-lightbox-content {
+    animation: none;
+  }
+
+  .slide-lightbox-content :deep(.slide.is-entrando),
+  .slide-lightbox-content :deep(.slide.is-saliendo) {
     animation: none;
   }
 

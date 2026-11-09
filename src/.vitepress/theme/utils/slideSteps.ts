@@ -8,8 +8,12 @@
 
 export type SlideStepDirection = 'forward' | 'back'
 
-/** Devuelve `true` si ha dado un paso y la tecla no debe cambiar de diapositiva. */
-export type SlideStepper = (direction: SlideStepDirection, slide: HTMLElement) => boolean
+/**
+ * Devuelve `true` si ha dado un paso (o, con `dry`, si lo daría) y la tecla no debe
+ * cambiar de diapositiva. Con `dry` no cambia nada: sirve para saber si un botón
+ * debe estar activo.
+ */
+export type SlideStepper = (direction: SlideStepDirection, slide: HTMLElement, dry: boolean) => boolean
 
 let stepper: SlideStepper | null = null
 
@@ -19,7 +23,7 @@ export function setSlideStepper(fn: SlideStepper | null): void {
 }
 
 /** Pregunta al paso registrado; `false` si no hay ninguno o no hay diapositiva. */
-export function stepSlide(direction: SlideStepDirection, slide: HTMLElement | null): boolean {
+export function stepSlide(direction: SlideStepDirection, slide: HTMLElement | null, dry = false): boolean {
   if (!stepper || !slide) return false
-  return stepper(direction, slide)
+  return stepper(direction, slide, dry)
 }

@@ -46,7 +46,8 @@ const SHADOWS: Record<string, string> = {
   fuerte: '0 0.8cqw 2.4cqw rgb(0 0 0 / 0.3)',
 }
 const ANIMATIONS = ['aparecer', 'desvanecer', 'deslizar-arriba', 'deslizar-izquierda', 'zoom']
-const TRANSITIONS = ['fundido', 'deslizar', 'zoom', 'ninguna']
+// `deslizar` y `zoom` llegan después (plan §11): hasta entonces, un valor desconocido se ignora.
+const TRANSITIONS = ['fundido', 'ninguna']
 
 /** Escapa para un atributo HTML entre comillas dobles (valores que genera EduPress). */
 export function escapeAttr(text: string): string {
