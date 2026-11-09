@@ -89,7 +89,7 @@ https://www.youtube.com/watch?v=jNQXAC9IVRw
 ::::
 
 :::: grafico barras x=20 y=24 w=60 h=auto
-![Alumnado por curso](/img/studio/graficos/barras-0a1b2c3d.svg)
+![Alumnado por curso](/img/studio/graficos/barras-d4d80557.svg)
 
 | Categoría | Alumnado |
 | --- | --- |

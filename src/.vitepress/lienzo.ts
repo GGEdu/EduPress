@@ -443,6 +443,30 @@ export function graficoOpening(info: string, ctx: BoxContext): string {
   return boxOpening(parts)
 }
 
+/**
+ * La tabla del gráfico toma por nombre su título (el `alt` de la imagen): así el lector de
+ * pantalla la anuncia con él. Se hace al pintar la apertura, antes de pintar la tabla. La regla
+ * de VitePress para `table_open` no pinta atributos, así que la apertura pasa a HTML hecho.
+ */
+export function nameGraficoTable(tokens: Token[], idx: number): void {
+  let title = ''
+  let depth = 0
+  for (let i = idx + 1; i < tokens.length; i++) {
+    const t = tokens[i]
+    depth += t.nesting
+    if (depth < 0) return
+    const image = t.type === 'inline' ? t.children?.find((c) => c.type === 'image') : undefined
+    if (!title && image) title = image.content.trim()
+    if (t.type === 'table_open') {
+      if (title) {
+        t.type = 'html_block'
+        t.content = `<table tabindex="0" aria-label="${escapeAttr(title)}">\n`
+      }
+      return
+    }
+  }
+}
+
 /** Los contenedores para `md.use(...)`. `base` es la base del sitio (`PROJECT.basePath`). */
 export function lienzoContainers(base: string): ContainerPlugin[] {
   return [
@@ -465,7 +489,9 @@ export function lienzoContainers(base: string): ContainerPlugin[] {
     // Gráfico de datos: la imagen se ve; la tabla, para el lector de pantalla.
     [container, 'grafico', {
       render(tokens: Token[], idx: number) {
-        return tokens[idx].nesting === 1 ? graficoOpening(tokens[idx].info, { base, onlyImage: false }) : '</div>\n'
+        if (tokens[idx].nesting !== 1) return '</div>\n'
+        nameGraficoTable(tokens, idx)
+        return graficoOpening(tokens[idx].info, { base, onlyImage: false })
       },
     }],
     // Vídeo de YouTube: la URL va dentro del bloque y no sale en la página (ver notasPlugin).
