@@ -425,6 +425,24 @@ export function videoOpening(info: string, ctx: BoxContext, texto: string): stri
   return boxOpening(parts, portada)
 }
 
+/** Tipos de `grafico`: la primera palabra tras el nombre. Solo cambia la clase; el dibujo es el SVG. */
+export const GRAFICO_VARIANTS = ['barras', 'lineas', 'sectores'] as const
+
+/**
+ * `grafico barras x= y= w= h=auto` con la imagen SVG que genera EduPress Studio y, debajo,
+ * la tabla de datos (la fuente de verdad). Se ve la imagen; la tabla queda para el lector
+ * de pantalla (oculta a la vista, no al lector). El SVG lo sanea Studio: aquí es una imagen.
+ */
+export function graficoOpening(info: string, ctx: BoxContext): string {
+  const tokens = parseAttrs(info.trim().replace(/^grafico\b/, ''))
+  const first = tokens[0]
+  const variant = first && first.value === true && (GRAFICO_VARIANTS as readonly string[]).includes(first.key) ? first.key : null
+  const parts = boxParts(attrMap(tokens), { ...ctx, onlyImage: false })
+  parts.classes.push('ep-grafico')
+  if (variant) parts.classes.push(`ep-grafico--${variant}`)
+  return boxOpening(parts)
+}
+
 /** Los contenedores para `md.use(...)`. `base` es la base del sitio (`PROJECT.basePath`). */
 export function lienzoContainers(base: string): ContainerPlugin[] {
   return [
@@ -442,6 +460,12 @@ export function lienzoContainers(base: string): ContainerPlugin[] {
     [container, 'forma', {
       render(tokens: Token[], idx: number) {
         return tokens[idx].nesting === 1 ? formaOpening(tokens[idx].info, { base, onlyImage: false }) : '</div>\n'
+      },
+    }],
+    // Gráfico de datos: la imagen se ve; la tabla, para el lector de pantalla.
+    [container, 'grafico', {
+      render(tokens: Token[], idx: number) {
+        return tokens[idx].nesting === 1 ? graficoOpening(tokens[idx].info, { base, onlyImage: false }) : '</div>\n'
       },
     }],
     // Vídeo de YouTube: la URL va dentro del bloque y no sale en la página (ver notasPlugin).
