@@ -1,4 +1,5 @@
-import { existsSync } from 'node:fs'
+import { copyFileSync, existsSync } from 'node:fs'
+import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 import type { HeadConfig } from 'vitepress'
@@ -299,6 +300,12 @@ const accentBoxContainer: [typeof container, string, { render(tokens: Token[], i
 export default defineConfig({
   base:   basePath,
   outDir: PROJECT.outDir,
+  // Las notas cifradas (config/notas.json, de EduPress Studio) se copian a la raíz del
+  // sitio para la página ?notas. Solo llevan la sal, las vueltas y la llave envuelta.
+  buildEnd(siteConfig) {
+    const origen = fileURLToPath(new URL('./config/notas.json', import.meta.url))
+    if (existsSync(origen)) copyFileSync(origen, join(siteConfig.outDir, 'notas.json'))
+  },
   vite: {
     build: {
       // El proyecto incluye bundles grandes (Mermaid/slides); elevamos el umbral
