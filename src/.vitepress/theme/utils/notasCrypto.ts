@@ -9,8 +9,8 @@
 //        "salt": "<b64url, 16 bytes>", "wrapped": "<iv b64url>:<llave envuelta b64url>" }
 //    La llave del curso son 32 bytes, envueltos con AES-GCM-256 (AAD = curso) bajo una
 //    llave derivada de la frase con PBKDF2-SHA-256 (iterations vueltas, salt).
-//  - Frase: antes de derivar se normaliza con trim(), toLocaleLowerCase('es') y espacios
-//    simples. base64url sin relleno.
+//  - Frase: antes de derivar se normaliza con normalize('NFKD'), trim(), toLocaleLowerCase('es')
+//    y espacios simples (como BIP-39). base64url sin relleno.
 //
 // Nada se guarda: la frase se usa una vez, y la llave desenvuelta vive solo en memoria
 // mientras la página está abierta.
@@ -34,9 +34,9 @@ const decoder = new TextDecoder()
 const NOTA = /^v1:([A-Za-z0-9_-]+):([A-Za-z0-9_-]+)$/
 const BASE64URL = /^[A-Za-z0-9_-]*$/
 
-/** Misma normalización que Studio: la frase escrita de otra forma deriva la misma llave. */
+/** La frase escrita de otra forma (acentos en NFC o NFD, espacios, mayúsculas) deriva la misma llave. */
 export function normalizarFrase(frase: string): string {
-  return frase.trim().toLocaleLowerCase('es').split(/\s+/).join(' ')
+  return frase.normalize('NFKD').trim().toLocaleLowerCase('es').split(/\s+/).join(' ')
 }
 
 export function desdeBase64Url(texto: string): Uint8Array {

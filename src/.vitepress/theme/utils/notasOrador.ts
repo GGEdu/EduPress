@@ -187,6 +187,7 @@ async function desbloquear(input: HTMLInputElement, boton: HTMLButtonElement): P
   input.disabled = true
   mensaje('Comprobando la frase…')
   const generacionInicial = generacion
+  let fallo = false
   try {
     const datos = await disponible
     if (!datos) throw new Error('sin notas')
@@ -194,12 +195,14 @@ async function desbloquear(input: HTMLInputElement, boton: HTMLButtonElement): P
     if (generacionInicial !== generacion) return
     curso = datos
     llave = nueva
+    const cuantas = document.querySelectorAll(NOTAS_PENDIENTES).length
     mostrarFormulario(true)
-    mensaje('')
     descifrarPendientes()
+    mensaje(`Notas visibles en ${cuantas} ${cuantas === 1 ? 'diapositiva' : 'diapositivas'}.`)
     document.getElementById('notas-orador-titulo')?.focus()
   } catch (error) {
     if (generacionInicial !== generacion) return
+    fallo = true
     input.setAttribute('aria-invalid', 'true')
     mensaje(
       error instanceof FraseIncorrecta
@@ -207,11 +210,12 @@ async function desbloquear(input: HTMLInputElement, boton: HTMLButtonElement): P
         : 'No se pueden cargar las notas de este curso. Vuelve a compilar la web o avisa a quien la publica.',
       true,
     )
-    input.focus()
   } finally {
     ocupado = false
     boton.disabled = false
     input.disabled = false
+    // Con el campo ya reactivado (un campo deshabilitado no recibe el foco).
+    if (fallo) input.focus()
   }
 }
 

@@ -43,13 +43,15 @@
 
 .notas-orador__campo input[aria-invalid='true'] { border-color: var(--vp-c-danger-1); }
 
+/* Texto oscuro sobre la marca: el blanco sobre el coral del tema no llega a 4,5:1. */
 .notas-orador button {
   padding: 0.5rem 1rem;
   border: 1px solid var(--vp-c-brand-1);
   border-radius: 8px;
   background: var(--vp-c-brand-1);
-  color: #FFFFFF;
+  color: #1F2937;
   font: inherit;
+  font-weight: 600;
   cursor: pointer;
 }
 
@@ -80,7 +82,7 @@
   margin: 0 0 0.25rem;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--vp-c-text-2);
+  color: var(--vp-c-text-1);
   text-transform: uppercase;
 }
 
@@ -90,3 +92,8 @@
   line-height: 1.6;
   white-space: pre-wrap;
 }
+
+/* En pantalla completa (lo que se proyecta) las notas no se ven nunca. Vale para la
+   pantalla completa actual (una copia) y para la de e2 (la diapositiva viva): las dos
+   son .slide-lightbox-overlay. */
+.slide-lightbox-overlay .ep-notas__texto { display: none !important; }
