@@ -1,9 +1,11 @@
+import { existsSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 import type { HeadConfig } from 'vitepress'
 import type Token from 'markdown-it/lib/token.mjs'
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 import container from 'markdown-it-container'
-import { escapeTitle, lienzoContainers } from './lienzo'
+import { escapeTitle, lienzoContainers, notasPlugin } from './lienzo'
 
 // ── Importar desde config/ ─────────────────────────────────────────────────
 // 👤 Edita los archivos de config/ para personalizar el sitio.
@@ -235,6 +237,10 @@ const headTags: HeadConfig[] = [
 if (COLORS.typography.fontImportUrl) {
   headTags.push(['link', { rel: 'stylesheet', href: COLORS.typography.fontImportUrl }])
 }
+// Fuentes copiadas al curso (las que elige EduPress Studio): solo si el curso las tiene.
+if (existsSync(fileURLToPath(new URL('../public/fonts/fonts.css', import.meta.url)))) {
+  headTags.push(['link', { rel: 'stylesheet', href: `${basePath}fonts/fonts.css` }])
+}
 
 // ── Pre-extraer contenedores Markdown ────────────────────────────────────────
 const infoBoxContainer    = createContainer('info-box',    'InfoBox', 'info')
@@ -319,6 +325,7 @@ export default defineConfig({
       md.use(...accentBoxContainer)
       // Diapositivas libres (lienzo.ts y theme/css/lienzo.css).
       for (const plugin of lienzoContainers(basePath)) md.use(...plugin)
+      md.use(notasPlugin)
     }
   },
   head: headTags,

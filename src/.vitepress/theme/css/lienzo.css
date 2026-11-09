@@ -93,6 +93,10 @@
   object-fit: var(--ajuste, cover);
 }
 
+/* Flechas y líneas (::: forma): el SVG llena el hueco y toma el color de «relleno». */
+.ep-forma { line-height: 0; }
+.ep-forma__svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
 /* Dentro de <SlidesViewer>: el lienzo es la diapositiva entera, sin margen. */
 .slide.slide--lienzo { padding: 0; min-height: 0; display: block; }
 /* El lienzo no se mueve al pasar el ratón, como las demás diapositivas. */
@@ -120,6 +124,16 @@
   }
 
   .ep-caja.decorativa { display: none; }
+
+  /* Una flecha que no es decorativa se queda, con sus proporciones y su volteo
+     (el giro no: en una columna no apuntaría a nada). */
+  .ep-forma {
+    width: min(100%, 12rem) !important;
+    height: auto !important;
+    aspect-ratio: var(--proporcion, 6 / 1);
+    min-height: 0.375rem;
+    transform: var(--volteo, none) !important;
+  }
 
   /* La imagen que cubría casi todo el lienzo pasa a ser su fondo. */
   .ep-caja.es-fondo {

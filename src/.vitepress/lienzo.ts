@@ -1,4 +1,4 @@
-// ── Diapositivas libres: contenedores `lienzo` y `caja` ─────────────────────
+// ── Diapositivas libres: contenedores `lienzo`, `caja`, `forma` y `notas` ────
 //
 //   ::::: lienzo fondo=#F5EFE9
 //   :::: caja x=6 y=8 w=56 h=auto tam=32
@@ -16,7 +16,7 @@
 import type Token from 'markdown-it/lib/token.mjs'
 import container from 'markdown-it-container'
 
-type ContainerPlugin = [typeof container, string, { render(tokens: Token[], idx: number): string }]
+type ContainerPlugin = [typeof container, string, { render(tokens: Token[], idx: number, options?: unknown, env?: { relativePath?: string }): string }]
 
 interface Attr {
   key: string
@@ -163,8 +163,16 @@ export interface BoxContext {
   onlyImage: boolean
 }
 
-export function cajaOpening(info: string, ctx: BoxContext): string {
-  const attrs = attrMap(parseAttrs(info.trim().replace(/^caja\b/, '')))
+interface BoxParts {
+  style: string[]
+  classes: string[]
+  data: string[]
+  w: number | null
+  h: number | null
+}
+
+/** Lo común a una caja y a una forma: posición, tamaño, giro, capa, aspecto y animación. */
+function boxParts(attrs: Map<string, string | true>, ctx: BoxContext): BoxParts {
   const style: string[] = []
   const classes = ['ep-caja']
   const data: string[] = []
@@ -187,6 +195,8 @@ export function cajaOpening(info: string, ctx: BoxContext): string {
   if (flip === 'h' || flip === 'hv') transforms.push('scaleX(-1)')
   if (flip === 'v' || flip === 'hv') transforms.push('scaleY(-1)')
   if (transforms.length > 0) style.push(`transform:${transforms.join(' ')}`)
+  const flips = transforms.filter((t) => t.startsWith('scale'))
+  if (flips.length > 0) style.push(`--volteo:${flips.join(' ')}`)
 
   const z = num(attrs.get('z'), 0, 999, true)
   if (z !== null) style.push(`z-index:${z}`)
@@ -230,8 +240,96 @@ export function cajaOpening(info: string, ctx: BoxContext): string {
     if (w !== null && h !== null && coveredArea(x ?? 0, y ?? 0, w, h) >= COVER_MIN) classes.push('es-fondo')
   }
 
+  return { style, classes, data, w, h }
+}
+
+function boxOpening({ style, classes, data }: BoxParts, inner = ''): string {
   const dataAttrs = data.length > 0 ? ` ${data.join(' ')}` : ''
-  return `<div class="${classes.join(' ')}" style="${escapeAttr(style.join(';'))}"${dataAttrs}>\n`
+  return `<div class="${classes.join(' ')}" style="${escapeAttr(style.join(';'))}"${dataAttrs}>${inner}\n`
+}
+
+export function cajaOpening(info: string, ctx: BoxContext): string {
+  return boxOpening(boxParts(attrMap(parseAttrs(info.trim().replace(/^caja\b/, ''))), ctx))
+}
+
+/** Tipos de `forma`: la primera palabra tras el nombre. */
+export const FORMA_VARIANTS = ['flecha', 'linea', 'flecha-doble'] as const
+type FormaVariant = (typeof FORMA_VARIANTS)[number]
+
+const round = (n: number): number => Math.round(n * 100) / 100
+
+/** Lo que se lee de una forma que no es decorativa. `texto=` lo cambia. */
+const FORMA_LABELS: Record<FormaVariant, string> = { flecha: 'Flecha', linea: 'Línea', 'flecha-doble': 'Flecha doble' }
+
+/** Proporciones del hueco de una forma en el lienzo de 16:9 (ancho y alto, en las mismas unidades). */
+export function formaSize(w: number, h: number | null): { width: number; height: number } {
+  const width = Math.max(1, w * 16)
+  return { width, height: Math.max(1, h === null ? width * 0.12 : h * 9) }
+}
+
+/**
+ * El SVG de una flecha o una línea, en unidades del propio hueco: un lienzo de 16:9
+ * hace que `w` valga 16 unidades por punto y `h`, 9. Así la punta no se deforma.
+ */
+export function formaSvg(variant: FormaVariant, w: number, h: number | null, label: string | null = null): string {
+  const { width, height } = formaSize(w, h)
+  const mid = height / 2
+  const stroke = Math.max(1, Math.min(height * 0.3, width * 0.08))
+  const head = Math.min(height, width / 3)
+  // La línea entra un poco en la punta: sin hueco entre las dos piezas al suavizar los bordes.
+  const start = variant === 'flecha-doble' ? head * 0.6 : 0
+  const end = variant === 'linea' ? width : width - head * 0.6
+  const parts = [`<line x1="${round(start)}" y1="${round(mid)}" x2="${round(end)}" y2="${round(mid)}" stroke="currentColor" stroke-width="${round(stroke)}"/>`]
+  if (variant !== 'linea') parts.push(`<polygon points="${round(width - head)},0 ${round(width)},${round(mid)} ${round(width - head)},${round(height)}" fill="currentColor"/>`)
+  if (variant === 'flecha-doble') parts.push(`<polygon points="${round(head)},0 0,${round(mid)} ${round(head)},${round(height)}" fill="currentColor"/>`)
+  const a11y = label === null ? 'aria-hidden="true"' : `role="img" aria-label="${escapeAttr(label)}"`
+  return `<svg class="ep-forma__svg" viewBox="0 0 ${round(width)} ${round(height)}" preserveAspectRatio="none" ${a11y} focusable="false">${parts.join('')}</svg>`
+}
+
+/** `forma flecha x= y= w= h= relleno=marca decorativa`: dibujada en SVG al compilar. */
+export function formaOpening(info: string, ctx: BoxContext): string {
+  const tokens = parseAttrs(info.trim().replace(/^forma\b/, ''))
+  const first = tokens[0]
+  const variant: FormaVariant =
+    first && first.value === true && (FORMA_VARIANTS as readonly string[]).includes(first.key) ? (first.key as FormaVariant) : 'flecha'
+  const attrs = attrMap(tokens)
+  const parts = boxParts(attrs, { ...ctx, onlyImage: false })
+  parts.classes.push('ep-forma')
+  parts.style.push(`color:${cssColor(attrs.get('relleno')) ?? 'var(--ep-marca)'}`)
+  // Al apilar, la forma conserva sus proporciones: si no, la punta se aplasta.
+  const { width, height } = formaSize(parts.w ?? 50, parts.h)
+  parts.style.push(`--proporcion:${round(width)} / ${round(height)}`)
+  const text = attrs.get('texto')
+  const label = attrs.get('decorativa') === true ? null : typeof text === 'string' && text.trim() !== '' ? text.trim().slice(0, 200) : FORMA_LABELS[variant]
+  return boxOpening(parts, formaSvg(variant, parts.w ?? 50, parts.h, label))
+}
+
+/**
+ * Las notas solo se publican cifradas (`v1:<iv>:<texto cifrado>`, en base64url). Unas
+ * notas escritas a mano en claro no salen: se avisa al compilar.
+ */
+export const NOTAS_FORMAT = /^v1:[A-Za-z0-9_-]+:[A-Za-z0-9_-]+$/
+
+/** Lo que hay dentro de cada `::: notas` (el texto cifrado): va a un atributo, nunca a la página. */
+function collectNotes(state: { tokens: Token[] }): void {
+  const tokens = state.tokens
+  for (let i = 0; i < tokens.length; i++) {
+    if (tokens[i].type !== 'container_notas_open') continue
+    let depth = 0
+    let close = i + 1
+    for (; close < tokens.length; close++) {
+      depth += tokens[close].nesting
+      if (depth < 0) break
+    }
+    const inner = tokens.slice(i + 1, close)
+    const text = inner
+      .filter((t) => t.type === 'inline' || t.type === 'fence' || t.type === 'code_block')
+      .map((t) => t.content)
+      .join('\n')
+      .trim()
+    tokens[i].meta = { ...(tokens[i].meta ?? {}), notas: text }
+    tokens.splice(i + 1, inner.length)
+  }
 }
 
 /** ¿Lo que hay entre la apertura `idx` y su cierre es solo una imagen? */
@@ -250,6 +348,11 @@ function containsOnlyImage(tokens: Token[], idx: number): boolean {
   return open.type === 'paragraph_open' && close.type === 'paragraph_close' && children.length === 1 && children[0].type === 'image'
 }
 
+/** Quita el contenido de las notas del árbol de tokens: no sale ni en la página ni en la búsqueda. */
+export function notasPlugin(md: { core: { ruler: { push(name: string, fn: (state: { tokens: Token[] }) => void): void } } }): void {
+  md.core.ruler.push('ep_notas', collectNotes)
+}
+
 /** Los contenedores para `md.use(...)`. `base` es la base del sitio (`PROJECT.basePath`). */
 export function lienzoContainers(base: string): ContainerPlugin[] {
   return [
@@ -262,6 +365,24 @@ export function lienzoContainers(base: string): ContainerPlugin[] {
       render(tokens: Token[], idx: number) {
         if (tokens[idx].nesting !== 1) return '</div>\n'
         return cajaOpening(tokens[idx].info, { base, onlyImage: containsOnlyImage(tokens, idx) })
+      },
+    }],
+    [container, 'forma', {
+      render(tokens: Token[], idx: number) {
+        return tokens[idx].nesting === 1 ? formaOpening(tokens[idx].info, { base, onlyImage: false }) : '</div>\n'
+      },
+    }],
+    // Notas del orador cifradas: ocultas, con el texto cifrado en un atributo (lo lee ?notas).
+    [container, 'notas', {
+      render(tokens: Token[], idx: number, _options?: unknown, env?: { relativePath?: string }) {
+        if (tokens[idx].nesting !== 1) return ''
+        const text = String(tokens[idx].meta?.notas ?? '')
+        if (text !== '' && !NOTAS_FORMAT.test(text)) {
+          const where = env?.relativePath ? ` (${env.relativePath})` : ''
+          console.warn(`[EduPress] Unas notas del orador no están cifradas: no se publican${where}. Escríbelas desde EduPress Studio.`)
+          return '<div class="ep-notas" hidden data-notas=""></div>\n'
+        }
+        return `<div class="ep-notas" hidden data-notas="${escapeAttr(text)}"></div>\n`
       },
     }],
   ]
