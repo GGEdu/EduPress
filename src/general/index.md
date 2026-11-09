@@ -33,6 +33,7 @@ Todo lo que necesitas para crear y publicar tu curso. Elige el punto de entrada 
 |------|-------------|
 | [7. Crear contenidos](./contenidos/7-crear-contenidos) | Páginas Markdown, frontmatter y bloques |
 | [8. Catálogo de componentes](./contenidos/8-componentes) | Todos los bloques disponibles con sintaxis Markdown |
+| [Ecuaciones](./contenidos/16-ecuaciones) | Fórmulas en línea y en bloque con `$…$` y `$$…$$` |
 
 ## 🎞️ Diapositivas e imágenes
 

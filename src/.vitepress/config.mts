@@ -315,6 +315,8 @@ export default defineConfig({
     },
   },
   markdown: {
+    // Ecuaciones con $…$ y $$…$$ (MathJax, con markdown-it-mathjax3 en devDependencies).
+    math: true,
     config(md) {
       md.use(tabsMarkdownPlugin)
       md.use(...infoBoxContainer)
