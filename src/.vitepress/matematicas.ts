@@ -1,14 +1,18 @@
+import { readFileSync } from 'node:fs'
+
 // ── Ecuaciones: aviso de `$$` sin cerrar ───────────────────────────────────
 //
 // Un `$$` que no se cierra no da error: markdown-it-mathjax3 se come el resto de la
 // página como si fuera una fórmula. Este plugin cuenta los `$$` de cada página, sin
-// contar lo que va en bloques de código ni en `código`, y avisa en la consola del
-// build si quedan impares. No rompe el build: la validación que bloquea la
-// publicación la hace EduPress Studio.
+// contar el frontmatter, los bloques de código, los spans de código ni las filas de
+// tabla, y avisa en la consola del build con el fichero y la línea si quedan impares.
+// Las líneas son las del fichero original: VitePress quita el frontmatter antes de
+// renderizar, así que el plugin lee el fichero (env.realPath) y no state.src. No
+// rompe el build: la validación que bloquea la publicación la hace EduPress Studio.
 
 interface CoreState {
   src: string
-  env?: { relativePath?: string }
+  env?: { path?: string; realPath?: string; relativePath?: string }
 }
 
 /** Lo que cuenta como un `$$` de verdad: no el `\$` escapado. */
@@ -17,8 +21,9 @@ const DOUBLE_DOLLAR = /\$\$/g
 const FENCE_OPEN = /^ {0,3}(`{3,}|~{3,})/
 
 /**
- * Vacía bloques de código y spans de código, línea a línea, para que no cuenten. Las
- * líneas se conservan: el número de línea del aviso es el del fichero.
+ * Vacía el frontmatter, los bloques de código, los spans de código y las filas de
+ * tabla, para que no cuenten. Las líneas se conservan: el número de línea del aviso
+ * es el del fichero.
  */
 export function sinCodigo(src: string): string {
   const out: string[] = []
@@ -34,6 +39,11 @@ export function sinCodigo(src: string): string {
     if (fence !== null) {
       const close = new RegExp(`^ {0,3}${fence[0]}{${fence.length},}\\s*$`)
       if (close.test(line)) fence = null
+      out.push('')
+      continue
+    }
+    // Una fila de tabla no cuenta: un `$$` suelto en una celda no es un bloque.
+    if (/^\s*\|/.test(line)) {
       out.push('')
       continue
     }
@@ -68,7 +78,18 @@ export function avisarDobleDolar(src: string, relativePath = 'página desconocid
   )
 }
 
+/** El texto original de la página, con su frontmatter. Si no se puede leer, el que recibe el render. */
+function textoOriginal(state: CoreState): string {
+  const file = state.env?.realPath ?? state.env?.path
+  if (!file) return state.src
+  try {
+    return readFileSync(file, 'utf-8')
+  } catch {
+    return state.src
+  }
+}
+
 /** Plugin de markdown-it: se ejecuta sobre cada página al compilarla. */
 export function avisoDobleDolarPlugin(md: { core: { ruler: { push(name: string, fn: (state: CoreState) => void): void } } }): void {
-  md.core.ruler.push('ep_aviso_doble_dolar', (state) => avisarDobleDolar(state.src, state.env?.relativePath))
+  md.core.ruler.push('ep_aviso_doble_dolar', (state) => avisarDobleDolar(textoOriginal(state), state.env?.relativePath))
 }
