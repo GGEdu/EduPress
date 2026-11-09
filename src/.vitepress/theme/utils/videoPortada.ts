@@ -25,17 +25,22 @@ function reproductorYouTube(id: string, titulo: string): HTMLIFrameElement {
   return iframe
 }
 
-/** Instala el listener una sola vez por carga de página. */
+/**
+ * Instala el listener una sola vez por carga de página. Va en fase de captura y corta la
+ * propagación: así el clic de la portada no llega a la diapositiva (que abriría la
+ * pantalla completa) y solo se crea un reproductor.
+ */
 export function initVideoPortadas(): void {
   if (instalado || typeof document === 'undefined') return
   instalado = true
   document.addEventListener('click', (event) => {
     const target = event.target instanceof Element ? event.target.closest<HTMLButtonElement>(PORTADA) : null
     if (!target) return
+    event.stopPropagation()
     const id = target.dataset.videoId ?? ''
-    if (!ID.test(id)) return
+    if (!ID.test(id) || !target.isConnected) return
     const iframe = reproductorYouTube(id, target.dataset.titulo || 'Vídeo de YouTube')
     target.replaceWith(iframe)
     iframe.focus()
-  })
+  }, true)
 }

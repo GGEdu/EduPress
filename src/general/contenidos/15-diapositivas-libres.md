@@ -102,9 +102,11 @@ Con `prefers-reduced-motion` no se mueve nada.
 
 ### Vídeos de YouTube
 
-Un vídeo es un bloque `video` con el enlace dentro y, si quieres, `titulo="…"`. Hasta
-que alguien pulsa la portada, YouTube no recibe nada. Solo se aceptan enlaces de
-`youtube.com`, `youtu.be` o `youtube-nocookie.com` (`watch`, `embed`, `shorts` o `live`).
+Un vídeo es un bloque `video` con el enlace dentro y, si quieres, `titulo="…"`. Para
+una comilla doble dentro del título, escríbela como `\"`; las comillas simples no sirven
+para delimitarlo. Hasta que alguien pulsa la portada, YouTube no recibe nada. Solo se
+aceptan enlaces de `youtube.com`, `youtu.be` o `youtube-nocookie.com` (`watch`, `embed`,
+`shorts` o `live`).
 
 Los controles y los subtítulos son los del reproductor de YouTube: el botón CC muestra
 los subtítulos, y si el vídeo tiene en español, son los que se eligen primero.

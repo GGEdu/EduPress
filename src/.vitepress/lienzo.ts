@@ -416,7 +416,7 @@ export function videoOpening(info: string, ctx: BoxContext, texto: string): stri
   if (id === null) {
     console.warn(`[EduPress] Un bloque \`video\` no tiene un enlace de YouTube válido: no se muestra.`)
     parts.classes.push('ep-video--no-valido')
-    return boxOpening(parts, '<p class="ep-video__aviso">Vídeo no disponible: el enlace no es de YouTube.</p>')
+    return boxOpening(parts, '<p class="ep-video__aviso">Vídeo no disponible.</p>')
   }
   const label = escapeAttr(`Reproducir vídeo: ${title}. Se carga YouTube al pulsar.`)
   const portada = `<button type="button" class="ep-video__portada" data-video-id="${id}" data-titulo="${escapeAttr(title)}" aria-label="${label}">`
