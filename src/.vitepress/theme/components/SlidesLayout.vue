@@ -13,7 +13,7 @@
  * Luego escribir el contenido normal con --- entre diapositivas.
  * ¡No hace falta usar ninguna etiqueta Vue!
  */
-import { ref, onMounted } from 'vue'
+import { ref, nextTick, onMounted } from 'vue'
 import { useData, Content } from 'vitepress'
 import SlideLightbox from './SlideLightbox.vue'
 import { useSlideProcessor, useSlideInteractions } from '../composables'
@@ -28,6 +28,10 @@ const contentRef = ref(null)
 const isLightboxOpen = ref(false)
 const lightboxIndex = ref(0)
 const allSlides = ref([])
+// Botón para el teclado: abre la presentación y, al cerrar, el foco vuelve a él.
+const openButtonRef = ref(null)
+const openedFromButton = ref(false)
+const ready = ref(false)
 
 // Composables
 const { processSlides, getSlides } = useSlideProcessor({
@@ -44,12 +48,24 @@ const { setupAllSlides } = useSlideInteractions({
 
 // Lightbox
 const openLightbox = (index) => {
+  // Los clics dentro de la pantalla completa llegan aquí por el listener de cada diapositiva:
+  // con la pantalla abierta no deben saltar a la diapositiva en la que se hizo clic al principio.
+  if (isLightboxOpen.value) return
   lightboxIndex.value = index
   isLightboxOpen.value = true
 }
 
+const openFromButton = () => {
+  openedFromButton.value = true
+  openLightbox(0)
+}
+
 const closeLightbox = () => {
   isLightboxOpen.value = false
+  if (openedFromButton.value) {
+    openedFromButton.value = false
+    nextTick(() => openButtonRef.value?.focus())
+  }
 }
 
 const handleSlideChange = (newIndex) => {
@@ -90,6 +106,7 @@ onMounted(async () => {
 
   // Configurar interacciones (hover, click, lightbox)
   setupAllSlides(allSlides.value, openLightbox)
+  ready.value = true
 })
 
 </script>
@@ -104,6 +121,18 @@ onMounted(async () => {
         {{ frontmatter.description }}
       </p>
     </header>
+
+    <!-- Botón para el teclado (fuera del contenedor: el procesado reescribe sus hijos) -->
+    <div class="slides-toolbar">
+      <button
+        ref="openButtonRef"
+        type="button"
+        class="slides-open-button"
+        :disabled="!ready"
+        @click="openFromButton">
+        Ver en pantalla completa
+      </button>
+    </div>
 
     <!-- Contenedor principal de slides -->
     <section
@@ -134,6 +163,37 @@ onMounted(async () => {
 .slides-layout-page {
   max-width: 100%;
   padding: 0;
+}
+
+.slides-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 var(--custom-space-4) var(--custom-space-3);
+}
+
+.slides-open-button {
+  padding: var(--custom-space-2) var(--custom-space-4);
+  border: var(--custom-border-width-thin) solid var(--vp-c-brand-1);
+  border-radius: var(--custom-radius-md);
+  background: var(--vp-c-bg);
+  color: var(--vp-c-brand-1);
+  font: inherit;
+  font-weight: var(--custom-font-weight-semibold);
+  cursor: pointer;
+}
+
+.slides-open-button:hover:not(:disabled) {
+  background: var(--vp-c-brand-soft);
+}
+
+.slides-open-button:focus-visible {
+  outline: 3px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+
+.slides-open-button:disabled {
+  opacity: var(--custom-opacity-disabled);
+  cursor: not-allowed;
 }
 
 /* Cabecera del documento */

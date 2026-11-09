@@ -53,6 +53,25 @@ export interface UseSlideInteractionsReturn {
 /**
  * Hook para manejar interacciones de slides
  */
+/**
+ * Lo que no abre la presentación al pulsarlo: enlaces, controles, pestañas, imágenes,
+ * diagramas, la portada del vídeo y el panel de notas.
+ */
+export const DEFAULT_EXCLUDED = [
+  'IMG',
+  '.mermaid-container',
+  'a',
+  'button',
+  'input',
+  'select',
+  'textarea',
+  'label',
+  '[role="tab"]',
+  '.plugin-tabs--tab',
+  '.ep-video',
+  '.ep-notas'
+]
+
 export function useSlideInteractions(
   options: UseSlideInteractionsOptions = {}
 ): UseSlideInteractionsReturn {
@@ -60,7 +79,7 @@ export function useSlideInteractions(
     enableHover = true,
     enableClick = true,
     hoverScale = 1.02,
-    excludeSelectors = ['IMG', '.mermaid-container']
+    excludeSelectors = DEFAULT_EXCLUDED
   } = options
 
   // Almacenar event listeners para cleanup
@@ -104,19 +123,15 @@ export function useSlideInteractions(
    * Verifica si el clic fue en un elemento excluido
    */
   const isExcludedElement = (event: Event): boolean => {
-    const target = event.target as HTMLElement
-    
-    for (const selector of excludeSelectors) {
-      if (typeof selector === 'string') {
-        // Es un tag name (ej: 'IMG')
-        if (target.tagName === selector) return true
-        // Es un selector CSS (ej: '.mermaid-container')
-        if (selector.startsWith('.') || selector.startsWith('#')) {
-          if (target.closest(selector)) return true
-        }
-      }
-    }
-    return false
+    const target = event.target as Element | null
+    const slide = event.currentTarget as Element | null
+    if (!target || typeof target.closest !== 'function') return false
+
+    return excludeSelectors.some((selector) => {
+      const hit = target.closest(selector)
+      // Solo cuenta lo que está dentro de la diapositiva, no un ancestro de la página.
+      return !!hit && (!slide || slide.contains(hit))
+    })
   }
 
   /**
