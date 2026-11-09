@@ -1,4 +1,4 @@
-// ── Diapositivas libres: contenedores `lienzo`, `caja`, `forma` y `notas` ────
+// ── Diapositivas libres: contenedores `lienzo`, `caja`, `forma`, `video` y `notas` ──
 //
 //   ::::: lienzo fondo=#F5EFE9
 //   :::: caja x=6 y=8 w=56 h=auto tam=32
@@ -322,11 +322,17 @@ export function formaOpening(info: string, ctx: BoxContext): string {
  */
 export const NOTAS_FORMAT = /^v1:[A-Za-z0-9_-]+:[A-Za-z0-9_-]+$/
 
-/** Lo que hay dentro de cada `::: notas` (el texto cifrado): va a un atributo, nunca a la página. */
-function collectNotes(state: { tokens: Token[] }): void {
+/**
+ * Los bloques cuyo contenido es texto crudo, no Markdown: `notas` (el texto cifrado) y
+ * `video` (la URL). Su texto va a `meta.texto` y sale de los tokens: nunca llega a la
+ * página ni a la búsqueda como párrafos.
+ */
+const TEXT_BLOCKS = ['container_notas_open', 'container_video_open']
+
+function collectBlockTexts(state: { tokens: Token[] }): void {
   const tokens = state.tokens
   for (let i = 0; i < tokens.length; i++) {
-    if (tokens[i].type !== 'container_notas_open') continue
+    if (!TEXT_BLOCKS.includes(tokens[i].type)) continue
     let depth = 0
     let close = i + 1
     for (; close < tokens.length; close++) {
@@ -339,7 +345,7 @@ function collectNotes(state: { tokens: Token[] }): void {
       .map((t) => t.content)
       .join('\n')
       .trim()
-    tokens[i].meta = { ...(tokens[i].meta ?? {}), notas: text }
+    tokens[i].meta = { ...(tokens[i].meta ?? {}), texto: text }
     tokens.splice(i + 1, inner.length)
   }
 }
@@ -360,9 +366,63 @@ function containsOnlyImage(tokens: Token[], idx: number): boolean {
   return open.type === 'paragraph_open' && close.type === 'paragraph_close' && children.length === 1 && children[0].type === 'image'
 }
 
-/** Quita el contenido de las notas del árbol de tokens: no sale ni en la página ni en la búsqueda. */
+/** Quita el texto de `notas` y de `video` del árbol de tokens (ver `collectBlockTexts`). */
 export function notasPlugin(md: { core: { ruler: { push(name: string, fn: (state: { tokens: Token[] }) => void): void } } }): void {
-  md.core.ruler.push('ep_notas', collectNotes)
+  md.core.ruler.push('ep_bloques', collectBlockTexts)
+}
+
+/** Identificador de un vídeo de YouTube: 11 caracteres de `[A-Za-z0-9_-]`. */
+export const YOUTUBE_ID = /^[A-Za-z0-9_-]{11}$/
+const YOUTUBE_HOSTS = ['youtube.com', 'www.youtube.com', 'm.youtube.com', 'youtu.be', 'youtube-nocookie.com', 'www.youtube-nocookie.com']
+const YOUTUBE_PATHS = ['embed', 'shorts', 'live']
+
+/**
+ * El identificador de un enlace de YouTube (`watch?v=`, `youtu.be/`, `embed/`, `shorts/`,
+ * `live/`) o el identificador solo. Cualquier otra cosa, incluido un `javascript:` o
+ * un dominio ajeno, da `null`: la página nunca usa la URL, solo el identificador.
+ */
+export function youtubeId(raw: string): string | null {
+  const text = raw.trim().replace(/^<|>$/g, '').trim()
+  if (YOUTUBE_ID.test(text)) return text
+  let url: URL
+  try {
+    url = new URL(text)
+  } catch {
+    return null
+  }
+  if (url.protocol !== 'https:' || !YOUTUBE_HOSTS.includes(url.hostname)) return null
+  const parts = url.pathname.split('/').filter(Boolean)
+  let id: string | null = null
+  if (url.hostname === 'youtu.be') id = parts[0] ?? null
+  else if (url.pathname === '/watch') id = url.searchParams.get('v')
+  else if (YOUTUBE_PATHS.includes(parts[0])) id = parts[1] ?? null
+  return id !== null && YOUTUBE_ID.test(id) ? id : null
+}
+
+const VIDEO_TITLE = 'Vídeo de YouTube'
+
+/**
+ * `video x= y= w= h= titulo="…"` con la URL dentro. Se pinta una portada neutra (sin
+ * pedir nada a YouTube). Al pulsarla, `theme/utils/videoPortada.ts` cambia la portada
+ * por el reproductor de `youtube-nocookie.com`.
+ */
+export function videoOpening(info: string, ctx: BoxContext, texto: string): string {
+  const attrs = attrMap(parseAttrs(info.trim().replace(/^video\b/, '')))
+  const parts = boxParts(attrs, { ...ctx, onlyImage: false })
+  parts.classes.push('ep-video')
+  const titleAttr = attrs.get('titulo')
+  const title = (typeof titleAttr === 'string' && titleAttr.trim() !== '' ? titleAttr.trim() : VIDEO_TITLE).slice(0, 120)
+  const id = youtubeId(texto)
+  if (id === null) {
+    console.warn(`[EduPress] Un bloque \`video\` no tiene un enlace de YouTube válido: no se muestra.`)
+    parts.classes.push('ep-video--no-valido')
+    return boxOpening(parts, '<p class="ep-video__aviso">Vídeo no disponible: el enlace no es de YouTube.</p>')
+  }
+  const label = escapeAttr(`Reproducir vídeo: ${title}. Se carga YouTube al pulsar.`)
+  const portada = `<button type="button" class="ep-video__portada" data-video-id="${id}" data-titulo="${escapeAttr(title)}" aria-label="${label}">`
+    + '<span class="ep-video__play" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>'
+    + `<span class="ep-video__titulo">${escapeAttr(title)}</span></button>`
+  return boxOpening(parts, portada)
 }
 
 /** Los contenedores para `md.use(...)`. `base` es la base del sitio (`PROJECT.basePath`). */
@@ -384,11 +444,18 @@ export function lienzoContainers(base: string): ContainerPlugin[] {
         return tokens[idx].nesting === 1 ? formaOpening(tokens[idx].info, { base, onlyImage: false }) : '</div>\n'
       },
     }],
+    // Vídeo de YouTube: la URL va dentro del bloque y no sale en la página (ver notasPlugin).
+    [container, 'video', {
+      render(tokens: Token[], idx: number) {
+        if (tokens[idx].nesting !== 1) return '</div>\n'
+        return videoOpening(tokens[idx].info, { base, onlyImage: false }, String(tokens[idx].meta?.texto ?? ''))
+      },
+    }],
     // Notas del orador cifradas: ocultas, con el texto cifrado en un atributo (lo lee ?notas).
     [container, 'notas', {
       render(tokens: Token[], idx: number, _options?: unknown, env?: { relativePath?: string }) {
         if (tokens[idx].nesting !== 1) return ''
-        const text = String(tokens[idx].meta?.notas ?? '')
+        const text = String(tokens[idx].meta?.texto ?? '')
         if (text !== '' && !NOTAS_FORMAT.test(text)) {
           const where = env?.relativePath ? ` (${env.relativePath})` : ''
           console.warn(`[EduPress] Unas notas del orador no están cifradas: no se publican${where}. Escríbelas desde EduPress Studio.`)

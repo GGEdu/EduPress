@@ -8,6 +8,7 @@ import customEnhanceApp from './enhanceApp'
 import { initializeHeaderScrollController } from './js/headerScrollController'
 import { initLightbox } from './utils/lightboxManager'
 import { initNotasOrador } from './utils/notasOrador'
+import { initVideoPortadas } from './utils/videoPortada'
 import SlidesViewer from './components/SlidesViewer.vue'
 import SlidesLayout from './components/SlidesLayout.vue'
 import SidebarLogos from './components/SidebarLogos.vue'
@@ -104,6 +105,7 @@ export default {
 
     // 5) Inicializar el controlador del header solo en el cliente
     if (typeof window !== 'undefined') {
+      initVideoPortadas(); // Portadas de vídeo de las diapositivas libres (delegación de clics)
       let diagramCounter = 0; // Contador global para IDs únicos
 
       const initMermaid = async () => {
