@@ -22,6 +22,14 @@ interface StepState {
 
 const states = new WeakMap<HTMLElement, StepState>()
 
+// Región aria-live (oculta a la vista) de la pantalla completa: anuncia «Paso N de M».
+let liveRegion: HTMLElement | null = null
+
+/** La pone SlideLightbox al abrirse y la quita (`null`) al cerrarse. */
+export function setStepLiveRegion(el: HTMLElement | null): void {
+  liveRegion = el
+}
+
 export function prefersReducedMotion(): boolean {
   return typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 }
@@ -39,6 +47,7 @@ function paint(state: StepState): void {
     const rank = state.steps.indexOf(stepOf(box))
     box.classList.toggle('is-visible', rank < state.shown)
   }
+  if (liveRegion) liveRegion.textContent = `Paso ${state.shown} de ${state.steps.length}`
 }
 
 /** Antes de mostrar la diapositiva en pantalla completa. `entering` dice de dónde viene. */
@@ -55,6 +64,7 @@ export function prepareSlide(slide: HTMLElement, entering: 'forward' | 'back'): 
 /** Al volver a la página: sin pasos, todo visible. */
 export function releaseSlide(slide: HTMLElement): void {
   states.delete(slide)
+  if (liveRegion) liveRegion.textContent = ''
   slide.classList.remove('is-presentando')
   animatedBoxes(slide).forEach((box) => box.classList.remove('is-visible'))
 }

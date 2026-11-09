@@ -4,7 +4,7 @@ import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import { useData } from 'vitepress'
 import { attachLightboxListeners, createLightbox } from '../utils/lightboxManager'
 import { stepSlide, type SlideStepDirection } from '../utils/slideSteps'
-import { prepareSlide, releaseSlide, prefersReducedMotion } from '../utils/slideAnimations'
+import { prepareSlide, releaseSlide, prefersReducedMotion, setStepLiveRegion } from '../utils/slideAnimations'
 
 /**
  * Pantalla completa de las diapositivas.
@@ -43,6 +43,7 @@ const FADE_MS = 300
 // Referencias
 const dialogRef = ref<HTMLElement | null>(null)
 const stageRef = ref<HTMLElement | null>(null)
+const stepLiveRef = ref<HTMLElement | null>(null)
 const currentIndex = ref(props.initialIndex)
 // Sube cuando cambia un paso, para que los botones se actualicen.
 const stepVersion = ref(0)
@@ -267,6 +268,8 @@ watch(currentIndex, () => {
   if (props.isOpen) nextTick(syncSlide)
 })
 
+watch(stepLiveRef, (el) => setStepLiveRegion(el), { flush: 'post' })
+
 watch(stageRef, (el, old) => {
   old?.removeEventListener('click', onStageClick, true)
   el?.addEventListener('click', onStageClick, true)
@@ -307,6 +310,9 @@ onBeforeUnmount(() => {
         ref="stageRef"
         class="slide-lightbox-content"
       />
+
+      <!-- Anuncio de los pasos para lectores de pantalla (no se ve) -->
+      <div ref="stepLiveRef" class="slide-lightbox-sr" aria-live="polite" aria-atomic="true" />
 
       <!-- Botón cerrar -->
       <button
@@ -624,6 +630,57 @@ onBeforeUnmount(() => {
   .slide-lightbox-prev,
   .slide-lightbox-next {
     transition: none !important;
+  }
+}
+
+/* Solo para lectores de pantalla. */
+.slide-lightbox-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Al imprimir, la pantalla completa se queda como una página normal: sin marco,
+   sin fondo oscuro ni controles, y el escenario ocupa el ancho del papel. */
+@media print {
+  :global(body) {
+    overflow: visible !important;
+  }
+
+  .slide-lightbox-overlay {
+    position: static;
+    display: block;
+    background: none;
+    backdrop-filter: none;
+    animation: none;
+  }
+
+  .slide-lightbox-content {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    animation: none;
+    container-type: normal;
+  }
+
+  .slide-lightbox-content :deep(.slide.slide--lienzo) {
+    width: 100%;
+  }
+
+  .slide-lightbox-close,
+  .slide-lightbox-prev,
+  .slide-lightbox-next,
+  .slide-lightbox-counter,
+  .slide-lightbox-sr {
+    display: none !important;
   }
 }
 

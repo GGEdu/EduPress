@@ -119,6 +119,8 @@
     width: auto !important;
     height: auto !important;
     transform: none !important;
+    /* Móvil: en una columna «deslizar» y «zoom» solo desvanecen. Desplazar o escalar
+       una caja apilada no lleva a ningún sitio, y así la columna no se mueve. */
     translate: none !important;
     scale: none !important;
     z-index: 1 !important;
@@ -187,6 +189,17 @@
 @media (prefers-reduced-motion: reduce) {
   .slide.is-presentando .ep-caja[data-anim] {
     transition: none;
+  }
+}
+
+/* Al imprimir se ven todas las cajas, también las que la presentación no había mostrado. */
+@media print {
+  .slide.is-presentando .ep-caja[data-anim] {
+    visibility: visible !important;
+    opacity: 1 !important;
+    translate: none !important;
+    scale: none !important;
+    transition: none !important;
   }
 }
 
