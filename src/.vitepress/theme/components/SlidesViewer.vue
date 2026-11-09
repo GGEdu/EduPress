@@ -38,6 +38,9 @@ const { setupAllSlides } = useSlideInteractions({
 
 // Métodos del lightbox
 const openLightbox = (index) => {
+  // Los clics dentro de la pantalla completa llegan aquí por el listener de cada diapositiva:
+  // con la pantalla abierta no deben saltar a la diapositiva en la que se hizo clic al principio.
+  if (isLightboxOpen.value) return
   lightboxIndex.value = index
   isLightboxOpen.value = true
 }

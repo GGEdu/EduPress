@@ -3,6 +3,16 @@
 import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import { useData } from 'vitepress'
 import { attachLightboxListeners, createLightbox } from '../utils/lightboxManager'
+import { stepSlide } from '../utils/slideSteps'
+
+/**
+ * Pantalla completa de las diapositivas.
+ *
+ * La diapositiva que se ve es la misma que la de la página: se MUEVE al escenario y,
+ * en su sitio, queda un hueco del mismo alto. Así conserva sus componentes Vue, sus
+ * listeners (pestañas, imágenes) y su estado, sin copiar HTML. Al cambiar de
+ * diapositiva o cerrar, vuelve a su sitio.
+ */
 
 const { frontmatter } = useData()
 
@@ -24,18 +34,52 @@ const props = defineProps({
 const emit = defineEmits(['close', 'slideChange'])
 
 // Referencias
-const contentRef = ref(null)
+const dialogRef = ref<HTMLElement | null>(null)
+const stageRef = ref<HTMLElement | null>(null)
 const currentIndex = ref(props.initialIndex)
+
+// Diapositiva que está ahora en el escenario, con el hueco que dejó en la página
+interface Mounted {
+  slide: HTMLElement
+  hole: HTMLElement
+}
+let mounted: Mounted | null = null
+let returnFocus: HTMLElement | null = null
 
 // Computed
 const totalSlides = computed(() => props.slides.length)
 const canGoPrevious = computed(() => currentIndex.value > 0)
 const canGoNext = computed(() => currentIndex.value < totalSlides.value - 1)
+const currentSlide = computed<HTMLElement | null>(() => (props.slides[currentIndex.value] as HTMLElement | undefined) ?? null)
 
-const currentSlideContent = computed(() => {
-  if (!props.slides[currentIndex.value]) return ''
-  return props.slides[currentIndex.value].innerHTML
-})
+// Mover diapositivas al escenario y devolverlas
+function restoreSlide(): void {
+  if (!mounted) return
+  const { slide, hole } = mounted
+  mounted = null
+  hole.parentNode?.replaceChild(slide, hole)
+}
+
+function mountSlide(slide: HTMLElement): void {
+  const stage = stageRef.value
+  if (!stage || !slide.parentNode) return
+  const hole = document.createElement('div')
+  hole.className = 'slide-hole'
+  hole.style.height = `${slide.offsetHeight}px`
+  slide.parentNode.replaceChild(hole, slide)
+  stage.appendChild(slide)
+  mounted = { slide, hole }
+  // Las imágenes de la diapositiva pasan a ampliables (como antes, con el lightbox de imágenes).
+  setTimeout(attachLightboxListeners, 100)
+}
+
+/** Deja en el escenario la diapositiva actual, y solo esa. */
+function syncSlide(): void {
+  const target = props.isOpen ? currentSlide.value : null
+  if (mounted?.slide === target) return
+  restoreSlide()
+  if (target) mountSlide(target)
+}
 
 // Métodos de navegación
 const handleNext = () => {
@@ -52,125 +96,121 @@ const handlePrevious = () => {
   }
 }
 
+const goTo = (index: number) => {
+  currentIndex.value = index
+  emit('slideChange', currentIndex.value)
+}
+
 const handleClose = () => {
   emit('close')
-  document.body.style.overflow = ''
+}
+
+// Foco: se lleva al abrir y vuelve a donde estaba al cerrar
+const FOCUSABLE = 'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+
+function trapTab(e: KeyboardEvent): void {
+  const root = dialogRef.value
+  if (!root) return
+  const items = Array.from(root.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
+    (el) => el.offsetParent !== null
+  )
+  if (items.length === 0) {
+    e.preventDefault()
+    root.focus()
+    return
+  }
+  const first = items[0]
+  const last = items[items.length - 1]
+  const active = document.activeElement as HTMLElement | null
+  const inside = !!active && root.contains(active)
+  if (e.shiftKey) {
+    if (!inside || active === first || active === root) {
+      e.preventDefault()
+      last.focus()
+    }
+  } else if (!inside || active === last) {
+    e.preventDefault()
+    first.focus()
+  }
 }
 
 // Manejo de teclado
-const handleKeyDown = (e) => {
+const handleKeyDown = (e: KeyboardEvent) => {
   if (!props.isOpen) return
-  
+
   switch (e.key) {
     case 'Escape':
       handleClose()
       break
+    case 'Tab':
+      trapTab(e)
+      break
     case 'ArrowLeft':
     case 'ArrowUp':
-      handlePrevious()
+      if (!stepSlide('back', currentSlide.value)) handlePrevious()
       break
     case 'ArrowRight':
     case 'ArrowDown':
     case ' ':
       e.preventDefault()
-      handleNext()
+      if (!stepSlide('forward', currentSlide.value)) handleNext()
       break
     case 'Home':
-      currentIndex.value = 0
-      emit('slideChange', currentIndex.value)
+      goTo(0)
       break
     case 'End':
-      currentIndex.value = totalSlides.value - 1
-      emit('slideChange', currentIndex.value)
+      goTo(totalSlides.value - 1)
       break
   }
 }
 
-// Re-adjuntar comportamiento de tabs tras v-html.
-// Con nuestro override de PluginTabsTab (v-show), todos los paneles están en el DOM
-// con display:none en los inactivos. Solo necesitamos reconectar los click listeners.
-const reattachTabs = () => {
-  if (!contentRef.value) return
-  contentRef.value.querySelectorAll('.plugin-tabs').forEach(tabsEl => {
-    const tabs = Array.from(tabsEl.querySelectorAll('.plugin-tabs--tab'))
-    const panels = Array.from(tabsEl.querySelectorAll('.plugin-tabs--content'))
+// Clics en imágenes y diagramas: se amplían con el lightbox de imágenes, no cambian de diapositiva.
+// Va en captura para ganar al listener de la propia diapositiva.
+function onStageClick(e: MouseEvent): void {
+  const target = e.target as HTMLElement
+  if (target.closest?.('a')) return
 
-    // Asegurar estado inicial correcto
-    const activeIdx = tabs.findIndex(t => t.getAttribute('aria-selected') === 'true')
-    const initialIdx = activeIdx !== -1 ? activeIdx : 0
-    panels.forEach((p, i) => {
-      p.style.display = i === initialIdx ? 'block' : 'none'
-    })
-    if (activeIdx === -1 && tabs[0]) tabs[0].setAttribute('aria-selected', 'true')
-
-    tabs.forEach((tab, i) => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => t.setAttribute('aria-selected', 'false'))
-        tab.setAttribute('aria-selected', 'true')
-        panels.forEach((p, j) => { p.style.display = j === i ? 'block' : 'none' })
-      })
-    })
-  })
-}
-
-// Mantengo esto como alias para llamar al manager global en los watchers
-const attachZoomListeners = () => {
-  if (typeof window !== 'undefined') {
-    setTimeout(() => {
-      attachLightboxListeners();
-    }, 100);
-    
-    // Delegación de eventos ultra-agresiva para ganar a medium-zoom
-    if (contentRef.value && !contentRef.value._hasCaptureListener) {
-      contentRef.value._hasCaptureListener = true;
-      contentRef.value.addEventListener('click', (e) => {
-        // Enlace normal ignorado
-        if (e.target.closest && e.target.closest('a')) return;
-        
-        let targetImg = null;
-        if (e.target.tagName === 'IMG') {
-          targetImg = e.target;
-        } else {
-          const mermaid = e.target.closest ? e.target.closest('.mermaid-container') : null;
-          if (mermaid) targetImg = mermaid;
-        }
-        
-        if (targetImg) {
-          e.preventDefault();
-          e.stopPropagation();
-          e.stopImmediatePropagation();
-          
-          // Verificar si ya está en attachLightboxListeners (o hacerlo on-the-fly)
-          if (!targetImg.getAttribute('data-lightbox-attached')) {
-            attachLightboxListeners(); // forzar un escaneo si es nueva
-          }
-          createLightbox(targetImg);
-          return false;
-        }
-      }, true); // Fase de captura!
-    }
+  let targetEl: HTMLElement | null = null
+  if (target.tagName === 'IMG') {
+    targetEl = target
+  } else {
+    const mermaid = target.closest?.('.mermaid-container') as HTMLElement | null
+    if (mermaid) targetEl = mermaid
   }
+  if (!targetEl) return
+
+  e.preventDefault()
+  e.stopPropagation()
+  e.stopImmediatePropagation()
+  if (!targetEl.getAttribute('data-lightbox-attached')) attachLightboxListeners()
+  createLightbox(targetEl)
 }
 
 // Watchers
-watch(() => props.isOpen, (newValue) => {
-  if (newValue) {
+watch(() => props.isOpen, (open) => {
+  if (open) {
+    returnFocus = document.activeElement as HTMLElement | null
     document.body.style.overflow = 'hidden'
     nextTick(() => {
-      reattachTabs()
-      attachZoomListeners()
+      syncSlide()
+      dialogRef.value?.focus()
     })
   } else {
+    restoreSlide()
     document.body.style.overflow = ''
+    returnFocus?.focus?.()
+    returnFocus = null
   }
 })
 
 watch(currentIndex, () => {
-  nextTick(() => {
-    reattachTabs()
-    attachZoomListeners()
-  })
+  if (props.isOpen) nextTick(syncSlide)
 })
+
+watch(stageRef, (el, old) => {
+  old?.removeEventListener('click', onStageClick, true)
+  el?.addEventListener('click', onStageClick, true)
+}, { flush: 'post' })
 
 watch(() => props.initialIndex, (newValue) => {
   currentIndex.value = newValue
@@ -183,6 +223,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleKeyDown)
+  restoreSlide()
   document.body.style.overflow = ''
 })
 
@@ -191,36 +232,36 @@ onBeforeUnmount(() => {
 <template>
 
   <Teleport to="body" v-if="isOpen">
-    <div 
-      class="slide-lightbox-overlay" 
+    <div
+      ref="dialogRef"
+      class="slide-lightbox-overlay"
       :class="frontmatter.pageClass"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Presentación en pantalla completa"
+      tabindex="-1"
       @click.self="handleClose"
     >
-      <!-- Contenido del slide -->
-      <div 
-        class="slide-lightbox-content" 
-        ref="contentRef"
-      >
-        <div 
-          class="slide" 
-          v-html="currentSlideContent"
-        />
-      </div>
-      
+      <!-- Escenario: aquí se mueve la diapositiva viva -->
+      <div
+        ref="stageRef"
+        class="slide-lightbox-content"
+      />
+
       <!-- Botón cerrar -->
-      <button 
-        class="slide-lightbox-close" 
-        @click="handleClose" 
+      <button
+        class="slide-lightbox-close"
+        @click="handleClose"
         aria-label="Cerrar"
         :style="{ transition: 'var(--custom-transition-medium)' }"
       >
         ×
       </button>
-      
+
       <!-- Navegación (solo si hay más de un slide) -->
       <template v-if="totalSlides > 1">
-        <button 
-          class="slide-lightbox-prev" 
+        <button
+          class="slide-lightbox-prev"
           @click.stop="handlePrevious"
           :disabled="!canGoPrevious"
           aria-label="Anterior"
@@ -228,9 +269,9 @@ onBeforeUnmount(() => {
         >
           ‹
         </button>
-        
-        <button 
-          class="slide-lightbox-next" 
+
+        <button
+          class="slide-lightbox-next"
           @click.stop="handleNext"
           :disabled="!canGoNext"
           aria-label="Siguiente"
@@ -238,9 +279,9 @@ onBeforeUnmount(() => {
         >
           ›
         </button>
-        
+
         <!-- Contador -->
-        <div class="slide-lightbox-counter">
+        <div class="slide-lightbox-counter" aria-live="polite">
           {{ currentIndex + 1 }} / {{ totalSlides }}
         </div>
       </template>
@@ -270,6 +311,12 @@ onBeforeUnmount(() => {
   animation: fadeIn 0.3s ease forwards;
 }
 
+.slide-lightbox-overlay:focus {
+  outline: none;
+}
+
+/* El escenario: 90 % de la ventana. Las diapositivas libres (lienzo) se encajan en
+   16:9 dentro, y las bandas que sobran son del fondo. */
 .slide-lightbox-content {
   width: 90vw;
   height: 90vh;
@@ -282,9 +329,12 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: center;
   border: var(--custom-border-width-thin) solid var(--vp-c-divider);
+  container-type: size;
 }
 
-.slide-lightbox-content .slide {
+/* La diapositiva movida aquí: el estilo de la página no la alcanza, así que va
+   con :deep. El cursor y los efectos al pasar el ratón no aplican en pantalla completa. */
+.slide-lightbox-content :deep(.slide) {
   width: 100%;
   max-width: 100%;
   height: 100%;
@@ -297,14 +347,16 @@ onBeforeUnmount(() => {
   padding: clamp(2rem, 5vh, 4rem) clamp(2rem, 5vw, 4rem);
   border-radius: var(--slide-border-radius);
   border: var(--custom-border-width-thin) solid var(--vp-c-divider);
-  box-shadow: none;
+  box-shadow: none !important;
   min-height: auto;
   position: relative;
   overflow: visible;
+  cursor: auto !important;
+  transform: none !important;
 }
 
 /* Borde superior decorativo */
-.slide-lightbox-content .slide::before {
+.slide-lightbox-content :deep(.slide::before) {
   content: '';
   position: absolute;
   top: 0;
@@ -315,13 +367,23 @@ onBeforeUnmount(() => {
   border-radius: var(--slide-border-radius) var(--slide-border-radius) 0 0;
 }
 
-.slide-lightbox-content .slide:hover {
-  box-shadow: none;
-  transform: none;
+.slide-lightbox-content :deep(.slide > *) {
+  max-width: 100%;
 }
 
-.slide-lightbox-content .slide > * {
-  max-width: 100%;
+/* Lienzo: 16:9 encajado en el escenario, sin marco ni padding de diapositiva. */
+.slide-lightbox-content :deep(.slide.slide--lienzo) {
+  display: block;
+  width: min(100cqw, calc(100cqh * 16 / 9));
+  height: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
+.slide-lightbox-content :deep(.slide--lienzo::before) {
+  display: none;
 }
 
 /* ============================================================================
@@ -416,6 +478,33 @@ onBeforeUnmount(() => {
 }
 
 /* ============================================================================
+ * Contenido de la diapositiva en pantalla completa
+ * ============================================================================ */
+
+.slide-lightbox-content :deep(.slide:not(.slide--lienzo) img) {
+  max-height: 90vh;
+  max-width: 90%;
+  cursor: zoom-in;
+}
+
+.slide-lightbox-content :deep(.slide:not(.slide--lienzo) p img[alt*="#center"]) {
+  max-width: 80%;
+  max-height: 45vh;
+  display: block;
+  margin: 0 auto 1.5rem auto;
+  object-fit: contain;
+}
+
+.slide-lightbox-content :deep(.mermaid-container) {
+  max-height: 70vh;
+  cursor: zoom-in;
+}
+
+.slide-lightbox-content :deep(.mermaid-container svg) {
+  max-height: 70vh !important;
+}
+
+/* ============================================================================
  * Animaciones
  * ============================================================================ */
 
@@ -435,9 +524,17 @@ onBeforeUnmount(() => {
   }
 }
 
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .slide-lightbox-overlay,
+  .slide-lightbox-content {
+    animation: none;
+  }
+
+  .slide-lightbox-close,
+  .slide-lightbox-prev,
+  .slide-lightbox-next {
+    transition: none !important;
+  }
 }
 
 /* ============================================================================
@@ -452,22 +549,22 @@ onBeforeUnmount(() => {
     padding: var(--custom-space-4);
     border-radius: 0;
   }
-  
+
   .slide-lightbox-prev,
   .slide-lightbox-next {
     width: 40px;
     height: 40px;
     font-size: 28px;
   }
-  
+
   .slide-lightbox-prev {
     left: var(--custom-space-2);
   }
-  
+
   .slide-lightbox-next {
     right: var(--custom-space-2);
   }
-  
+
   .slide-lightbox-close {
     width: 35px;
     height: 35px;
@@ -475,13 +572,13 @@ onBeforeUnmount(() => {
     top: var(--custom-space-2);
     right: var(--custom-space-2);
   }
-  
+
   .slide-lightbox-counter {
     font-size: var(--custom-font-size-xs);
     padding: var(--custom-space-1) var(--custom-space-3);
     bottom: var(--custom-space-3);
   }
-  
+
   .zoom-controls button {
     width: 35px;
     height: 35px;
@@ -496,22 +593,22 @@ onBeforeUnmount(() => {
     height: 95vh;
     padding: var(--custom-space-6);
   }
-  
+
   .slide-lightbox-prev,
   .slide-lightbox-next {
     width: 45px;
     height: 45px;
     font-size: 36px;
   }
-  
+
   .slide-lightbox-prev {
     left: var(--custom-space-4);
   }
-  
+
   .slide-lightbox-next {
     right: var(--custom-space-4);
   }
-  
+
   .slide-lightbox-close {
     width: 40px;
     height: 40px;
@@ -519,43 +616,12 @@ onBeforeUnmount(() => {
     top: var(--custom-space-4);
     right: var(--custom-space-4);
   }
-  
+
   .slide-lightbox-counter {
     font-size: var(--custom-font-size-sm);
     padding: var(--custom-space-2) var(--custom-space-4);
     bottom: var(--custom-space-5);
   }
-}
-
-</style>
-
-<style scoped>
-
-/* ============================================================================
- * Estilos globales para contenido del slide en lightbox
- * ============================================================================ */
-
-.slide-lightbox-content .slide :deep(img) {
-  max-height: 90vh;
-  max-width: 90%;
-  cursor: zoom-in;
-}
-
-.slide-lightbox-content .slide :deep(p img[alt*="#center"]) {
-  max-width: 80%;
-  max-height: 45vh;
-  display: block;
-  margin: 0 auto 1.5rem auto;
-  object-fit: contain;
-}
-
-.slide-lightbox-content .slide :deep(.mermaid-container) {
-  max-height: 70vh;
-  cursor: zoom-in;
-}
-
-.slide-lightbox-content .slide :deep(.mermaid-container svg) {
-  max-height: 70vh !important;
 }
 
 </style>
