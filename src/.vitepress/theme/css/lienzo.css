@@ -125,8 +125,14 @@
 
   .ep-caja.decorativa { display: none; }
 
-  /* Una flecha que no es decorativa se queda, como una banda baja a lo ancho. */
-  .ep-forma { height: 2rem !important; }
+  /* Una flecha que no es decorativa se queda, con sus proporciones y su volteo
+     (el giro no: en una columna no apuntaría a nada). */
+  .ep-forma {
+    width: min(100%, 12rem) !important;
+    height: auto !important;
+    aspect-ratio: var(--proporcion, 6 / 1);
+    transform: var(--volteo, none) !important;
+  }
 
   /* La imagen que cubría casi todo el lienzo pasa a ser su fondo. */
   .ep-caja.es-fondo {

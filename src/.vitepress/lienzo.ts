@@ -195,6 +195,8 @@ function boxParts(attrs: Map<string, string | true>, ctx: BoxContext): BoxParts 
   if (flip === 'h' || flip === 'hv') transforms.push('scaleX(-1)')
   if (flip === 'v' || flip === 'hv') transforms.push('scaleY(-1)')
   if (transforms.length > 0) style.push(`transform:${transforms.join(' ')}`)
+  const flips = transforms.filter((t) => t.startsWith('scale'))
+  if (flips.length > 0) style.push(`--volteo:${flips.join(' ')}`)
 
   const z = num(attrs.get('z'), 0, 999, true)
   if (z !== null) style.push(`z-index:${z}`)
@@ -260,18 +262,28 @@ const round = (n: number): number => Math.round(n * 100) / 100
  * El SVG de una flecha o una línea, en unidades del propio hueco: un lienzo de 16:9
  * hace que `w` valga 16 unidades por punto y `h`, 9. Así la punta no se deforma.
  */
-export function formaSvg(variant: FormaVariant, w: number, h: number | null): string {
+/** Lo que se lee de una forma que no es decorativa. `texto=` lo cambia. */
+const FORMA_LABELS: Record<FormaVariant, string> = { flecha: 'Flecha', linea: 'Línea', 'flecha-doble': 'Flecha doble' }
+
+/** Proporciones del hueco de una forma en el lienzo de 16:9 (ancho y alto, en las mismas unidades). */
+export function formaSize(w: number, h: number | null): { width: number; height: number } {
   const width = Math.max(1, w * 16)
-  const height = Math.max(1, h === null ? width * 0.12 : h * 9)
+  return { width, height: Math.max(1, h === null ? width * 0.12 : h * 9) }
+}
+
+export function formaSvg(variant: FormaVariant, w: number, h: number | null, label: string | null = null): string {
+  const { width, height } = formaSize(w, h)
   const mid = height / 2
   const stroke = Math.max(1, Math.min(height * 0.3, width * 0.08))
   const head = Math.min(height, width / 3)
-  const start = variant === 'flecha-doble' ? head : 0
-  const end = variant === 'linea' ? width : width - head
+  // La línea entra un poco en la punta: sin hueco entre las dos piezas al suavizar los bordes.
+  const start = variant === 'flecha-doble' ? head * 0.6 : 0
+  const end = variant === 'linea' ? width : width - head * 0.6
   const parts = [`<line x1="${round(start)}" y1="${round(mid)}" x2="${round(end)}" y2="${round(mid)}" stroke="currentColor" stroke-width="${round(stroke)}"/>`]
   if (variant !== 'linea') parts.push(`<polygon points="${round(width - head)},0 ${round(width)},${round(mid)} ${round(width - head)},${round(height)}" fill="currentColor"/>`)
   if (variant === 'flecha-doble') parts.push(`<polygon points="${round(head)},0 0,${round(mid)} ${round(head)},${round(height)}" fill="currentColor"/>`)
-  return `<svg class="ep-forma__svg" viewBox="0 0 ${round(width)} ${round(height)}" preserveAspectRatio="none" aria-hidden="true" focusable="false">${parts.join('')}</svg>`
+  const a11y = label === null ? 'aria-hidden="true"' : `role="img" aria-label="${escapeAttr(label)}"`
+  return `<svg class="ep-forma__svg" viewBox="0 0 ${round(width)} ${round(height)}" preserveAspectRatio="none" ${a11y} focusable="false">${parts.join('')}</svg>`
 }
 
 /** `forma flecha x= y= w= h= relleno=marca decorativa`: dibujada en SVG al compilar. */
@@ -284,8 +296,19 @@ export function formaOpening(info: string, ctx: BoxContext): string {
   const parts = boxParts(attrs, { ...ctx, onlyImage: false })
   parts.classes.push('ep-forma')
   parts.style.push(`color:${cssColor(attrs.get('relleno')) ?? 'var(--ep-marca)'}`)
-  return boxOpening(parts, formaSvg(variant, parts.w ?? 50, parts.h))
+  // Al apilar, la forma conserva sus proporciones: si no, la punta se aplasta.
+  const { width, height } = formaSize(parts.w ?? 50, parts.h)
+  parts.style.push(`--proporcion:${round(width)} / ${round(height)}`)
+  const text = attrs.get('texto')
+  const label = attrs.get('decorativa') === true ? null : typeof text === 'string' && text.trim() !== '' ? text.trim().slice(0, 200) : FORMA_LABELS[variant]
+  return boxOpening(parts, formaSvg(variant, parts.w ?? 50, parts.h, label))
 }
+
+/**
+ * Las notas solo se publican cifradas (`v1:<iv>:<texto cifrado>`, en base64url). Unas
+ * notas escritas a mano en claro no salen: se avisa al compilar.
+ */
+export const NOTAS_FORMAT = /^v1:[A-Za-z0-9_-]+:[A-Za-z0-9_-]+$/
 
 /** Lo que hay dentro de cada `::: notas` (el texto cifrado): va a un atributo, nunca a la página. */
 function collectNotes(state: { tokens: Token[] }): void {
@@ -354,6 +377,10 @@ export function lienzoContainers(base: string): ContainerPlugin[] {
       render(tokens: Token[], idx: number) {
         if (tokens[idx].nesting !== 1) return ''
         const text = String(tokens[idx].meta?.notas ?? '')
+        if (text !== '' && !NOTAS_FORMAT.test(text)) {
+          console.warn('[EduPress] Unas notas del orador no están cifradas: no se publican. Escríbelas desde EduPress Studio.')
+          return '<div class="ep-notas" hidden data-notas=""></div>\n'
+        }
         return `<div class="ep-notas" hidden data-notas="${escapeAttr(text)}"></div>\n`
       },
     }],
