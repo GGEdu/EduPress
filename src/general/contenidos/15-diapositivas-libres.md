@@ -81,6 +81,24 @@ https://www.youtube.com/watch?v=jNQXAC9IVRw
 ::::
 :::::
 
+---
+
+::::: lienzo fondo=#F5EFE9
+:::: caja x=6 y=6 w=88 h=auto tam=36
+## Un gráfico de datos
+::::
+
+:::: grafico barras x=20 y=24 w=60 h=auto
+![Alumnado por curso](/img/studio/graficos/barras-d4d80557.svg)
+
+| Categoría | Alumnado |
+| --- | --- |
+| 1.º | 24 |
+| 2.º | 18 |
+| 3.º | 21 |
+::::
+:::::
+
 </SlidesViewer>
 
 ## Cómo se escriben
@@ -110,3 +128,7 @@ aceptan enlaces de `youtube.com`, `youtu.be` o `youtube-nocookie.com` (`watch`, 
 
 Los controles y los subtítulos son los del reproductor de YouTube: el botón CC muestra
 los subtítulos, y si el vídeo tiene en español, son los que se eligen primero.
+
+## Gráficos
+
+Un `grafico` (`barras`, `lineas` o `sectores`) lleva la imagen del gráfico, que dibuja EduPress Studio a partir de los datos, y debajo la tabla con esos datos. En la página se ve la imagen; la tabla queda para quien usa un lector de pantalla. Para cambiar los datos, edita el gráfico desde Studio: la tabla manda y la imagen se vuelve a dibujar.

@@ -425,6 +425,48 @@ export function videoOpening(info: string, ctx: BoxContext, texto: string): stri
   return boxOpening(parts, portada)
 }
 
+/** Tipos de `grafico`: la primera palabra tras el nombre. Solo cambia la clase; el dibujo es el SVG. */
+export const GRAFICO_VARIANTS = ['barras', 'lineas', 'sectores'] as const
+
+/**
+ * `grafico barras x= y= w= h=auto` con la imagen SVG que genera EduPress Studio y, debajo,
+ * la tabla de datos (la fuente de verdad). Se ve la imagen; la tabla queda para el lector
+ * de pantalla (oculta a la vista, no al lector). El SVG lo sanea Studio: aquí es una imagen.
+ */
+export function graficoOpening(info: string, ctx: BoxContext): string {
+  const tokens = parseAttrs(info.trim().replace(/^grafico\b/, ''))
+  const first = tokens[0]
+  const variant = first && first.value === true && (GRAFICO_VARIANTS as readonly string[]).includes(first.key) ? first.key : null
+  const parts = boxParts(attrMap(tokens), { ...ctx, onlyImage: false })
+  parts.classes.push('ep-grafico')
+  if (variant) parts.classes.push(`ep-grafico--${variant}`)
+  return boxOpening(parts)
+}
+
+/**
+ * La tabla del gráfico toma por nombre su título (el `alt` de la imagen): así el lector de
+ * pantalla la anuncia con él. Se hace al pintar la apertura, antes de pintar la tabla. La regla
+ * de VitePress para `table_open` no pinta atributos, así que la apertura pasa a HTML hecho.
+ */
+export function nameGraficoTable(tokens: Token[], idx: number): void {
+  let title = ''
+  let depth = 0
+  for (let i = idx + 1; i < tokens.length; i++) {
+    const t = tokens[i]
+    depth += t.nesting
+    if (depth < 0) return
+    const image = t.type === 'inline' ? t.children?.find((c) => c.type === 'image') : undefined
+    if (!title && image) title = image.content.trim()
+    if (t.type === 'table_open') {
+      if (title) {
+        t.type = 'html_block'
+        t.content = `<table tabindex="0" aria-label="${escapeAttr(title)}">\n`
+      }
+      return
+    }
+  }
+}
+
 /** Los contenedores para `md.use(...)`. `base` es la base del sitio (`PROJECT.basePath`). */
 export function lienzoContainers(base: string): ContainerPlugin[] {
   return [
@@ -442,6 +484,14 @@ export function lienzoContainers(base: string): ContainerPlugin[] {
     [container, 'forma', {
       render(tokens: Token[], idx: number) {
         return tokens[idx].nesting === 1 ? formaOpening(tokens[idx].info, { base, onlyImage: false }) : '</div>\n'
+      },
+    }],
+    // Gráfico de datos: la imagen se ve; la tabla, para el lector de pantalla.
+    [container, 'grafico', {
+      render(tokens: Token[], idx: number) {
+        if (tokens[idx].nesting !== 1) return '</div>\n'
+        nameGraficoTable(tokens, idx)
+        return graficoOpening(tokens[idx].info, { base, onlyImage: false })
       },
     }],
     // Vídeo de YouTube: la URL va dentro del bloque y no sale en la página (ver notasPlugin).
