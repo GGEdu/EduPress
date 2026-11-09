@@ -6,6 +6,7 @@ import type Token from 'markdown-it/lib/token.mjs'
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 import container from 'markdown-it-container'
 import { escapeTitle, lienzoContainers, notasPlugin } from './lienzo'
+import { avisoDobleDolarPlugin } from './matematicas'
 
 // ── Importar desde config/ ─────────────────────────────────────────────────
 // 👤 Edita los archivos de config/ para personalizar el sitio.
@@ -328,6 +329,7 @@ export default defineConfig({
       // Diapositivas libres (lienzo.ts y theme/css/lienzo.css).
       for (const plugin of lienzoContainers(basePath)) md.use(...plugin)
       md.use(notasPlugin)
+      md.use(avisoDobleDolarPlugin)
     }
   },
   head: headTags,

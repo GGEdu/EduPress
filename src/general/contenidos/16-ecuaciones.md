@@ -32,7 +32,7 @@ $$
 \int_{0}^{1} x^{2}\,dx = \frac{1}{3}
 $$
 
-Un bloque de fórmula necesita una línea en blanco antes y después, como cualquier párrafo.
+Un bloque también puede ir pegado al final de una frase, como `Texto pegado:$$`, y el `$$` de cierre en su propia línea. Para leerlo mejor, déjale una línea en blanco antes y después, como a cualquier párrafo.
 
 ## Fórmulas con subíndices, fracciones y sumas
 
@@ -84,8 +84,28 @@ Una fórmula en línea también funciona: $a^{2} + b^{2} = c^{2}$.
 
 </SlidesViewer>
 
-## Qué conviene saber
+## Precios con dólar
 
-- Para un dólar que no es una fórmula, escríbelo como `\$`, sobre todo si hay otro dólar en la misma línea: `Cuesta \$5 y $x^2$ es una fórmula`.
+Si escribes precios con `$`, pon `\$`. Desde esta versión, algunos pares de `$` en la misma línea se toman como fórmula, y el texto entre ellos sale en letra matemática. Esto cambia también los cursos que ya existían: revisa sus precios antes de publicar.
+
+```md
+Cuesta \$5 el cuaderno y \$12 el libro.
+```
+
+## Un `$$` sin cerrar
+
+Un bloque `$$` necesita su cierre. Si falta, el texto que sigue se trata como fórmula: no da error, pero el resto de la página se ve roto, con las frases mezcladas con la fórmula y los `$$` sobrantes a la vista.
+
+El build no falla, pero avisa en la consola con el fichero y la línea del `$$` que sobra:
+
+```text
+[EduPress] Un `$$` sin cerrar en general/…/pagina.md, línea 9: el resto de la página se toma como fórmula. …
+```
+
+Para arreglarlo, busca la línea indicada y añade el `$$` que falta. Un `$$` dentro de un bloque de código o en un `código` en línea no cuenta.
+
+## Otras cosas que conviene saber
+
 - Dentro de un bloque de código (las comillas triples) el dólar no se interpreta: se muestra tal cual, como en los ejemplos de arriba.
 - Las fórmulas se compilan al generar el sitio. Una fórmula mal escrita no para el build: en la página aparece el mensaje de error de MathJax en lugar de la fórmula, así que conviene revisarla al previsualizar.
+- Por seguridad, MathJax no admite `\href`, `\class`, `\style` ni `\cssId`: los enlaces y los estilos se escriben en Markdown, no dentro de una fórmula.
