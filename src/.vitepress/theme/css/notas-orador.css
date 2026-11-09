@@ -1,0 +1,99 @@
+/* Página de notas del orador (?notas): theme/utils/notasOrador.ts. */
+
+.notas-orador {
+  margin: 1rem 0 1.5rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  background: var(--vp-c-bg-soft);
+}
+
+.notas-orador__titulo {
+  margin: 0 0 0.5rem;
+  padding: 0;
+  border: 0;
+  font-size: 1.25rem;
+}
+
+.notas-orador__titulo:focus { outline: none; }
+.notas-orador__titulo:focus-visible { outline: 3px solid var(--vp-c-brand-1); outline-offset: 2px; border-radius: 4px; }
+
+.notas-orador__form label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+
+.notas-orador__campo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.notas-orador__campo input {
+  flex: 1 1 14rem;
+  min-width: 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 8px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+  font: inherit;
+}
+
+.notas-orador__campo input[aria-invalid='true'] { border-color: var(--vp-c-danger-1); }
+
+/* Texto oscuro sobre la marca: el blanco sobre el coral del tema no llega a 4,5:1. */
+.notas-orador button {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--vp-c-brand-1);
+  border-radius: 8px;
+  background: var(--vp-c-brand-1);
+  color: #1F2937;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.notas-orador button:disabled { opacity: 0.6; cursor: progress; }
+
+.notas-orador input:focus-visible,
+.notas-orador button:focus-visible,
+.ep-notas__texto:focus-visible {
+  outline: 3px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+
+.notas-orador__estado { min-height: 1.5em; margin: 0.5rem 0 0; }
+.notas-orador__estado--error { color: var(--vp-c-danger-1); }
+
+/* Las notas van debajo de su diapositiva, dentro de la misma. */
+.ep-notas__texto {
+  margin: 0.75rem 0 0;
+  padding: 0.75rem 1rem;
+  border-left: 4px solid var(--vp-c-brand-1);
+  border-radius: 0 8px 8px 0;
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-1);
+  cursor: text;
+}
+
+.ep-notas__etiqueta {
+  margin: 0 0 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  text-transform: uppercase;
+}
+
+.ep-notas__contenido {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* En pantalla completa (lo que se proyecta) las notas no se ven nunca. Vale para la
+   pantalla completa actual (una copia) y para la de e2 (la diapositiva viva): las dos
+   son .slide-lightbox-overlay. */
+.slide-lightbox-overlay .ep-notas__texto { display: none !important; }

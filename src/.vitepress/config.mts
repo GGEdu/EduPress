@@ -1,4 +1,5 @@
-import { existsSync } from 'node:fs'
+import { copyFileSync, existsSync, readFileSync } from 'node:fs'
+import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
 import type { HeadConfig } from 'vitepress'
@@ -297,11 +298,32 @@ const accentBoxContainer: [typeof container, string, { render(tokens: Token[], i
   }
 }]
 
+// En `vitepress dev` no hay build que copie notas.json: el middleware lo sirve desde config/.
+const notasEnDesarrollo = {
+  name: 'edupress-notas-dev',
+  configureServer(server: { middlewares: { use(fn: (req: { url?: string }, res: any, next: () => void) => void): void } }) {
+    server.middlewares.use((req, res, next) => {
+      if ((req.url ?? '').split('?')[0] !== `${basePath}notas.json`) return next()
+      const origen = fileURLToPath(new URL('./config/notas.json', import.meta.url))
+      if (!existsSync(origen)) return next()
+      res.setHeader('Content-Type', 'application/json')
+      res.end(readFileSync(origen))
+    })
+  },
+}
+
 // ── Exportar configuración VitePress ───────────────────────────────────────
 export default defineConfig({
   base:   basePath,
   outDir: PROJECT.outDir,
+  // Las notas cifradas (config/notas.json, de EduPress Studio) se copian a la raíz del
+  // sitio para la página ?notas. Solo llevan la sal, las vueltas y la llave envuelta.
+  buildEnd(siteConfig) {
+    const origen = fileURLToPath(new URL('./config/notas.json', import.meta.url))
+    if (existsSync(origen)) copyFileSync(origen, join(siteConfig.outDir, 'notas.json'))
+  },
   vite: {
+    plugins: [notasEnDesarrollo],
     build: {
       // El proyecto incluye bundles grandes (Mermaid/slides); elevamos el umbral
       // para evitar ruido en CI sin alterar el resultado de compilación.
