@@ -300,3 +300,59 @@
 }
 
 .ep-video__aviso { margin: 0; padding: 0.5em; font-size: 0.9em; }
+
+/* ── Dentro de una caja, todo escala con su letra («tam») ──
+ *
+ * Los tokens del tema (design-tokens.css) van en rem: las cajas de color (InfoBox,
+ * AccentBox), el código y sus rellenos tienen 16 px o 14 px fijos aunque la caja
+ * diga tam=26 sobre un lienzo de 1400 px. Dentro de .ep-caja se redefinen en em, y se
+ * vuelven a declarar los que se calculan a partir de ellos (un custom property se
+ * resuelve donde se declara: si no, heredaría el valor ya calculado en :root).
+ */
+.ep-caja {
+  --custom-font-size-xs: 0.75em;
+  --custom-font-size-sm: 0.875em;
+  --custom-font-size-base: 1em;
+  --custom-font-size-lg: 1.125em;
+  --custom-font-size-xl: 1.25em;
+  --custom-font-size-2xl: 1.5em;
+  --custom-font-size-3xl: 1.875em;
+  --custom-font-size-4xl: 2em;
+  --custom-font-size-5xl: 2.5em;
+  --custom-space-1: 0.25em;
+  --custom-space-2: 0.5em;
+  --custom-space-3: 0.75em;
+  --custom-space-4: 1em;
+  --custom-space-5: 1.25em;
+  --custom-space-6: 1.5em;
+  --custom-space-7: 1.75em;
+  --custom-space-8: 2em;
+  --custom-space-10: 2.5em;
+  --custom-space-12: 3em;
+  --custom-component-padding-sm: var(--custom-space-3);
+  --custom-component-padding-md: var(--custom-space-4);
+  --custom-component-padding-lg: var(--custom-space-6);
+  --box-padding: var(--custom-component-padding-md);
+  --box-margin: var(--custom-space-3) 0;
+  --code-padding: 0.1em 0.3em;
+  --code-block-padding: var(--custom-space-3);
+  --table-cell-padding: var(--custom-space-2) var(--custom-space-3);
+  --list-padding-left: 1.25em;
+  --list-margin-left: 0;
+  --list-item-margin: 0.15em 0;
+}
+
+/* El código: la letra y el relleno en em (VitePress y slides.css los ponen en px). */
+.ep-caja div[class*='language-'] { margin: 0.4em 0; }
+.ep-caja div[class*='language-'] pre { padding: 0.6em 0; }
+.ep-caja div[class*='language-'] code { font-size: 0.85em; line-height: 1.5; padding: 0 0.9em; }
+.ep-caja :not(pre) > code { font-size: 0.85em; }
+
+/* Las citas y las tablas de VitePress: también en em. */
+.ep-caja blockquote { margin: 0.4em 0; padding: 0.2em 0 0.2em 0.8em; }
+.ep-caja blockquote > p { font-size: 1em; }
+.ep-caja table { margin: 0.4em 0; font-size: 0.9em; }
+.ep-caja :is(th, td) { padding: 0.3em 0.6em; }
+
+/* Las cajas de color no se mueven al pasar el ratón dentro de un lienzo (como las demás cajas). */
+.ep-lienzo .ep-caja :is(.info-box, .accent-box, .custom-block):hover { transform: none; }
