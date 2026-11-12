@@ -223,7 +223,7 @@ const logoBranding = {
 // Curso de una sola unidad: usa el navbar de esa unidad tal cual (con prefijos).
 // Curso multi-unidad: Home + cada unidad como dropdown con sus ítems de nav.
 // unitMenu.mode = 'cumulative' (con más de una unidad): solo el navbar de la raíz;
-// cada unidad lleva su propio desplegable (unitNavbars, en config/units.ts).
+// cada unidad lleva su propio desplegable con ella y las anteriores (construirUnitNavbars, en unitHelpers.ts).
 const unitMenu = unitMenuDe(unitsData)
 const acumulativo = unitMenu.mode === 'cumulative' && nonRootUnits.length > 1
 const navbar = acumulativo
