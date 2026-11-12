@@ -82,6 +82,8 @@ Edita `src/.vitepress/config/units.json` y añade una entrada por unidad, cada u
 No hay que cambiar ningún otro archivo: el navbar y el sidebar se construyen solos.
 :::
 
+Con muchas unidades encadenadas (sesiones, por ejemplo), `"unitMenu": { "mode": "cumulative", "label": "Sesiones" }` en `units.json` deja el navbar global solo con la raíz, y cada unidad lista las unidades 1 a N hasta la suya, nunca las siguientes.
+
 ## Paso 6 — Crea las carpetas de cada unidad
 
 ```bash

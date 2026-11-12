@@ -158,6 +158,8 @@ export const LOGOS = {
 }
 ```
 
+Para ocultar un logo sin borrar su archivo, pon `false` en el bloque `visible` de `logos.ts` (`navbar`, `autor`, `gva`, `centro`, `footer`). Si el bloque falta, todos se muestran.
+
 ::: tip ¿Qué modo usar?
 - `same` — Logo en color sobre fondo claro y oscuro (si tiene buen contraste en ambos).
 - `invert` — Logo en negro: en modo oscuro se invierte a blanco automáticamente con CSS.

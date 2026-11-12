@@ -16,8 +16,9 @@ import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages.js'
 import { PROJECT } from './config/project'
 import { COLORS }  from './config/colors'
 import { LOGOS, getDarkLogoPath } from './config/logos'
-import { UNITS, getAllUnitsArray, unitNavbars } from './config/units'
-import { getNavbarForUnit, getSidebarForUnit } from './unitHelpers'
+import { UNITS, getAllUnitsArray } from './config/units'
+import { getNavbarForUnit, getSidebarForUnit, construirUnitNavbars, unitMenuDe } from './unitHelpers'
+import unitsData from './config/units.json'
 
 
 // ── Helper: alineación del contenido en contenedores ───────────────────────
@@ -195,31 +196,47 @@ const navbarLogo = LOGOS.mode === 'separate'
   ? { light: navbarLogoSrc, dark: getDarkLogoPath(navbarLogoSrc, LOGOS.darkSuffix) }
   : navbarLogoSrc
 
+// Visibilidad (logos.ts → visible). Un logos.ts antiguo, sin ese bloque, muestra todo.
+const visible: Record<string, boolean> = {
+  navbar: true, autor: true, gva: true, centro: true, footer: true,
+  ...(LOGOS as { visible?: Record<string, boolean> }).visible,
+}
+
 // logoBranding: leído por los componentes Vue (SidebarLogos.vue, FooterLogo.vue)
 // via:  useData().theme.value.logoBranding
+const logosDeclarados = {
+  autor:  { src: `${basePath}img/logo-autor.png`,  height: LOGOS.heights.autor  },
+  gva:    { src: `${basePath}img/logo-gva.png`,    height: LOGOS.heights.gva    },
+  centro: { src: `${basePath}img/logo-centro.png`, height: LOGOS.heights.centro },
+  footer: { src: `${basePath}img/logo-autor.png`,  height: LOGOS.heights.footer },
+}
 const logoBranding = {
   mode:       LOGOS.mode,
   darkSuffix: LOGOS.darkSuffix,
-  logos: {
-    autor:  { src: `${basePath}img/logo-autor.png`,  height: LOGOS.heights.autor  },
-    gva:    { src: `${basePath}img/logo-gva.png`,    height: LOGOS.heights.gva    },
-    centro: { src: `${basePath}img/logo-centro.png`, height: LOGOS.heights.centro },
-    footer: { src: `${basePath}img/logo-autor.png`,  height: LOGOS.heights.footer },
-  },
+  // Los logos ocultos no se declaran: los componentes no pintan lo que no existe.
+  logos: Object.fromEntries(
+    Object.entries(logosDeclarados).filter(([clave]) => visible[clave] !== false)
+  ),
 }
 
 // ── Navbar global ─────────────────────────────────────────────────────────────
 // Curso de una sola unidad: usa el navbar de esa unidad tal cual (con prefijos).
 // Curso multi-unidad: Home + cada unidad como dropdown con sus ítems de nav.
-const navbar = nonRootUnits.length === 1
-  ? getNavbarForUnit(nonRootUnits[0].navbar, nonRootUnits[0].code)
-  : [
-      { text: '🏠 Inicio', link: '/' },
-      ...nonRootUnits.map(u => ({
-        text: `${u.icon} ${u.title}`,
-        items: getNavbarForUnit(u.navbar, u.code).filter((item: any) => item.link !== '/'),
-      }))
-    ]
+// unitMenu.mode = 'cumulative' (con más de una unidad): solo el navbar de la raíz;
+// cada unidad lleva su propio desplegable con ella y las anteriores (construirUnitNavbars, en unitHelpers.ts).
+const unitMenu = unitMenuDe(unitsData)
+const acumulativo = unitMenu.mode === 'cumulative' && nonRootUnits.length > 1
+const navbar = acumulativo
+  ? UNITS.root.navbar
+  : nonRootUnits.length === 1
+    ? getNavbarForUnit(nonRootUnits[0].navbar, nonRootUnits[0].code)
+    : [
+        { text: '🏠 Inicio', link: '/' },
+        ...nonRootUnits.map(u => ({
+          text: `${u.icon} ${u.title}`,
+          items: getNavbarForUnit(u.navbar, u.code).filter((item: any) => item.link !== '/'),
+        }))
+      ]
 
 // ── Sidebar multi-prefijo ─────────────────────────────────────────────────────
 // VitePress sirve el sidebar de cada unidad según el prefijo de URL:
@@ -373,10 +390,12 @@ export default defineConfig({
     },
   },
   themeConfig: {
-    logo: navbarLogo,
+    // Sin logo del navbar: la clave no existe (el tema no pinta nada).
+    ...(visible.navbar ? { logo: navbarLogo } : {}),
     socialLinks: PROJECT.socialLinks,
     logoBranding,
-    unitNavbars,
+    // Desplegables por unidad: unitMenu (units.json) más lo escrito a mano en unitNavbars.
+    unitNavbars: construirUnitNavbars(unitsData, UNITS, unitsData.unitNavbars),
     sidebar: sidebar,
     footer: { copyright: PROJECT.copyright },
     license: PROJECT.license,
