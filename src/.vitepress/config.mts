@@ -16,8 +16,9 @@ import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages.js'
 import { PROJECT } from './config/project'
 import { COLORS }  from './config/colors'
 import { LOGOS, getDarkLogoPath } from './config/logos'
-import { UNITS, getAllUnitsArray, unitNavbars, UNIT_MENU_MODE } from './config/units'
-import { getNavbarForUnit, getSidebarForUnit } from './unitHelpers'
+import { UNITS, getAllUnitsArray } from './config/units'
+import { getNavbarForUnit, getSidebarForUnit, construirUnitNavbars, unitMenuDe } from './unitHelpers'
+import unitsData from './config/units.json'
 
 
 // ── Helper: alineación del contenido en contenedores ───────────────────────
@@ -223,7 +224,8 @@ const logoBranding = {
 // Curso multi-unidad: Home + cada unidad como dropdown con sus ítems de nav.
 // unitMenu.mode = 'cumulative' (con más de una unidad): solo el navbar de la raíz;
 // cada unidad lleva su propio desplegable (unitNavbars, en config/units.ts).
-const acumulativo = UNIT_MENU_MODE === 'cumulative' && nonRootUnits.length > 1
+const unitMenu = unitMenuDe(unitsData)
+const acumulativo = unitMenu.mode === 'cumulative' && nonRootUnits.length > 1
 const navbar = acumulativo
   ? UNITS.root.navbar
   : nonRootUnits.length === 1
@@ -392,7 +394,8 @@ export default defineConfig({
     ...(visible.navbar ? { logo: navbarLogo } : {}),
     socialLinks: PROJECT.socialLinks,
     logoBranding,
-    unitNavbars,
+    // Desplegables por unidad: unitMenu (units.json) más lo escrito a mano en unitNavbars.
+    unitNavbars: construirUnitNavbars(unitsData, UNITS, unitsData.unitNavbars),
     sidebar: sidebar,
     footer: { copyright: PROJECT.copyright },
     license: PROJECT.license,

@@ -51,7 +51,9 @@ export const LOGOS = {
   // false oculta el logo sin borrar su archivo. Si falta este bloque (cursos
   // antiguos), todos se muestran.
   visible: {
-    navbar: true,   // logo de la barra superior (img/logo.png)
+    // Logo de la barra superior (img/logo.png). La marca de agua de impresión
+    // (printWatermark) también usa img/logo.png, pero es un ajuste aparte: no se oculta aquí.
+    navbar: true,
     autor:  true,   // logo del autor en el lateral (img/logo-autor.png)
     gva:    true,   // logo institucional en el lateral (img/logo-gva.png)
     centro: true,   // logo del centro en el lateral (img/logo-centro.png)

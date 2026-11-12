@@ -10,13 +10,6 @@
 //   formatVersion — Versión del formato. Hoy, 1.
 //   units         — Unidades del curso. `root` es la página de inicio.
 //   unitNavbars   — Desplegable opcional del navbar según la URL activa.
-//   unitMenu      — Opcional. Cómo se listan las unidades en el navbar:
-//                   { "mode": "all" } (ausente = all): un desplegable por unidad.
-//                   { "mode": "cumulative", "label": "Sesiones" }: el navbar global
-//                   solo lleva la raíz, y cada unidad tiene un desplegable con las
-//                   unidades 1..N hasta ella (nunca las posteriores). `label` es el
-//                   texto del desplegable (por defecto «Sesiones»).
-//                   Un unitNavbars escrito a mano para una unidad manda sobre el generado.
 //
 // PROPIEDADES DE CADA UNIDAD:
 //   id        — Identificador único (debe coincidir con la clave del objeto)
@@ -58,48 +51,4 @@ export function getUnitByCode(code: string): UnitConfig | undefined {
   return UNITS[code]
 }
 
-// ── Menú de unidades (unitMenu) ──────────────────────────────────────────────
-// Ausente en units.json = 'all'. Los cursos antiguos no lo tienen.
-export type UnitMenuMode = 'all' | 'cumulative'
-export const UNIT_MENU_MODE: UnitMenuMode =
-  (data as { unitMenu?: { mode?: string } }).unitMenu?.mode === 'cumulative' ? 'cumulative' : 'all'
-export const UNIT_MENU_LABEL: string =
-  (data as { unitMenu?: { label?: string } }).unitMenu?.label ?? 'Sesiones'
-
-// Primer enlace del sidebar de una unidad (en orden de aparición), con su prefijo.
-function primeraPagina(unidad: UnitConfig): string {
-  const buscar = (items: DefaultTheme.SidebarItem[]): string | undefined => {
-    for (const item of items) {
-      if (item.link) return item.link
-      const hijo = item.items && buscar(item.items)
-      if (hijo) return hijo
-    }
-    return undefined
-  }
-  const enlace = buscar(unidad.sidebar)
-  return enlace ? `/${unidad.code}${enlace}` : `/${unidad.code}/`
-}
-
-// Desplegable acumulativo: en la unidad N se listan las unidades 1..N.
-function unitNavbarsAcumulativos(): Record<string, NavGroup[]> {
-  const unidades = Object.values(UNITS).filter(u => u.id !== 'root')
-  const resultado: Record<string, NavGroup[]> = {}
-  if (unidades.length < 2) return resultado
-  unidades.forEach((unidad, i) => {
-    resultado[unidad.code] = [{
-      text: UNIT_MENU_LABEL,
-      items: unidades.slice(0, i + 1).map(u => ({
-        text: `${u.icon} ${u.fullTitle || u.title}`,
-        link: primeraPagina(u),
-      })),
-    }]
-  })
-  return resultado
-}
-
-const unitNavbarsManuales = data.unitNavbars as unknown as Record<string, NavGroup[]>
-
-// Lo escrito a mano en unitNavbars manda sobre lo generado para esa unidad.
-export const unitNavbars: Record<string, NavGroup[]> = UNIT_MENU_MODE === 'cumulative'
-  ? { ...unitNavbarsAcumulativos(), ...unitNavbarsManuales }
-  : unitNavbarsManuales
+export const unitNavbars = data.unitNavbars as unknown as Record<string, NavGroup[]>
