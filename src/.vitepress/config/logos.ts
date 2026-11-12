@@ -45,4 +45,17 @@ export const LOGOS = {
     footer: '75px',   // Logo del pie de página (versión compacta del autor)
   },
 
+  // --------------------------------------------------------------------------
+  // VISIBILIDAD DE LOS LOGOS
+  // --------------------------------------------------------------------------
+  // false oculta el logo sin borrar su archivo. Si falta este bloque (cursos
+  // antiguos), todos se muestran.
+  visible: {
+    navbar: true,   // logo de la barra superior (img/logo.png)
+    autor:  true,   // logo del autor en el lateral (img/logo-autor.png)
+    gva:    true,   // logo institucional en el lateral (img/logo-gva.png)
+    centro: true,   // logo del centro en el lateral (img/logo-centro.png)
+    footer: true,   // logo del pie (usa img/logo-autor.png)
+  },
+
 }
