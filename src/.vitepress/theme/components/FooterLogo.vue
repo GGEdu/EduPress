@@ -16,6 +16,8 @@ import { computed } from 'vue'
 import { useData, withBase } from 'vitepress'
 import ThemedImage from './ThemedImage.vue'
 
+interface Logo { src: string; height: string }
+
 const { theme } = useData()
 const branding = computed(() => theme.value.logoBranding as {
   mode: 'same' | 'invert' | 'separate'
