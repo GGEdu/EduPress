@@ -56,6 +56,8 @@ const PELIGROSAS = [
   ['\\unicode con comilla', '$\\unicode[a" onmouseover="alert(8)]{x42}$', ['onmouseover']],
   ['grosor de letra con estilos', '$\\mmlToken{mi}[fontfamily="serif", fontweight="bold;background:url(https://example.org/f.png)"]{x}$', ['url(', 'example.org']],
   ['\\fcolorbox con estilos', '$\\fcolorbox{red;background:url(https://example.org/g.png)}{yellow}{x}$', ['url(', 'example.org']],
+  ['\\fcolorbox con comilla', '$\\fcolorbox{red" onmouseover="alert(11)}{yellow}{x}$', ['onmouseover']],
+  ['\\bbox con comilla en el color', '$\\bbox[color:red" onmouseover="alert(12)]{x}$', ['onmouseover']],
   ['color con comilla', `$\\mmlToken{mi}[color='red" onmouseover="alert(9)']{x}$`, ['onmouseover']],
   ['imagen de fuera con mglyph', '$\\mmlToken{mglyph}[src="https://example.org/h.png"]{}$', ['example.org']],
 ]
