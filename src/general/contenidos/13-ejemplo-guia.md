@@ -21,7 +21,7 @@ Esta plantilla educativa está diseñada para facilitar la creación de material
 
 ## 🎯 Objetivos de Aprendizaje {.animate-title}
 
-::: details 📋 Resultados de Aprendizaje y Objetivos Específicos
+:::: details 📋 Resultados de Aprendizaje y Objetivos Específicos
 
 ### 🎪 Objetivos Generales del Curso
 
@@ -49,10 +49,11 @@ Esta plantilla educativa está diseñada para facilitar la creación de material
 - **CP3**: Adaptación a nuevas tecnologías y metodologías
 - **CP4**: Pensamiento crítico y toma de decisiones
 :::
+::::
 
 ## 📚 Estructura del Temario {.animate-title}
 
-::: info 📖 Organización de Contenidos
+:::: info 📖 Organización de Contenidos
 
 ### 🗂️ Unidades Didácticas
 
@@ -92,10 +93,11 @@ Esta plantilla educativa está diseñada para facilitar la creación de material
 - Presentación y defensa
 
 :::
+::::
 
 ## 🎯 Metodología y Evaluación {.animate-title}
 
-::: tip 🚀 Aprendizaje Activo y Personalizado
+:::: tip 🚀 Aprendizaje Activo y Personalizado
 
 ### 📖 Metodología Didáctica
 
@@ -122,10 +124,11 @@ Esta plantilla educativa está diseñada para facilitar la creación de material
 - Nota mínima en proyecto final: **5.0**
 - Entrega puntual de todas las actividades
 :::
+::::
 
 ## 📚 Recursos y Materiales {.animate-title}
 
-::: info 🛠️ Herramientas y Recursos
+:::: info 🛠️ Herramientas y Recursos
 
 ### 📖 Bibliografía y Referencias
 
@@ -183,6 +186,7 @@ Esta plantilla educativa está diseñada para facilitar la creación de material
 - Presentación y defensa
 
 :::
+::::
 
 ## 🚀 Comenzar el Curso {.animate-title}
 
