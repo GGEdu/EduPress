@@ -109,3 +109,4 @@ Para arreglarlo, busca la línea indicada y añade el `$$` que falta. Un `$$` de
 - Dentro de un bloque de código (las comillas triples) el dólar no se interpreta: se muestra tal cual, como en los ejemplos de arriba.
 - Las fórmulas se compilan al generar el sitio. Una fórmula mal escrita no para el build: en la página aparece el mensaje de error de MathJax en lugar de la fórmula, así que conviene revisarla al previsualizar.
 - Por seguridad, MathJax no admite `\href`, `\class`, `\style` ni `\cssId`: los enlaces y los estilos se escriben en Markdown, no dentro de una fórmula.
+- Tampoco llega a la web lo que una fórmula intente meter por otras vías (`\mmlToken`, `\bbox`, `\unicode`…): enlaces, imágenes, clases o estilos con `url(…)`. Los colores, bordes y márgenes de `\bbox` y `\colorbox`, y las referencias con `\label` y `\eqref`, funcionan como siempre.

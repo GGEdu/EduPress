@@ -7,8 +7,7 @@ import type Token from 'markdown-it/lib/token.mjs'
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 import container from 'markdown-it-container'
 import { escapeTitle, lienzoContainers, notasPlugin } from './lienzo'
-import { avisoDobleDolarPlugin } from './matematicas'
-import { AllPackages } from 'mathjax-full/js/input/tex/AllPackages.js'
+import { avisoDobleDolarPlugin, formulasSeguras, OPCIONES_MATEMATICAS } from './matematicas'
 
 // ── Importar desde config/ ─────────────────────────────────────────────────
 // 👤 Edita los archivos de config/ para personalizar el sitio.
@@ -357,8 +356,9 @@ export default defineConfig({
   },
   markdown: {
     // Ecuaciones con $…$ y $$…$$ (MathJax, con markdown-it-mathjax3 en devDependencies).
-    // Sin los paquetes html y action: \href{javascript:…}, \class, \style y \cssId.
-    math: { tex: { packages: AllPackages.filter((p: string) => p !== 'html' && p !== 'action') } },
+    // En modo seguro (matematicas.ts): sin \href, \class, \style ni \cssId, y sin enlaces,
+    // clases, ids ni estilos peligrosos se pongan con la orden que se pongan.
+    math: OPCIONES_MATEMATICAS,
     config(md) {
       md.use(tabsMarkdownPlugin)
       md.use(...infoBoxContainer)
@@ -371,6 +371,7 @@ export default defineConfig({
       for (const plugin of lienzoContainers(basePath)) md.use(...plugin)
       md.use(notasPlugin)
       md.use(avisoDobleDolarPlugin)
+      md.use(formulasSeguras)
     }
   },
   head: headTags,
